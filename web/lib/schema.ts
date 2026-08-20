@@ -12,6 +12,8 @@ export type Fleet = {
 export type Entry = {
   id: string;
   cve: string | null;
+  /** NVD published date, joined from web/data/nvd-dates.json at load. */
+  published?: string;
   aliases: string[];
   title: string;
   layer: string;
@@ -34,7 +36,7 @@ export type Entry = {
 export type IndexEntry = Pick<
   Entry,
   | "id" | "cve" | "aliases" | "title" | "layer" | "layer_name"
-  | "component" | "year" | "cvss_score" | "severity" | "kev"
+  | "component" | "year" | "cvss_score" | "severity" | "kev" | "published"
 >;
 
 /** Ordered top of stack to silicon. The order is the point: it is a rack elevation. */
@@ -82,5 +84,14 @@ export function toIndex(e: Entry): IndexEntry {
     cvss_score: e.cvss_score,
     severity: e.severity,
     kev: e.kev,
+    published: e.published,
   };
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/** "2026-01-14" -> "Jan 14, 2026". Deterministic, so server and client markup agree. */
+export function fmtDate(iso: string): string {
+  const [y, m, d] = iso.split("-");
+  return `${MONTHS[Number(m) - 1]} ${Number(d)}, ${y}`;
 }

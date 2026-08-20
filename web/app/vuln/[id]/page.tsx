@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import VendorIcon from "@/app/_components/VendorIcon";
 import { getAllEntries, getEntry } from "@/lib/entries";
-import { PAIN_HINT, SEVERITY_LABEL } from "@/lib/schema";
+import { PAIN_HINT, SEVERITY_LABEL, fmtDate } from "@/lib/schema";
 
 export const dynamicParams = false;
 
@@ -133,7 +133,11 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
             <Row label="Identifier"><span className="font-mono">{ident}</span></Row>
             <Row label="Component">{entry.component}</Row>
             <Row label="Layer">{entry.layer_name}</Row>
-            {entry.year && <Row label="Year"><span className="font-mono tabular-nums">{entry.year}</span></Row>}
+            {entry.published ? (
+              <Row label="Published"><span className="font-mono tabular-nums">{fmtDate(entry.published)}</span></Row>
+            ) : entry.year ? (
+              <Row label="Year"><span className="font-mono tabular-nums">{entry.year}</span></Row>
+            ) : null}
             {fleet.pain_class && (
               <Row label="Remediation cost">
                 <span className="font-mono">{fleet.pain_class}</span>

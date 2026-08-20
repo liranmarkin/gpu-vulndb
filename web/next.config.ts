@@ -5,7 +5,7 @@ const config: NextConfig = {
   outputFileTracingRoot: process.cwd() + "/..",
   // The per-entry OG route renders on demand, so its fonts and the entries
   // corpus must ship inside the function bundle.
-  outputFileTracingIncludes: { "/**": ["./assets/fonts/*.ttf", "../entries/**"] },
+  outputFileTracingIncludes: { "/**": ["./assets/fonts/*.ttf", "./data/*.json", "../entries/**"] },
   async redirects() {
     return [{ source: "/vuln/:id.html", destination: "/vuln/:id", permanent: true }];
   },

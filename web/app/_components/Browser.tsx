@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { IndexEntry, Severity } from "@/lib/schema";
-import { LAYERS, SEVERITIES } from "@/lib/schema";
+import { LAYERS, SEVERITIES, fmtDate } from "@/lib/schema";
 import VendorIcon from "./VendorIcon";
 
 const PAGE = 60;
@@ -99,7 +99,9 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
     });
     const by: Record<Sort, (a: IndexEntry, b: IndexEntry) => number> = {
       score: (a, b) => (b.cvss_score ?? -1) - (a.cvss_score ?? -1) || a.id.localeCompare(b.id),
-      year: (a, b) => b.year.localeCompare(a.year) || (b.cvss_score ?? -1) - (a.cvss_score ?? -1),
+      year: (a, b) =>
+        (b.published ?? b.year).localeCompare(a.published ?? a.year) ||
+        (b.cvss_score ?? -1) - (a.cvss_score ?? -1),
       component: (a, b) => a.component.localeCompare(b.component) || (b.cvss_score ?? -1) - (a.cvss_score ?? -1),
     };
     return out.sort(by[sort]);
@@ -364,8 +366,10 @@ function Card({ entry: e }: { entry: IndexEntry }) {
           {e.aliases.slice(0, 2).map((a) => <Tag key={a} tone="alias">{a}</Tag>)}
         </span>
       </span>
-      {e.year && (
-        <span className="pt-[3px] font-mono text-[12px] tabular-nums text-faint">{e.year}</span>
+      {(e.published || e.year) && (
+        <span className="pt-[3px] font-mono text-[12px] tabular-nums text-faint">
+          {e.published ? fmtDate(e.published) : e.year}
+        </span>
       )}
     </Link>
   );
