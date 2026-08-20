@@ -21,7 +21,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
   const [kev, setKev] = useState(false);
   const [layer, setLayer] = useState<string | null>(null);
   const [year, setYear] = useState("");
-  const [sort, setSort] = useState<Sort>("score");
+  const [sort, setSort] = useState<Sort>("year");
   const [shown, setShown] = useState(PAGE);
   // Must be state, not a ref: the write-back effect below has to be blocked until
   // this read has actually committed a render, or it writes an empty query string
@@ -36,7 +36,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
     setLayer(p.get("layer"));
     setYear(p.get("year") ?? "");
     setKev(p.get("kev") === "1");
-    setSort((p.get("sort") as Sort) ?? "score");
+    setSort((p.get("sort") as Sort) ?? "year");
     setSev(new Set((p.get("severity") ?? "").split(",").filter(Boolean) as Severity[]));
     setReady(true);
   }, []);
@@ -52,7 +52,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
     if (layer) p.set("layer", layer);
     if (year) p.set("year", year);
     if (kev) p.set("kev", "1");
-    if (sort !== "score") p.set("sort", sort);
+    if (sort !== "year") p.set("sort", sort);
     if (sev.size) p.set("severity", [...sev].join(","));
     return p.toString();
   }, [debouncedQ, layer, year, kev, sort, sev]);
@@ -121,7 +121,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
 
   function clearAll() {
     setQ(""); setDebouncedQ(""); setSev(new Set()); setKev(false);
-    setLayer(null); setYear(""); setSort("score");
+    setLayer(null); setYear(""); setSort("year");
   }
 
   return (
@@ -273,9 +273,9 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
             aria-label="Sort order"
             className="rounded-full border border-line bg-card px-3.5 py-1.5 text-[13px] font-medium text-muted hover:border-line-strong hover:text-ink"
           >
-            <option value="score">Highest CVSS</option>
             <option value="year">Newest first</option>
-            <option value="component">Component A–Z</option>
+            <option value="score">Highest CVSS</option>
+            <option value="component">Component A-Z</option>
           </select>
 
           {filtered && (
