@@ -17,16 +17,25 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def new_entry_files() -> list[Path]:
+def entry_changes() -> tuple[list[Path], int]:
+    """New entry files, and how many existing ones the run also touched.
+
+    derive_pain.py labels any entry whose remediation prose names a cost, including ones that
+    arrived on an earlier day without a class. Those edits are real and belong in the message;
+    a commit that says only "add 79" while modifying 17 more misreports its own diff.
+    """
     out = subprocess.run(["git", "status", "--porcelain", "entries/"],
                          cwd=ROOT, capture_output=True, text=True, check=True).stdout
-    paths = []
+    added, modified = [], 0
     for line in out.splitlines():
-        status, _, name = line.partition(" ")
-        name = (name or line[3:]).strip()
-        if line.startswith("??") and name.endswith(".json"):
-            paths.append(ROOT / name)
-    return paths
+        name = line[3:].strip()
+        if not name.endswith(".json"):
+            continue
+        if line.startswith("??"):
+            added.append(ROOT / name)
+        else:
+            modified += 1
+    return added, modified
 
 
 def main():
@@ -34,8 +43,9 @@ def main():
     ap.add_argument("--candidates", type=Path)
     args = ap.parse_args()
 
+    added, modified = entry_changes()
     entries = []
-    for path in new_entry_files():
+    for path in added:
         try:
             entries.append(json.loads(path.read_text()))
         except (OSError, json.JSONDecodeError):
@@ -71,8 +81,12 @@ def main():
             score = f"{e['cvss_score']:.1f}" if e.get("cvss_score") is not None else "unscored"
             lines.append(f"  {mark}{e['id']} ({score}) {e['title']}")
 
-    lines += ["", "All at status 'curated' - machine-assisted from NVD and vendor advisories,",
-              "not individually verified against primary sources."]
+    if modified:
+        lines += ["", f"Also labelled a remediation cost on {modified} existing entries whose "
+                      "prose named one."]
+
+    lines += ["", "New entries are at status 'curated' - machine-assisted from NVD and vendor",
+              "advisories, not individually verified against primary sources."]
     print("\n".join(lines))
 
 

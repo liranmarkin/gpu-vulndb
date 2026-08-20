@@ -110,7 +110,26 @@ git -c user.name="gpu-vulndb daily" -c user.email="liran.markin@gmail.com" \
     commit --quiet -m "$message"
 
 step "pushing"
-git push --quiet origin main
+# A sweep takes minutes and the branch can move underneath it. The commit only adds new files
+# under entries/ plus two generated files, so replaying it on top of whatever landed is safe;
+# a rebase that does not apply cleanly is a real conflict and should stop the run.
+pushed=0
+for attempt in 1 2 3; do
+  if git push --quiet origin main; then pushed=1; break; fi
+  step "push rejected (attempt $attempt) - rebasing onto origin/main and retrying"
+  git fetch --quiet origin
+  git rebase --quiet origin/main || { git rebase --abort || true; fail "rebase conflicted - resolve by hand"; }
+  # Counts and dates are derived from the whole corpus, so they have to be recomputed against
+  # the entries that arrived while this run was working.
+  $PY scripts/daily_dates.py --candidates "$CANDIDATES"
+  $PY scripts/refresh_readme.py
+  if ! git diff --quiet web/data/nvd-dates.json README.md; then
+    git add web/data/nvd-dates.json README.md
+    git -c user.name="gpu-vulndb daily" -c user.email="liran.markin@gmail.com" \
+        commit --quiet --amend --no-edit
+  fi
+done
+[ "$pushed" = "1" ] || fail "could not push after 3 attempts"
 
 # The batch is the only record of what a run produced, so it is archived rather than deleted.
 mv "$BATCH_FILE" "$WORK/" 2>/dev/null || true
