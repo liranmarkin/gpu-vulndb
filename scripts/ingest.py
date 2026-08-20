@@ -31,6 +31,20 @@ LAYER_NAMES = {
     "kernel-hypervisor": "Kernel, userspace & hypervisor",
 }
 
+# Consumer and workstation products that ride along in vendor advisory feeds. A GPU cloud does
+# not run GeForce Experience, and carrying those entries is what makes a database look like an
+# NVD mirror. Matched before anything else, and dropped.
+OUT_OF_SCOPE = re.compile(
+    r"geforce experience|geforce now|nvidia control panel|nvidia app\b|shield tv|shield tablet|"
+    r"nvidia broadcast|rtx (?:voice|remix|experience)|omniverse launcher|studio driver|"
+    r"jetson nano|nintendo|drive (?:px|agx|hyperion)|automotive|tegra (?:x1|k1)",
+    re.I,
+)
+
+# A management controller is firmware even when the vendor name says GPU, so this is checked
+# before the GPU rule. "NVIDIA DGX BMC" belongs with the other BMCs, not with the drivers.
+MANAGEMENT_PLANE = re.compile(r"\bbmc\b|\bipmi\b|redfish|\bilo\b|idrac|xclarity|megarac|aspeed", re.I)
+
 # Ordered: the first pattern that matches a component wins.
 LAYER_RULES: list[tuple[str, str]] = [
     (r"nvidia|cuda|cudnn|nccl|dcgm|vgpu|nvswitch|nvlink|gsp|vbios|nvflash|dgx|hgx|grid|"
@@ -56,11 +70,13 @@ LAYER_RULES: list[tuple[str, str]] = [
 
 
 def infer_layer(component: str, hint: str | None) -> str:
+    text = component or ""
+    if MANAGEMENT_PLANE.search(text):
+        return "firmware-bmc-fabric"
     if hint in LAYER_NAMES:
         return hint
-    text = (component or "").lower()
     for pattern, layer in LAYER_RULES:
-        if re.search(pattern, text):
+        if re.search(pattern, text.lower()):
             return layer
     return "firmware-bmc-fabric"
 
@@ -111,6 +127,8 @@ def normalize(raw: dict, source: str, seq: Counter) -> tuple[dict | None, str | 
     component = (raw.get("component") or "").strip()
     if not component:
         return None, "missing component"
+    if OUT_OF_SCOPE.search(component):
+        return None, f"{component}: consumer/workstation product, out of scope"
 
     impact = (raw.get("impact") or "").strip()
     if len(impact) < 3:
