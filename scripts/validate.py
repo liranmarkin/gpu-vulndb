@@ -100,6 +100,8 @@ def main():
                     err(path, f"reference points at {host} — {why}")
             if ref.endswith(".csv"):
                 err(path, "reference is a bulk index, not the advisory for this entry")
+            if "services.nvd.nist.gov/rest/json" in ref or "keywordSearch=" in ref:
+                err(path, "reference is an API search query, not a citation")
 
     report(files, seen_cves)
 

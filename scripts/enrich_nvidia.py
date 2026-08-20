@@ -28,6 +28,9 @@ ENTRIES = ROOT / "entries"
 BULLETIN_URL = "https://github.com/NVIDIA/product-security/tree/main/{year}/{bulletin}"
 NVD_URL = "https://nvd.nist.gov/vuln/detail/{}"
 STALE_HOSTS = ("nvidia.custhelp.com",)
+# An NVD API keyword-search URL is a query, not a citation - it points at no particular
+# vulnerability and its result set changes over time.
+BOGUS_REF = re.compile(r"services\.nvd\.nist\.gov/rest/json/cves|[?&]keywordSearch=")
 CVE_RE = re.compile(r"^CVE-\d{4}-\d{4,7}$")
 VECTOR_RE = re.compile(r"^CVSS:[34]\.\d/")
 
@@ -79,7 +82,7 @@ def main():
             continue
 
         cites_bulk = any(
-            u.endswith(".csv") or any(h in u for h in STALE_HOSTS)
+            u.endswith(".csv") or any(h in u for h in STALE_HOSTS) or BOGUS_REF.search(u)
             for u in entry["references"]
         )
         info = index.get(cve)
@@ -93,7 +96,9 @@ def main():
         if cites_bulk:
             refs = [
                 u for u in entry["references"]
-                if not u.endswith(".csv") and not any(h in u for h in STALE_HOSTS)
+                if not u.endswith(".csv")
+                and not any(h in u for h in STALE_HOSTS)
+                and not BOGUS_REF.search(u)
             ]
             year = bulletin_year.get(info["bulletin"] or "")
             if info["bulletin"] and year:
