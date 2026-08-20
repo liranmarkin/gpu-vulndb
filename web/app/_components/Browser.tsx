@@ -342,7 +342,7 @@ function Card({ entry: e }: { entry: IndexEntry }) {
   return (
     <Link
       href={`/vuln/${e.id}`}
-      className="relative grid grid-cols-[38px_1fr] items-start gap-3.5 overflow-hidden rounded-2xl border border-line bg-card p-4 pl-5 shadow-[var(--shadow-card)] transition duration-150 hover:-translate-y-px hover:border-line-strong hover:shadow-[var(--shadow-card-hover)] sm:gap-4 sm:p-5 sm:pl-6"
+      className="relative grid grid-cols-[38px_minmax(0,1fr)_auto] items-start gap-3.5 overflow-hidden rounded-2xl border border-line bg-card p-4 pl-5 shadow-[var(--shadow-card)] transition duration-150 hover:-translate-y-px hover:border-line-strong hover:shadow-[var(--shadow-card-hover)] sm:gap-4 sm:p-5 sm:pl-6"
     >
       <span
         aria-hidden
@@ -364,6 +364,9 @@ function Card({ entry: e }: { entry: IndexEntry }) {
           {e.aliases.slice(0, 2).map((a) => <Tag key={a} tone="alias">{a}</Tag>)}
         </span>
       </span>
+      {e.year && (
+        <span className="pt-[3px] font-mono text-[12px] tabular-nums text-faint">{e.year}</span>
+      )}
     </Link>
   );
 }
