@@ -21,8 +21,16 @@ export async function generateMetadata({
   if (!entry) return {};
 
   const ident = entry.cve ?? entry.id;
-  const title = `${ident} - ${entry.component}`;
-  const description = (entry.impact || entry.title).slice(0, 180);
+  const alias = entry.aliases[0];
+  const title = `${ident}${alias ? ` (${alias})` : ""} - ${entry.title}`;
+  const sev =
+    entry.cvss_score != null
+      ? `CVSS ${entry.cvss_score.toFixed(1)} ${SEVERITY_LABEL[entry.severity].toLowerCase()}`
+      : SEVERITY_LABEL[entry.severity];
+  const description = clip(
+    `${sev}${entry.kev ? ", known exploited (CISA KEV)" : ""}. ${entry.impact || entry.title}`,
+    158,
+  );
 
   return {
     title,
@@ -30,6 +38,11 @@ export async function generateMetadata({
     alternates: { canonical: `/vuln/${entry.id}` },
     openGraph: { title, description, url: `/vuln/${entry.id}`, type: "article" },
   };
+}
+
+function clip(s: string, max: number): string {
+  if (s.length <= max) return s;
+  return s.slice(0, max).replace(/\s+\S*$/, "");
 }
 
 export default async function VulnPage({ params }: { params: Promise<{ id: string }> }) {
@@ -41,15 +54,40 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
   const score = entry.cvss_score != null ? entry.cvss_score.toFixed(1) : "—";
   const fleet = entry.fleet ?? {};
   const hasFleet = Boolean(fleet.ubiquity || fleet.remediation_pain || fleet.why_fleet_wide);
+  const pageUrl = `https://gpuvulndb.org/vuln/${entry.id}`;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: entry.title,
+    url: pageUrl,
+    mainEntityOfPage: pageUrl,
+    ...(entry.published && { datePublished: entry.published }),
+    description: entry.impact || entry.title,
+    keywords: [ident, ...entry.aliases, entry.component, entry.layer_name].join(", "),
+    author: { "@type": "Organization", name: "GPU Vulnerability Database", url: "https://gpuvulndb.org" },
+    publisher: { "@type": "Organization", name: "GPU Vulnerability Database", url: "https://gpuvulndb.org" },
+  };
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Database", item: "https://gpuvulndb.org/" },
+      { "@type": "ListItem", position: 2, name: entry.layer_name, item: `https://gpuvulndb.org/layer/${entry.layer}` },
+      { "@type": "ListItem", position: 3, name: ident, item: pageUrl },
+    ],
+  };
 
   return (
     <main className="mx-auto max-w-[1200px] px-[22px]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <div className="grid items-start gap-10 pt-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-14">
         <article>
           <p className="mb-5 font-mono text-[12px] text-faint">
             <Link href="/#database" className="text-muted hover:text-ink">Database</Link>
             <span className="mx-1.5 text-line-strong">/</span>
-            <Link href={`/?layer=${entry.layer}#database`} className="text-muted hover:text-ink">
+            <Link href={`/layer/${entry.layer}`} className="text-muted hover:text-ink">
               {entry.layer_name}
             </Link>
           </p>

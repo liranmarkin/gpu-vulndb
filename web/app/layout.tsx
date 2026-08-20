@@ -1,7 +1,9 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Instrument_Sans, Spline_Sans_Mono } from "next/font/google";
 import Link from "next/link";
 import Logo from "./_components/Logo";
+import { LAYERS } from "@/lib/schema";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -23,7 +25,7 @@ const mono = Spline_Sans_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://gpuvulndb.org"),
   title: {
-    default: "GPU Vulnerability Database",
+    default: "GPU Vulnerability Database - CVEs across the GPU infrastructure stack",
     template: "%s · GPU VulnDB",
   },
   description:
@@ -77,9 +79,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <footer className="mt-20 border-t border-line bg-card py-12 text-[13.5px] text-muted">
           <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[22px] sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex items-center gap-2.5">
-              <Logo size={24} />
-              <span className="font-display text-[15.5px] font-bold text-ink">GPU VulnDB</span>
+            <div>
+              <div className="mb-5 flex items-center gap-2.5">
+                <Logo size={24} />
+                <span className="font-display text-[15.5px] font-bold text-ink">GPU VulnDB</span>
+              </div>
+              <nav aria-label="Browse by layer" className="grid gap-1.5 text-[13px]">
+                {LAYERS.map((l) => (
+                  <Link key={l.id} href={`/layer/${l.id}`} className="text-muted hover:text-brand-ink">
+                    {l.name}
+                  </Link>
+                ))}
+              </nav>
             </div>
             <div className="max-w-[64ch]">
               <p className="mb-2.5">
@@ -98,6 +109,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </footer>
+        <Analytics />
       </body>
     </html>
   );

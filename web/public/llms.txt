@@ -1,0 +1,21 @@
+# GPU Vulnerability Database
+
+> An open, community-maintained database of vulnerabilities in the stack GPU datacenters run on: BMC and GPU firmware, BIOS/UEFI, network fabric, GPU drivers and CUDA, host kernel and hypervisors, container runtimes and Kubernetes, control plane tooling, and AI/ML model serving. Every entry carries impact, attack vector, and operator remediation, not just a CVSS score. Data is CC BY 4.0.
+
+## Data
+
+- [Full corpus, JSON](https://gpuvulndb.org/data.json): every entry in one CORS-open file
+- [RSS feed](https://gpuvulndb.org/feed.xml): newest entries
+- [Source repository](https://github.com/liranmarkin/gpu-vulndb): one JSON file per entry under entries/, schema under schema/
+
+## Browse
+
+- [All entries](https://gpuvulndb.org/)
+- [AI/ML frameworks & serving](https://gpuvulndb.org/layer/ai-serving)
+- [Container, Kubernetes & orchestration](https://gpuvulndb.org/layer/container-orchestration)
+- [Control plane, storage & DevOps](https://gpuvulndb.org/layer/control-plane)
+- [Kernel, userspace & hypervisor](https://gpuvulndb.org/layer/kernel-hypervisor)
+- [NVIDIA / GPU stack](https://gpuvulndb.org/layer/gpu-stack)
+- [Firmware, BMC & network fabric](https://gpuvulndb.org/layer/firmware-bmc-fabric)
+
+Entry pages live at https://gpuvulndb.org/vuln/<id>, where <id> is a CVE id (CVE-2025-23266) or an NCVD- id for design-level weaknesses that never received a CVE.
