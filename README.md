@@ -28,7 +28,7 @@ There is no shortage of vulnerability databases. There is a specific and checkab
 - **Package-centric databases cannot represent this hardware.** The [OSV schema](https://ossf.github.io/osv-schema/) keys every record to a package in a registry or distro. There is no ecosystem for firmware, BMC images, BIOS, or a GPU driver shipped as a `.run` installer, and no way to add one without changing the spec.
 - **NVD tells you a score, not what to do.** A CVSS vector does not tell an operator whether the fix is a config change, a daemon restart, draining every GPU node, or flashing firmware across a fleet. For this stack, that difference is the entire cost of the fix.
 - **You cannot find this hardware by searching for it.** The Linux kernel CVE corpus records which *source files* a vulnerability affects. NVD does not carry that field, so NVD can only be searched by text — and for this stack the text does not name the hardware. See below.
-- **Cloud vulnerability databases cover the provider's services, not the substrate.** [cloudvulndb.org](https://www.cloudvulndb.org/) catalogues issues in hyperscaler services, where remediation is the provider's job and usually already done. Here, *you are the provider*. Nobody patches it for you.
+- **Cloud security databases cover the provider's services, not the substrate.** Cross-tenant issues in hyperscaler services get catalogued, and the provider fixes them for you. Here, *you are the provider*. Nobody patches it for you.
 
 
 ### What text search costs you
