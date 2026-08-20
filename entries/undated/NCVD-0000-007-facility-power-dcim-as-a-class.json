@@ -1,0 +1,20 @@
+{
+  "id": "NCVD-0000-007-facility-power-dcim-as-a-class",
+  "cve": null,
+  "aliases": [],
+  "title": "Facility power / DCIM as a class: PDUs, CRAC controllers, BMS and DCIM platforms run long-lived embedded firmware, sit on flat facility…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Facility power / DCIM as a class",
+  "year": "2023-2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "PDUs, CRAC controllers, BMS and DCIM platforms run long-lived embedded firmware, sit on flat facility networks, and are frequently outside the compute operator's change-control. An attacker with PDU control has a physical-availability weapon against a GPU cluster",
+  "attack_vector": "Network, facility LAN",
+  "remediation": "Contractual and architectural: demand facility-network segmentation and a firmware SLA from the colo provider, and monitor the power plane independently. For a tenant in someone else's datacenter there is no patch you can apply yourself",
+  "references": [
+    "https://thehackernews.com/2023/08/multiple-flaws-in-cyberpower-and.html"
+  ],
+  "status": "curated"
+}

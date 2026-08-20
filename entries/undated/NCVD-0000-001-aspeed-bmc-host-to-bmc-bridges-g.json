@@ -1,0 +1,20 @@
+{
+  "id": "NCVD-0000-001-aspeed-bmc-host-to-bmc-bridges-g",
+  "cve": null,
+  "aliases": [],
+  "title": "ASPEED BMC (host-to-BMC bridges generally): The ASPEED LPC/PCIe bridge architecture exists to let the host talk to the BMC",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "ASPEED BMC (host-to-BMC bridges generally)",
+  "year": "2019-2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "The ASPEED LPC/PCIe bridge architecture exists to let the host talk to the BMC; disabling it breaks legitimate in-band management (ipmitool, firmware update tooling). Operators frequently leave it on",
+  "attack_vector": "Local, host CPU",
+  "remediation": "Explicit per-fleet decision: lock the AHB bridges and lose in-band management tooling, or accept a host→BMC escalation path. There is no configuration that gives both",
+  "references": [
+    "https://nvd.nist.gov/vuln/detail/CVE-2019-6260"
+  ],
+  "status": "curated"
+}

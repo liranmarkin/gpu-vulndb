@@ -1,0 +1,20 @@
+{
+  "id": "NCVD-0000-003-internet-exposed-bmc",
+  "cve": null,
+  "aliases": [],
+  "title": "Internet-exposed BMC: Shodan-visible BMCs are a recurring finding at colo/neocloud buildouts — a management interface reachable…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Internet-exposed BMC",
+  "year": "2019-2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Shodan-visible BMCs are a recurring finding at colo/neocloud buildouts — a management interface reachable from the internet turns every BMC CVE above into a directly exploitable, pre-auth, below-OS foothold",
+  "attack_vector": "Network, from the public internet",
+  "remediation": "Continuous external attack-surface scanning of the management ranges plus an enforced out-of-band network design; the operational cost is that remote-hands and vendor support workflows often depend on the exposure",
+  "references": [
+    "https://www.shodan.io/search?query=ipmi"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "NCVD-2023-001-msi-intel-boot-guard-oem-key-lea",
+  "cve": null,
+  "aliases": [
+    "no CVE"
+  ],
+  "title": "MSI / Intel Boot Guard OEM key leak: The Money Message ransomware dump exposed MSI's firmware image-signing private keys for 57 products and Intel…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "MSI / Intel Boot Guard OEM key leak",
+  "year": "2023",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "The Money Message ransomware dump exposed MSI's firmware image-signing private keys for 57 products and Intel Boot Guard KM/BPM private keys for 116 products, reportedly touching Intel, Lenovo and Supermicro platforms. An attacker can sign a firmware image that the hardware root of trust accepts — Boot Guard is effectively void on affected silicon and the implant survives any OS reinstall",
+  "attack_vector": "Supply chain / local flash",
+  "remediation": "There is no patch. Boot Guard keys are fused into the CPU at manufacture, so revocation is impossible on shipped hardware. The only response is to treat Boot Guard as non-authoritative on affected platforms and add an independent firmware-measurement/attestation layer",
+  "references": [
+    "https://www.helpnetsecurity.com/2023/05/08/msi-private-keys-leaked/"
+  ],
+  "status": "curated"
+}

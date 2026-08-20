@@ -1,0 +1,7 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report an undisclosed vulnerability
+    url: https://www.kb.cert.org/vuls/report/
+    about: >
+      Do not report new vulnerabilities here — issues are public immediately. Report to the
+      vendor, or use CERT/CC to coordinate disclosure.

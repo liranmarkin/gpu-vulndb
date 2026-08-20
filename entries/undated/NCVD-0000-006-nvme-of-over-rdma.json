@@ -1,0 +1,22 @@
+{
+  "id": "NCVD-0000-006-nvme-of-over-rdma",
+  "cve": null,
+  "aliases": [
+    "NeVerMore"
+  ],
+  "title": "NVMe-oF over RDMA: NVMe-over-Fabrics inherits RDMA's lack of authentication",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "NVMe-oF over RDMA",
+  "year": "2022-2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "NVMe-over-Fabrics inherits RDMA's lack of authentication; storage targets are addressable by any host on the fabric, so a compromised tenant node can reach other tenants' namespaces. No CVE — design",
+  "attack_vector": "Fabric-local",
+  "remediation": "Enforce NVMe-oF host NQN allowlisting plus DH-HMAC-CHAP authentication and separate storage fabric; costs throughput and adds provisioning complexity",
+  "references": [
+    "https://arxiv.org/abs/2202.08080"
+  ],
+  "status": "curated"
+}

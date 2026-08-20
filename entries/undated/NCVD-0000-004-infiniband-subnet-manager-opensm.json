@@ -1,0 +1,20 @@
+{
+  "id": "NCVD-0000-004-infiniband-subnet-manager-opensm",
+  "cve": null,
+  "aliases": [],
+  "title": "InfiniBand subnet manager (OpenSM / UFM): The IB subnet manager has unilateral authority over LID assignment, routing and partitioning for the entire…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "InfiniBand subnet manager (OpenSM / UFM)",
+  "year": "2019-2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "The IB subnet manager has unilateral authority over LID assignment, routing and partitioning for the entire fabric, and the management datagram (MAD) path has historically had weak authentication. There is no per-tenant trust boundary in the SM",
+  "attack_vector": "Fabric-local",
+  "remediation": "Requires an architectural control: pinned partition keys (pkeys) per tenant, SM redundancy, and treating the SM host as tier-0 infrastructure. No patch exists because it is the protocol model",
+  "references": [
+    "https://nvd.nist.gov/vuln/detail/CVE-2024-0130"
+  ],
+  "status": "curated"
+}

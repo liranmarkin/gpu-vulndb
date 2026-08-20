@@ -1,0 +1,20 @@
+{
+  "id": "NCVD-0000-009-redfish-implementations-all-vend",
+  "cve": null,
+  "aliases": [],
+  "title": "Redfish implementations (all vendors): Redfish replaced IPMI but reintroduced the same class of flaws at the HTTP layer — CVE-2024-54085…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Redfish implementations (all vendors)",
+  "year": "2019-2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Redfish replaced IPMI but reintroduced the same class of flaws at the HTTP layer — CVE-2024-54085, CVE-2023-34330, CVE-2023-25191/25192, CVE-2018-15774 are all Redfish-surface bugs. The spec mandates no minimum implementation assurance, and every ODM ships its own stack",
+  "attack_vector": "Network / management VLAN",
+  "remediation": "Treat Redfish as an untrusted-by-default surface: mTLS or a management-plane proxy in front of every BMC, per-node unique credentials, and no direct operator access. This is architecture work, not patching",
+  "references": [
+    "https://nvd.nist.gov/vuln/detail/CVE-2024-54085"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gpuvulndb.org/schema/entry.schema.json",
+  "title": "GPU VulnDB entry",
+  "description": "One vulnerability, or one design-level weakness, affecting the stack that GPU infrastructure runs on.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "title", "layer", "layer_name", "component",
+    "severity", "impact", "references", "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable key and filename. A CVE id where one exists, otherwise NCVD-<year>-<seq>-<slug>.",
+      "pattern": "^(CVE-\\d{4}-\\d{4,7}|NCVD-\\d{4}-\\d{3}-[a-z0-9-]+)$"
+    },
+    "cve": {
+      "type": ["string", "null"],
+      "description": "Null for design-level weaknesses that have no CVE and never will.",
+      "pattern": "^CVE-\\d{4}-\\d{4,7}$"
+    },
+    "aliases": {
+      "type": "array",
+      "description": "Named-vulnerability branding only, e.g. NVIDIAScape. Not component qualifiers.",
+      "items": { "type": "string", "minLength": 2, "maxLength": 60 },
+      "uniqueItems": true
+    },
+    "title": { "type": "string", "minLength": 8, "maxLength": 200 },
+    "layer": {
+      "type": "string",
+      "description": "Which layer of the stack the flaw lives in.",
+      "enum": [
+        "ai-serving",
+        "container-orchestration",
+        "control-plane",
+        "kernel-hypervisor",
+        "gpu-stack",
+        "firmware-bmc-fabric"
+      ]
+    },
+    "layer_name": { "type": "string", "minLength": 3 },
+    "component": { "type": "string", "minLength": 2, "maxLength": 120 },
+    "year": { "type": "string", "pattern": "^(\\d{4}|\\d{4}-\\d{4}|)$" },
+    "cvss_score": { "type": ["number", "null"], "minimum": 0, "maximum": 10 },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low", "unscored"]
+    },
+    "kev": {
+      "type": "boolean",
+      "description": "Listed in the CISA Known Exploited Vulnerabilities catalog."
+    },
+    "impact": {
+      "type": "string",
+      "minLength": 3,
+      "description": "What an attacker gets. Written for an operator, not copied from the CVE record."
+    },
+    "attack_vector": {
+      "type": "string",
+      "description": "Who has to be able to reach what, for this to be exploitable."
+    },
+    "remediation": {
+      "type": "string",
+      "description": "What the operator has to actually do. This is the field that makes the entry worth more than an NVD lookup."
+    },
+    "references": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "format": "uri", "pattern": "^https?://" },
+      "uniqueItems": true
+    },
+    "fleet": {
+      "type": "object",
+      "description": "Blast radius across a fleet: how many nodes carry it, and what remediation costs.",
+      "additionalProperties": false,
+      "properties": {
+        "ubiquity": { "type": "string" },
+        "remediation_pain": { "type": "string" },
+        "pain_class": {
+          "type": "string",
+          "description": "What remediation actually costs, ordered roughly cheapest to most disruptive.",
+          "enum": [
+            "hot-patch",
+            "daemon-restart",
+            "node-drain",
+            "node-reboot",
+            "microcode + reboot",
+            "firmware-flash",
+            "physical access",
+            "unpatchable / mitigate-only",
+            "other"
+          ]
+        },
+        "why_fleet_wide": { "type": "string" }
+      }
+    },
+    "status": {
+      "type": "string",
+      "description": "Quality tier. 'curated' is bulk-imported from vendor advisories with machine assistance and is not individually human-verified. 'reviewed' means a maintainer confirmed every field against primary sources. 'stub' is a placeholder with references but no analysis.",
+      "enum": ["stub", "curated", "reviewed"]
+    },
+    "contributor": {
+      "type": ["string", "null"],
+      "description": "GitHub profile of whoever wrote or last verified this entry. Distinct from the researcher who found the flaw.",
+      "pattern": "^https://github\\.com/[A-Za-z0-9-]+$"
+    },
+    "discovered_by": {
+      "type": "array",
+      "description": "Credit for the original research. A list, because findings usually have more than one author.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "org": { "type": "string" },
+          "url": { "type": "string", "pattern": "^https?://" }
+        }
+      }
+    },
+    "published_at": {
+      "type": ["string", "null"],
+      "description": "ISO 8601. Deliberately not the YYYY/MM/DD strings other databases use.",
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "known_exploited": {
+      "type": ["boolean", "null"],
+      "description": "Exploited in the wild, independent of whether CISA has listed it."
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "id": { "pattern": "^CVE-" } }, "required": ["id"] },
+      "then": {
+        "required": ["cve"],
+        "description": "A CVE-keyed entry must carry the matching cve field."
+      }
+    },
+    {
+      "if": { "properties": { "severity": { "const": "unscored" } }, "required": ["severity"] },
+      "else": {
+        "required": ["cvss_score"],
+        "description": "Anything with a severity bucket must carry the score it was derived from."
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "NCVD-0000-012-gpu-accelerator-firmware-vbios-g",
+  "cve": null,
+  "aliases": [],
+  "title": "GPU / accelerator firmware (VBIOS, GSP, NVSwitch): GPU-resident firmware sits below the host OS and is not covered by host EDR or reimaging. NVIDIA ships GPU…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "GPU / accelerator firmware (VBIOS, GSP, NVSwitch)",
+  "year": "2023-2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "GPU-resident firmware sits below the host OS and is not covered by host EDR or reimaging. NVIDIA ships GPU firmware fixes through opaque bundled updates, so a neocloud cannot independently verify what changed or attest the running image between tenants",
+  "attack_vector": "Local, from a tenant with device access",
+  "remediation": "Enforce a firmware re-flash and attestation step at every tenant handoff rather than trusting a host reimage. NVIDIA's bundle model means the operator cannot audit the fix, only apply it",
+  "references": [
+    "https://www.nvidia.com/en-us/security/"
+  ],
+  "status": "curated"
+}

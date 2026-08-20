@@ -1,0 +1,20 @@
+{
+  "id": "NCVD-0000-002-ipmi-over-lan-as-a-protocol",
+  "cve": null,
+  "aliases": [],
+  "title": "IPMI over LAN as a protocol: IPMI has no transport confidentiality guarantees worth relying on, weak session handling, and per-vendor…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "IPMI over LAN as a protocol",
+  "year": "2013-2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "IPMI has no transport confidentiality guarantees worth relying on, weak session handling, and per-vendor implementations that diverge from spec. Every BMC on the fleet speaks it by default",
+  "attack_vector": "Network, management VLAN",
+  "remediation": "Fleet policy decision to disable IPMI-over-LAN and force Redfish-only; costs a rewrite of provisioning/monitoring tooling and loses compatibility with older ODM chassis",
+  "references": [
+    "https://nvd.nist.gov/vuln/detail/CVE-2013-4786"
+  ],
+  "status": "curated"
+}

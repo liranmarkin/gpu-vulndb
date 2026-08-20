@@ -1,0 +1,39 @@
+name: validate
+
+on:
+  pull_request:
+    paths:
+      - "entries/**"
+      - "schema/**"
+      - "scripts/**"
+      - ".github/workflows/validate.yml"
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  schema:
+    name: schema and consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install jsonschema
+        run: pip install --quiet jsonschema
+
+      - name: Validate entries
+        run: python scripts/validate.py
+
+      - name: Check the generated site data is not hand-edited
+        run: |
+          if git diff --name-only origin/main...HEAD 2>/dev/null | grep -qx 'site/data.json'; then
+            echo "site/data.json is generated — maintainers regenerate it on release."
+            echo "Please revert your change to that file; edit entries/ instead."
+            exit 1
+          fi

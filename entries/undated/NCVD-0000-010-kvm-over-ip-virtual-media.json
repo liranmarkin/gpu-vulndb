@@ -1,0 +1,20 @@
+{
+  "id": "NCVD-0000-010-kvm-over-ip-virtual-media",
+  "cve": null,
+  "aliases": [],
+  "title": "KVM-over-IP / virtual media: The BMC's virtual-media function can mount an arbitrary ISO as the host's boot device. Any BMC compromise…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "KVM-over-IP / virtual media",
+  "year": "2019-2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "The BMC's virtual-media function can mount an arbitrary ISO as the host's boot device. Any BMC compromise therefore converts directly into arbitrary host boot, bypassing disk encryption and OS controls (CVE-2019-16649 is the concrete instance)",
+  "attack_vector": "Network / BMC",
+  "remediation": "Disable virtual media in the BMC baseline except during provisioning windows, and gate the KVM/vmedia ports at the management-network edge. Costs the remote-hands workflow that most operations teams rely on",
+  "references": [
+    "https://nvd.nist.gov/vuln/detail/CVE-2019-16649"
+  ],
+  "status": "curated"
+}

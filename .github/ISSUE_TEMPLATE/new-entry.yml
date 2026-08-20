@@ -1,0 +1,95 @@
+name: Suggest a vulnerability
+description: Propose an entry you do not want to write as a pull request yourself
+title: "[entry] "
+labels: ["new entry"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Only for vulnerabilities that are **already public**. This is not a disclosure venue —
+        issues here are visible to everyone the moment you open them. See
+        [SECURITY.md](../blob/main/SECURITY.md).
+
+        If you are comfortable writing the entry yourself, a pull request is faster. See
+        [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md).
+
+  - type: input
+    id: identifier
+    attributes:
+      label: CVE or name
+      description: The CVE id, or the name if there is no CVE.
+      placeholder: CVE-2025-23266, or "unauthenticated Redfish on the management VLAN"
+    validations:
+      required: true
+
+  - type: input
+    id: component
+    attributes:
+      label: Affected component
+      placeholder: NVIDIA Container Toolkit
+    validations:
+      required: true
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Which layer of the stack does the flaw live in?
+      description: Where the flaw *is*, not where the consequences land.
+      options:
+        - ai-serving — inference servers, training frameworks, model formats
+        - container-orchestration — runtimes, Kubernetes, schedulers, service mesh
+        - control-plane — cluster management, storage, CI/CD, observability
+        - kernel-hypervisor — host kernel, userspace, virtualization
+        - gpu-stack — GPU drivers, CUDA, container toolkit, vGPU, DCGM
+        - firmware-bmc-fabric — BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs
+        - not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: What does an attacker get?
+      description: The consequence for an operator, not a restatement of the weakness class.
+      placeholder: Container escape to host root on any GPU node running a tenant-supplied image.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reach
+    attributes:
+      label: Who has to be able to reach it?
+      placeholder: Any tenant who can schedule a pod on a GPU node.
+    validations:
+      required: true
+
+  - type: textarea
+    id: remediation
+    attributes:
+      label: What does an operator have to do about it?
+      description: >
+        Include the rollout cost if you know it — config change, daemon restart, node drain,
+        reboot, firmware flash, or no fix available. Leave blank if you do not know.
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: Public references
+      description: One URL per line. At least one is required.
+      placeholder: |
+        https://nvidia.custhelp.com/app/answers/detail/a_id/5616
+        https://nvd.nist.gov/vuln/detail/CVE-2025-23266
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: This vulnerability is already public, and I am not disclosing anything new.
+          required: true
+        - label: I have not included exploit code.
+          required: true

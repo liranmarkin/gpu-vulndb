@@ -1,0 +1,17 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 GPU Vulnerability Database contributors
+
+The vulnerability data in entries/ and the schema in schema/ are licensed under
+the Creative Commons Attribution 4.0 International License.
+
+You are free to share and adapt this material for any purpose, including
+commercially, provided you give appropriate credit to the GPU Vulnerability
+Database, link to this license, and indicate if changes were made.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+Summary: https://creativecommons.org/licenses/by/4.0/
+
+The data is provided "as is", without warranty of any kind. It is informational
+and makes no claim of completeness or accuracy. Always confirm against the
+vendor's own advisory before acting on an entry.

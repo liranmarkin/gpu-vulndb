@@ -1,0 +1,46 @@
+name: Report a wrong entry
+description: An entry has incorrect facts, a bad reference, or misleading remediation advice
+title: "[correction] "
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Incorrect remediation guidance is the most serious error this project can ship, because
+        someone may act on it. Those are treated as urgent.
+  - type: input
+    id: entry
+    attributes:
+      label: Entry id
+      placeholder: CVE-2025-23266
+    validations:
+      required: true
+  - type: dropdown
+    id: field
+    attributes:
+      label: Which field is wrong?
+      multiple: true
+      options:
+        - impact
+        - attack_vector
+        - remediation
+        - fleet (ubiquity / pain_class / why_fleet_wide)
+        - severity or cvss_score
+        - layer
+        - references
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: What is wrong, and what should it say?
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source that supports the correction
+      description: One URL per line. First-hand operational experience is also valid — say so.
+    validations:
+      required: true
