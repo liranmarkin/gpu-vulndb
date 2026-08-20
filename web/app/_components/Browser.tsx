@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { IndexEntry, Severity } from "@/lib/schema";
 import { LAYERS, SEVERITIES } from "@/lib/schema";
 
@@ -25,7 +25,10 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
   const [year, setYear] = useState("");
   const [sort, setSort] = useState<Sort>("score");
   const [shown, setShown] = useState(PAGE);
-  const hydrated = useRef(false);
+  // Must be state, not a ref: the write-back effect below has to be blocked until
+  // this read has actually committed a render, or it writes an empty query string
+  // over the very URL the read depends on.
+  const [ready, setReady] = useState(false);
 
   // Read filters from the URL once, so a filtered view is a shareable link.
   useEffect(() => {
@@ -36,9 +39,8 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
     setYear(p.get("year") ?? "");
     setKev(p.get("kev") === "1");
     setSort((p.get("sort") as Sort) ?? "score");
-    const s = p.get("severity");
-    if (s) setSev(new Set(s.split(",").filter(Boolean) as Severity[]));
-    hydrated.current = true;
+    setSev(new Set((p.get("severity") ?? "").split(",").filter(Boolean) as Severity[]));
+    setReady(true);
   }, []);
 
   useEffect(() => {
@@ -58,10 +60,10 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
   }, [debouncedQ, layer, year, kev, sort, sev]);
 
   useEffect(() => {
-    if (!hydrated.current) return;
+    if (!ready) return;
     window.history.replaceState(null, "", params ? `?${params}#database` : window.location.pathname);
     setShown(PAGE);
-  }, [params]);
+  }, [params, ready]);
 
   const years = useMemo(
     () => [...new Set(entries.map((e) => e.year).filter((y) => /^\d{4}$/.test(y)))].sort().reverse(),

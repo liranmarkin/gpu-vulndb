@@ -76,7 +76,26 @@ jq -r 'select(.kev and .layer=="gpu-stack") | .id + "  " + .title' entries/*/*.j
 ```
 
 The website also serves the whole corpus as a single file at
-[gpuvulndb.org/data.json](https://gpuvulndb.org/data.json).
+[gpuvulndb.org/data.json](https://gpuvulndb.org/data.json), CORS-open so you can fetch it from
+anywhere. There is an RSS feed at [/feed.xml](https://gpuvulndb.org/feed.xml).
+
+## Repository layout
+
+```
+entries/<year>/<id>.json   the database — one file per entry, the source of truth
+schema/entry.schema.json   the schema, enforced in CI
+scripts/validate.py        what CI runs; run it before opening a pull request
+scripts/build.py           one-off importer from the original source CSVs, not part of contributing
+web/                       the website (Next.js 16, React 19, Tailwind 4)
+```
+
+The site reads `entries/` straight off disk at build time, so nothing generated is ever committed
+and the data has no toolchain of its own. Contributing an entry needs a text editor and Python;
+only working on the site itself needs Node.
+
+```bash
+cd web && npm install && npm run dev
+```
 
 ## Contributing
 
