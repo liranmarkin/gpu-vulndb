@@ -199,8 +199,200 @@ def write_site_data(entries):
     )
 
 
+# ----------------------------------------------------------------- page rendering
+
+SITE_URL = "https://gpuvulndb.org"
+SEV_LABEL = {"critical": "Critical", "high": "High", "medium": "Medium",
+             "low": "Low", "unscored": "Unscored"}
+PAIN_HINT = {
+    "hot-patch": "Patchable without interrupting workloads.",
+    "daemon-restart": "Needs a service restart on affected nodes.",
+    "node-drain": "Needs tenant workloads evicted from each node.",
+    "node-reboot": "Needs a full reboot of each affected node.",
+    "microcode + reboot": "Needs a microcode update and a reboot.",
+    "firmware-flash": "Needs a firmware flash, usually with the node out of service.",
+    "physical access": "Needs someone physically at the machine.",
+    "unpatchable / mitigate-only": "No vendor fix. Mitigation is the only option.",
+}
+
+
+def esc(text):
+    return (str(text if text is not None else "")
+            .replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            .replace('"', "&quot;"))
+
+
+def inline_code(text):
+    """Render the backtick spans in the curated prose, after escaping."""
+    return re.sub(r"`([^`]+)`", r"<code>\1</code>", esc(text))
+
+
+def field(heading, value):
+    return f"<div class=\"field\"><h3>{heading}</h3><p>{inline_code(value)}</p></div>" if value else ""
+
+
+def render_page(e):
+    score = f"{e['cvss_score']:.1f}" if e.get("cvss_score") is not None else "—"
+    sev = e["severity"]
+    ident = e.get("cve") or e["id"]
+
+    tags = [f'<span class="tag">{esc(ident)}</span>',
+            f'<span class="tag">{esc(e["layer_name"])}</span>']
+    if e.get("kev"):
+        tags.append('<span class="tag kev">Known exploited</span>')
+    tags += [f'<span class="tag alias">{esc(a)}</span>' for a in e.get("aliases", [])]
+    tags.append(f'<span class="tag status">{esc(e.get("status", "curated"))}</span>')
+
+    fleet = e.get("fleet") or {}
+    fleet_html = ""
+    if fleet:
+        inner = (field("How widespread", fleet.get("ubiquity"))
+                 + field("Cost to remediate", fleet.get("remediation_pain"))
+                 + field("Why it hits the whole fleet", fleet.get("why_fleet_wide")))
+        if inner:
+            fleet_html = ('<div class="field"><h3>Fleet impact</h3>'
+                          f'<div class="callout">{inner}</div></div>')
+
+    refs = "".join(
+        f'<a href="{esc(u)}" rel="noopener nofollow" target="_blank">{esc(u)}</a>'
+        for u in e.get("references", []))
+    refs_html = f'<div class="field"><h3>References</h3><div class="refs">{refs}</div></div>' if refs else ""
+
+    side = [
+        f'<div class="side-row"><dt>CVSS</dt>'
+        f'<dd class="side-score sev-{sev}">{score} <small>{SEV_LABEL.get(sev, "")}</small></dd></div>',
+        f'<div class="side-row"><dt>Identifier</dt><dd class="mono">{esc(ident)}</dd></div>',
+        f'<div class="side-row"><dt>Component</dt><dd>{esc(e["component"])}</dd></div>',
+        f'<div class="side-row"><dt>Layer</dt><dd>{esc(e["layer_name"])}</dd></div>',
+    ]
+    if e.get("year"):
+        side.append(f'<div class="side-row"><dt>Year</dt><dd class="mono">{esc(e["year"])}</dd></div>')
+    if fleet.get("pain_class"):
+        pc = fleet["pain_class"]
+        hint = PAIN_HINT.get(pc, "")
+        side.append(f'<div class="side-row"><dt>Remediation cost</dt>'
+                    f'<dd class="mono">{esc(pc)}</dd>'
+                    + (f'<dd style="color:var(--dimmer);font-size:12.5px;margin-top:4px">{esc(hint)}</dd>'
+                       if hint else "") + '</div>')
+    if e.get("kev"):
+        side.append('<div class="side-row"><dt>CISA KEV</dt>'
+                    '<dd class="sev-critical">Listed as exploited</dd></div>')
+
+    desc = (e.get("impact") or e["title"])[:180]
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(ident)} — {esc(e['component'])} | GPU VulnDB</title>
+<meta name="description" content="{esc(desc)}">
+<link rel="canonical" href="{SITE_URL}/vuln/{esc(e['id'])}">
+<meta property="og:title" content="{esc(ident)} — {esc(e['component'])}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{SITE_URL}/vuln/{esc(e['id'])}">
+<link rel="alternate" type="application/rss+xml" title="GPU VulnDB" href="/feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">GPU<span>/</span>VulnDB</a>
+    <nav>
+      <a href="/#database">Database</a>
+      <a href="/data.json">JSON</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/liranmarkin/gpu-vulndb">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="detail-wrap">
+    <article>
+      <p class="crumb"><a href="/#database">Database</a> ·
+        <a href="/?layer={esc(e['layer'])}#database">{esc(e['layer_name'])}</a></p>
+      <h2 class="detail-title">{esc(e['title'])}</h2>
+      <div class="detail-tags">{''.join(tags)}</div>
+
+      {field("Impact", e.get("impact"))}
+      {field("Who can reach it", e.get("attack_vector"))}
+      {field("What to do", e.get("remediation"))}
+      {fleet_html}
+      {refs_html}
+
+      <p class="disclaimer">This entry is <strong>{esc(e.get('status', 'curated'))}</strong>.
+      {"It was imported from vendor advisories with machine assistance and has not been individually verified against primary sources." if e.get('status') == 'curated' else "A maintainer verified it against primary sources."}
+      Confirm against your vendor's advisory before acting on it, and
+      <a href="https://github.com/liranmarkin/gpu-vulndb/issues/new?template=correction.yml">report anything wrong</a>.</p>
+    </article>
+
+    <aside>
+      <dl class="side">{''.join(side)}</dl>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>GPU Vulnerability Database</strong> — an open community project.
+    Data CC BY 4.0. Informational only, with no warranty of completeness.</p>
+  </div>
+</footer>
+</body>
+</html>
+"""
+
+
+def write_pages(entries):
+    out = SITE / "vuln"
+    if out.exists():
+        for old in out.glob("*.html"):
+            old.unlink()
+    out.mkdir(parents=True, exist_ok=True)
+    for e in entries:
+        (out / f"{e['id']}.html").write_text(render_page(e))
+
+
+def write_sitemap(entries):
+    urls = [f"<url><loc>{SITE_URL}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>"]
+    urls += [f"<url><loc>{SITE_URL}/vuln/{esc(e['id'])}</loc></url>" for e in entries]
+    (SITE / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(urls) + "\n</urlset>\n")
+    (SITE / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n")
+
+
+def write_feed(entries):
+    """Most severe recent entries. Static hosting, so no real publication dates to sort on."""
+    recent = sorted(entries, key=lambda e: (e.get("year") or "", e.get("cvss_score") or 0),
+                    reverse=True)[:50]
+    items = "".join(
+        f"<item><title>{esc((e.get('cve') or e['id']) + ' — ' + e['title'])}</title>"
+        f"<link>{SITE_URL}/vuln/{esc(e['id'])}</link>"
+        f"<guid isPermaLink=\"true\">{SITE_URL}/vuln/{esc(e['id'])}</guid>"
+        f"<description>{esc(e.get('impact') or e['title'])}</description>"
+        f"<category>{esc(e['layer_name'])}</category></item>"
+        for e in recent)
+    (SITE / "feed.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0"><channel>'
+        "<title>GPU Vulnerability Database</title>"
+        f"<link>{SITE_URL}/</link>"
+        "<description>Vulnerabilities in the stack that GPU infrastructure runs on.</description>"
+        f"{items}</channel></rss>\n")
+
+
 if __name__ == "__main__":
     built = build()
+    write_pages(built)
+    write_sitemap(built)
+    write_feed(built)
     kev = sum(1 for e in built if e["kev"])
     crit = sum(1 for e in built if e["severity"] == "critical")
     print(f"entries: {len(built)}  critical: {crit}  kev: {kev}")
+    print(f"pages:   {len(built)} under site/vuln/ + sitemap, robots, feed")

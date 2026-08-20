@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NCVD-0000-007-facility-power-dcim-as-a-class — Facility power / DCIM as a class | GPU VulnDB</title>
+<meta name="description" content="PDUs, CRAC controllers, BMS and DCIM platforms run long-lived embedded firmware, sit on flat facility networks, and are frequently outside the compute operator's change-control. An">
+<link rel="canonical" href="https://gpuvulndb.org/vuln/NCVD-0000-007-facility-power-dcim-as-a-class">
+<meta property="og:title" content="NCVD-0000-007-facility-power-dcim-as-a-class — Facility power / DCIM as a class">
+<meta property="og:description" content="PDUs, CRAC controllers, BMS and DCIM platforms run long-lived embedded firmware, sit on flat facility networks, and are frequently outside the compute operator's change-control. An">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://gpuvulndb.org/vuln/NCVD-0000-007-facility-power-dcim-as-a-class">
+<link rel="alternate" type="application/rss+xml" title="GPU VulnDB" href="/feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">GPU<span>/</span>VulnDB</a>
+    <nav>
+      <a href="/#database">Database</a>
+      <a href="/data.json">JSON</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/liranmarkin/gpu-vulndb">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="detail-wrap">
+    <article>
+      <p class="crumb"><a href="/#database">Database</a> ·
+        <a href="/?layer=firmware-bmc-fabric#database">Firmware, BMC &amp; network fabric</a></p>
+      <h2 class="detail-title">Facility power / DCIM as a class: PDUs, CRAC controllers, BMS and DCIM platforms run long-lived embedded firmware, sit on flat facility…</h2>
+      <div class="detail-tags"><span class="tag">NCVD-0000-007-facility-power-dcim-as-a-class</span><span class="tag">Firmware, BMC &amp; network fabric</span><span class="tag status">curated</span></div>
+
+      <div class="field"><h3>Impact</h3><p>PDUs, CRAC controllers, BMS and DCIM platforms run long-lived embedded firmware, sit on flat facility networks, and are frequently outside the compute operator's change-control. An attacker with PDU control has a physical-availability weapon against a GPU cluster</p></div>
+      <div class="field"><h3>Who can reach it</h3><p>Network, facility LAN</p></div>
+      <div class="field"><h3>What to do</h3><p>Contractual and architectural: demand facility-network segmentation and a firmware SLA from the colo provider, and monitor the power plane independently. For a tenant in someone else's datacenter there is no patch you can apply yourself</p></div>
+      
+      <div class="field"><h3>References</h3><div class="refs"><a href="https://thehackernews.com/2023/08/multiple-flaws-in-cyberpower-and.html" rel="noopener nofollow" target="_blank">https://thehackernews.com/2023/08/multiple-flaws-in-cyberpower-and.html</a></div></div>
+
+      <p class="disclaimer">This entry is <strong>curated</strong>.
+      It was imported from vendor advisories with machine assistance and has not been individually verified against primary sources.
+      Confirm against your vendor's advisory before acting on it, and
+      <a href="https://github.com/liranmarkin/gpu-vulndb/issues/new?template=correction.yml">report anything wrong</a>.</p>
+    </article>
+
+    <aside>
+      <dl class="side"><div class="side-row"><dt>CVSS</dt><dd class="side-score sev-unscored">— <small>Unscored</small></dd></div><div class="side-row"><dt>Identifier</dt><dd class="mono">NCVD-0000-007-facility-power-dcim-as-a-class</dd></div><div class="side-row"><dt>Component</dt><dd>Facility power / DCIM as a class</dd></div><div class="side-row"><dt>Layer</dt><dd>Firmware, BMC &amp; network fabric</dd></div><div class="side-row"><dt>Year</dt><dd class="mono">2023-2026</dd></div></dl>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>GPU Vulnerability Database</strong> — an open community project.
+    Data CC BY 4.0. Informational only, with no warranty of completeness.</p>
+  </div>
+</footer>
+</body>
+</html>

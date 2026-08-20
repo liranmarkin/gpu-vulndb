@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NCVD-0000-008-firmware-signing-key-compromise — Firmware signing-key compromise as a class | GPU VulnDB</title>
+<meta name="description" content="Firmware trust anchors (Boot Guard KM/BPM, UEFI PK/KEK, BMC image-signing keys) are held by ODMs with weaker security postures than the clouds that deploy their hardware, and sever">
+<link rel="canonical" href="https://gpuvulndb.org/vuln/NCVD-0000-008-firmware-signing-key-compromise">
+<meta property="og:title" content="NCVD-0000-008-firmware-signing-key-compromise — Firmware signing-key compromise as a class">
+<meta property="og:description" content="Firmware trust anchors (Boot Guard KM/BPM, UEFI PK/KEK, BMC image-signing keys) are held by ODMs with weaker security postures than the clouds that deploy their hardware, and sever">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://gpuvulndb.org/vuln/NCVD-0000-008-firmware-signing-key-compromise">
+<link rel="alternate" type="application/rss+xml" title="GPU VulnDB" href="/feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">GPU<span>/</span>VulnDB</a>
+    <nav>
+      <a href="/#database">Database</a>
+      <a href="/data.json">JSON</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/liranmarkin/gpu-vulndb">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="detail-wrap">
+    <article>
+      <p class="crumb"><a href="/#database">Database</a> ·
+        <a href="/?layer=firmware-bmc-fabric#database">Firmware, BMC &amp; network fabric</a></p>
+      <h2 class="detail-title">Firmware signing-key compromise as a class: Firmware trust anchors (Boot Guard KM/BPM, UEFI PK/KEK, BMC image-signing keys) are held by ODMs with weaker…</h2>
+      <div class="detail-tags"><span class="tag">NCVD-0000-008-firmware-signing-key-compromise</span><span class="tag">Firmware, BMC &amp; network fabric</span><span class="tag status">curated</span></div>
+
+      <div class="field"><h3>Impact</h3><p>Firmware trust anchors (Boot Guard KM/BPM, UEFI PK/KEK, BMC image-signing keys) are held by ODMs with weaker security postures than the clouds that deploy their hardware, and several have been breached. A neocloud inherits the ODM's key hygiene</p></div>
+      <div class="field"><h3>Who can reach it</h3><p>Supply chain</p></div>
+      <div class="field"><h3>What to do</h3><p>Requires diligence on ODM key custody at purchase time and an independent measured-boot / firmware-integrity baseline so a signed-but-malicious image is still detectable. Cannot be remediated after the fact</p></div>
+      
+      <div class="field"><h3>References</h3><div class="refs"><a href="https://www.binarly.io/blog/pkfail-untrusted-platform-keys-undermine-secure-boot-on-uefi-ecosystem" rel="noopener nofollow" target="_blank">https://www.binarly.io/blog/pkfail-untrusted-platform-keys-undermine-secure-boot-on-uefi-ecosystem</a></div></div>
+
+      <p class="disclaimer">This entry is <strong>curated</strong>.
+      It was imported from vendor advisories with machine assistance and has not been individually verified against primary sources.
+      Confirm against your vendor's advisory before acting on it, and
+      <a href="https://github.com/liranmarkin/gpu-vulndb/issues/new?template=correction.yml">report anything wrong</a>.</p>
+    </article>
+
+    <aside>
+      <dl class="side"><div class="side-row"><dt>CVSS</dt><dd class="side-score sev-unscored">— <small>Unscored</small></dd></div><div class="side-row"><dt>Identifier</dt><dd class="mono">NCVD-0000-008-firmware-signing-key-compromise</dd></div><div class="side-row"><dt>Component</dt><dd>Firmware signing-key compromise as a class</dd></div><div class="side-row"><dt>Layer</dt><dd>Firmware, BMC &amp; network fabric</dd></div><div class="side-row"><dt>Year</dt><dd class="mono">2023-2026</dd></div></dl>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>GPU Vulnerability Database</strong> — an open community project.
+    Data CC BY 4.0. Informational only, with no warranty of completeness.</p>
+  </div>
+</footer>
+</body>
+</html>

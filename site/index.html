@@ -4,172 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GPU Vulnerability Database</title>
-<meta name="description" content="An open database of vulnerabilities in the stack that GPU infrastructure runs on — firmware and BMC through to model serving. Free, open source, community maintained.">
+<meta name="description" content="An open database of vulnerabilities in the stack that GPU infrastructure runs on — BMC and GPU firmware through to model serving. Free, open source, community maintained.">
+<link rel="canonical" href="https://gpuvulndb.org/">
 <meta property="og:title" content="GPU Vulnerability Database">
-<meta property="og:description" content="Vulnerabilities in the stack that GPU infrastructure runs on — firmware and BMC through to model serving.">
+<meta property="og:description" content="Vulnerabilities in the stack that GPU infrastructure runs on — BMC and GPU firmware through to model serving.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://gpuvulndb.org/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="GPU VulnDB" href="/feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --void:#070B14; --rack:#0D1524; --rack-2:#111B2E; --rail:#1C2942; --rail-lit:#2C3E60;
-  --text:#DCE4F2; --dim:#8296B5; --dimmer:#5B6E8C;
-  --link:#5AA0FF;
-  /* Warm means exactly one thing on this page: risk. */
-  --critical:#FF5C5C; --high:#FF9838; --medium:#F0C13B; --low:#56A8E8; --unscored:#6B7C99;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --sans:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
-  --display:"Archivo","IBM Plex Sans",system-ui,sans-serif;
-  --maxw:1180px;
-}
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{
-  margin:0; background:var(--void); color:var(--text);
-  font-family:var(--sans); font-size:15px; line-height:1.55;
-  -webkit-font-smoothing:antialiased;
-}
-a{color:var(--link);text-decoration:none}
-a:hover{text-decoration:underline}
-:focus-visible{outline:2px solid var(--link);outline-offset:2px;border-radius:2px}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
-
-/* ---------- masthead ---------- */
-.masthead{
-  position:sticky;top:0;z-index:50;background:rgba(7,11,20,.92);
-  backdrop-filter:blur(8px);border-bottom:1px solid var(--rail);
-}
-.masthead .wrap{display:flex;align-items:center;gap:18px;height:56px}
-.brand{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--text);white-space:nowrap}
-.brand span{color:var(--dimmer)}
-.masthead nav{margin-left:auto;display:flex;gap:18px;font-size:13px;font-family:var(--mono)}
-.masthead nav a{color:var(--dim)}
-.masthead nav a:hover{color:var(--text);text-decoration:none}
-
-/* ---------- hero ---------- */
-.hero{padding:64px 0 8px;border-bottom:1px solid var(--rail)}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--dimmer);margin:0 0 18px}
-h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,6vw,60px);
-  line-height:1.02;letter-spacing:-.02em;margin:0 0 20px;max-width:16ch}
-.lede{font-size:17px;color:var(--dim);max-width:62ch;margin:0 0 40px}
-.lede strong{color:var(--text);font-weight:500}
-
-/* ---------- the stack (signature) ---------- */
-.stack{margin:0 0 10px;border:1px solid var(--rail);border-radius:3px;overflow:hidden;background:var(--rack)}
-.stack-head{display:flex;justify-content:space-between;align-items:baseline;
-  padding:11px 16px;border-bottom:1px solid var(--rail);font-family:var(--mono);
-  font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmer)}
-.layer{display:grid;grid-template-columns:1fr 168px 62px;align-items:center;gap:16px;
-  width:100%;text-align:left;padding:13px 16px;background:transparent;border:0;
-  border-top:1px solid var(--rail);color:var(--text);font:inherit;cursor:pointer;
-  transition:background .12s}
-.layer:first-of-type{border-top:0}
-.layer:hover{background:var(--rack-2)}
-.layer[aria-pressed="true"]{background:var(--rack-2);box-shadow:inset 3px 0 0 var(--link)}
-.layer-name{font-size:14.5px}
-.layer-depth{font-family:var(--mono);font-size:10.5px;color:var(--dimmer);
-  letter-spacing:.1em;text-transform:uppercase;display:block;margin-top:2px}
-.bar{height:7px;background:var(--rail);border-radius:1px;overflow:hidden;display:flex}
-.bar i{display:block;height:100%}
-.layer-count{font-family:var(--mono);font-size:14px;text-align:right;color:var(--dim)}
-.stack-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  font-family:var(--mono);font-size:11.5px;color:var(--dimmer);padding:11px 16px;
-  border-top:1px solid var(--rail)}
-.legend{display:flex;gap:14px;flex-wrap:wrap}
-.legend b{font-weight:400;display:inline-flex;align-items:center;gap:5px;color:var(--dimmer)}
-.legend i{width:8px;height:8px;border-radius:1px;display:block}
-
-/* ---------- controls ---------- */
-.controls{position:sticky;top:56px;z-index:40;background:var(--void);
-  border-bottom:1px solid var(--rail);padding:14px 0}
-.controls .wrap{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.search{flex:1 1 260px;min-width:0;position:relative;display:flex;align-items:center}
-.search input{
-  width:100%;padding:9px 12px 9px 32px;background:var(--rack);color:var(--text);
-  border:1px solid var(--rail);border-radius:3px;font-family:var(--mono);font-size:13.5px;
-}
-.search input::placeholder{color:var(--dimmer)}
-.search svg{position:absolute;left:10px;width:14px;height:14px;stroke:var(--dimmer);fill:none;stroke-width:2}
-.chip{
-  font-family:var(--mono);font-size:12px;padding:7px 11px;background:var(--rack);
-  color:var(--dim);border:1px solid var(--rail);border-radius:3px;cursor:pointer;
-  letter-spacing:.03em;transition:.12s;
-}
-.chip:hover{color:var(--text);border-color:var(--rail-lit)}
-.chip[aria-pressed="true"]{background:var(--rail);color:var(--text);border-color:var(--rail-lit)}
-.chip[data-sev="critical"][aria-pressed="true"]{border-color:var(--critical);color:var(--critical)}
-.chip[data-sev="high"][aria-pressed="true"]{border-color:var(--high);color:var(--high)}
-.chip[data-sev="medium"][aria-pressed="true"]{border-color:var(--medium);color:var(--medium)}
-select.chip{appearance:none;padding-right:26px;
-  background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);
-  background-position:calc(100% - 14px) 50%,calc(100% - 9px) 50%;
-  background-size:5px 5px,5px 5px;background-repeat:no-repeat}
-
-/* ---------- results ---------- */
-.meta{font-family:var(--mono);font-size:12px;color:var(--dimmer);padding:16px 0 10px}
-.meta b{color:var(--text);font-weight:500}
-.list{border-top:1px solid var(--rail)}
-.entry{border-bottom:1px solid var(--rail)}
-.entry-head{display:grid;grid-template-columns:52px 1fr auto;gap:16px;align-items:start;
-  width:100%;text-align:left;padding:15px 4px;background:none;border:0;color:inherit;
-  font:inherit;cursor:pointer}
-.entry-head:hover{background:var(--rack)}
-.score{font-family:var(--mono);font-size:17px;font-weight:600;text-align:right;
-  line-height:1.2;padding-top:1px}
-.score small{display:block;font-size:9.5px;font-weight:500;letter-spacing:.09em;
-  text-transform:uppercase;opacity:.75;margin-top:1px}
-.sev-critical{color:var(--critical)} .sev-high{color:var(--high)}
-.sev-medium{color:var(--medium)} .sev-low{color:var(--low)} .sev-unscored{color:var(--unscored)}
-.entry-title{font-size:14.5px;line-height:1.45;margin:0 0 5px}
-.entry-sub{font-family:var(--mono);font-size:11.5px;color:var(--dimmer);
-  display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-.tag{border:1px solid var(--rail-lit);border-radius:2px;padding:1px 5px;color:var(--dim)}
-.tag.kev{border-color:var(--critical);color:var(--critical)}
-.tag.alias{border-color:var(--rail-lit);color:var(--text)}
-.chev{color:var(--dimmer);font-family:var(--mono);font-size:11px;padding-top:4px}
-
-.detail{padding:2px 4px 26px 72px;display:grid;gap:18px;max-width:88ch}
-.field h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--dimmer);margin:0 0 5px;font-weight:500}
-.field p{margin:0;font-size:14.5px;line-height:1.62;color:var(--text)}
-.field code{font-family:var(--mono);font-size:.9em;background:var(--rack-2);
-  border:1px solid var(--rail);border-radius:2px;padding:1px 4px}
-.fleet{border-left:2px solid var(--rail-lit);padding-left:14px;display:grid;gap:12px}
-.refs{display:flex;flex-direction:column;gap:4px;font-family:var(--mono);font-size:12.5px;
-  word-break:break-all}
-.empty{padding:60px 4px;color:var(--dim);font-size:15px}
-.more{display:block;width:100%;margin:22px 0 0;padding:12px;background:var(--rack);
-  border:1px solid var(--rail);border-radius:3px;color:var(--dim);font-family:var(--mono);
-  font-size:12.5px;cursor:pointer}
-.more:hover{color:var(--text);border-color:var(--rail-lit)}
-
-footer{border-top:1px solid var(--rail);margin-top:60px;padding:34px 0 60px;
-  color:var(--dimmer);font-size:13.5px}
-footer p{margin:0 0 10px;max-width:70ch}
-
-@media(max-width:680px){
-  .hero{padding:40px 0 8px}
-  .layer{grid-template-columns:1fr 46px;gap:10px}
-  .layer .bar{display:none}
-  .detail{padding-left:4px}
-  .entry-head{grid-template-columns:46px 1fr;gap:12px}
-  .chev{display:none}
-}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
 
 <header class="masthead">
   <div class="wrap">
-    <div class="brand">GPU<span>/</span>VulnDB</div>
+    <a class="brand" href="/">GPU<span>/</span>VulnDB</a>
     <nav>
       <a href="#database">Database</a>
       <a href="/data.json">JSON</a>
-      <a id="gh" href="https://github.com/liranmarkin/gpu-vulndb">GitHub</a>
+      <a href="/feed.xml">RSS</a>
+      <a href="https://github.com/liranmarkin/gpu-vulndb">GitHub</a>
     </nav>
   </div>
 </header>
@@ -187,15 +44,18 @@ footer p{margin:0 0 10px;max-width:70ch}
     </p>
 
     <div class="stack">
-      <div class="stack-head"><span>The stack, top to bottom</span><span id="stack-total"></span></div>
+      <div class="stack-head">
+        <span>The stack, top to bottom</span>
+        <span id="stack-total"></span>
+      </div>
       <div id="stack"></div>
       <div class="stack-foot">
         <span class="legend" id="legend"></span>
         <span>Select a layer to filter</span>
       </div>
     </div>
-    <p class="eyebrow" style="margin:12px 0 34px">
-      Serving sits at the top. Firmware sits under everything and reboots the slowest.
+    <p class="stack-note">
+      Serving sits at the top. Firmware sits under everything, and reboots the slowest.
     </p>
   </div>
 </section>
@@ -209,13 +69,14 @@ footer p{margin:0 0 10px;max-width:70ch}
     <button class="chip" data-sev="critical" aria-pressed="false">Critical</button>
     <button class="chip" data-sev="high" aria-pressed="false">High</button>
     <button class="chip" data-sev="medium" aria-pressed="false">Medium</button>
-    <button class="chip" id="kev" aria-pressed="false">Exploited (KEV)</button>
+    <button class="chip" id="kev" aria-pressed="false">Exploited</button>
     <select class="chip" id="year" aria-label="Filter by year"></select>
     <select class="chip" id="sort" aria-label="Sort order">
       <option value="score">Highest CVSS</option>
       <option value="year">Newest first</option>
       <option value="component">Component A–Z</option>
     </select>
+    <button class="reset" id="reset" hidden>Clear filters</button>
   </div>
 </section>
 
@@ -227,22 +88,23 @@ footer p{margin:0 0 10px;max-width:70ch}
 
 <footer>
   <div class="wrap">
-    <p><strong style="color:var(--text);font-weight:500">GPU Vulnerability Database</strong> — an open community project.
-    Entries are curated from vendor advisories, NVD, and CISA KEV, and annotated for operators
-    running GPU fleets. Corrections and additions are welcome by pull request.</p>
-    <p>Data is licensed CC BY 4.0. Tooling is MIT. This database is informational and makes no
+    <p><strong>GPU Vulnerability Database</strong> — an open community project. Entries are curated
+    from vendor advisories, NVD and CISA KEV, then annotated for operators running GPU fleets.
+    Corrections and additions are welcome
+    <a href="https://github.com/liranmarkin/gpu-vulndb">on GitHub</a>.</p>
+    <p>Data is licensed CC BY 4.0; tooling is MIT. This database is informational and makes no
     warranty of completeness — always confirm against your vendor's advisory before acting.</p>
   </div>
 </footer>
 
 <script>
 const LAYERS=[
-  {id:"ai-serving",           name:"AI/ML frameworks & serving",     depth:"Tenant workload"},
+  {id:"ai-serving",            name:"AI/ML frameworks & serving",           depth:"Tenant workload"},
   {id:"container-orchestration",name:"Container, Kubernetes & orchestration",depth:"Scheduling & isolation"},
-  {id:"control-plane",        name:"Control plane, storage & DevOps",depth:"Operator tooling"},
-  {id:"kernel-hypervisor",    name:"Kernel, userspace & hypervisor", depth:"Host OS"},
-  {id:"gpu-stack",            name:"NVIDIA / GPU stack",             depth:"Driver & accelerator"},
-  {id:"firmware-bmc-fabric",  name:"Firmware, BMC & network fabric", depth:"Silicon & management plane"},
+  {id:"control-plane",         name:"Control plane, storage & DevOps",      depth:"Operator tooling"},
+  {id:"kernel-hypervisor",     name:"Kernel, userspace & hypervisor",       depth:"Host OS"},
+  {id:"gpu-stack",             name:"NVIDIA / GPU stack",                   depth:"Driver & accelerator"},
+  {id:"firmware-bmc-fabric",   name:"Firmware, BMC & network fabric",       depth:"Silicon & management plane"},
 ];
 const SEV=["critical","high","medium","low","unscored"];
 const SEV_LABEL={critical:"Crit",high:"High",medium:"Med",low:"Low",unscored:"n/a"};
@@ -252,19 +114,14 @@ let ALL=[], view=[], shown=0;
 const state={q:"",sev:new Set(),kev:false,layer:null,year:"",sort:"score"};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-// Render backtick spans from the curated prose as real code, after escaping.
-const fmt=s=>esc(s).replace(/`([^`]+)`/g,"<code>$1</code>");
 
-fetch("data.json").then(r=>r.json()).then(d=>{ALL=d.entries;init()})
+fetch("/data.json").then(r=>r.json()).then(d=>{ALL=d.entries;init()})
   .catch(()=>{$("#meta").textContent="Could not load the database. Reload the page to try again."});
 
-function init(){
-  buildStack(); buildLegend(); buildYears(); wire(); apply();
-}
+function init(){buildStack();buildLegend();buildYears();wire();readURL();apply()}
 
 function buildStack(){
-  const total=ALL.length;
-  $("#stack-total").textContent=total.toLocaleString()+" entries";
+  $("#stack-total").textContent=ALL.length.toLocaleString()+" entries";
   const max=Math.max(...LAYERS.map(l=>ALL.filter(e=>e.layer===l.id).length));
   $("#stack").innerHTML=LAYERS.map(l=>{
     const rows=ALL.filter(e=>e.layer===l.id);
@@ -275,42 +132,81 @@ function buildStack(){
     return `<button class="layer" data-layer="${l.id}" aria-pressed="false">
       <span><span class="layer-name">${esc(l.name)}</span>
         <span class="layer-depth">${esc(l.depth)}</span></span>
-      <span class="bar" style="opacity:${.35+.65*rows.length/max}">${seg}</span>
+      <span class="bar" style="opacity:${(.4+.6*rows.length/max).toFixed(2)}">${seg}</span>
       <span class="layer-count">${rows.length}</span>
     </button>`;
   }).join("");
   $("#stack").querySelectorAll(".layer").forEach(b=>b.addEventListener("click",()=>{
-    const id=b.dataset.layer;
-    state.layer=state.layer===id?null:id;
-    $("#stack").querySelectorAll(".layer").forEach(x=>
-      x.setAttribute("aria-pressed",String(x.dataset.layer===state.layer)));
-    apply();
+    state.layer=state.layer===b.dataset.layer?null:b.dataset.layer;
+    syncLayerButtons(); apply();
   }));
 }
-
+function syncLayerButtons(){
+  $("#stack").querySelectorAll(".layer").forEach(x=>
+    x.setAttribute("aria-pressed",String(x.dataset.layer===state.layer)));
+}
 function buildLegend(){
   $("#legend").innerHTML=SEV.filter(s=>s!=="unscored").map(s=>
     `<b><i style="background:var(--${s})"></i>${s}</b>`).join("");
 }
-
 function buildYears(){
   const ys=[...new Set(ALL.map(e=>e.year).filter(y=>/^\d{4}$/.test(y)))].sort().reverse();
   $("#year").innerHTML='<option value="">All years</option>'+
     ys.map(y=>`<option value="${y}">${y}</option>`).join("");
 }
 
+/* Filters live in the query string so a filtered view is a shareable link. */
+function readURL(){
+  const p=new URLSearchParams(location.search);
+  state.q=(p.get("q")||"").toLowerCase();
+  state.layer=p.get("layer")||null;
+  state.year=p.get("year")||"";
+  state.kev=p.get("kev")==="1";
+  state.sort=p.get("sort")||"score";
+  (p.get("severity")||"").split(",").filter(Boolean).forEach(s=>state.sev.add(s));
+
+  $("#q").value=p.get("q")||"";
+  $("#year").value=state.year;
+  $("#sort").value=state.sort;
+  $("#kev").setAttribute("aria-pressed",String(state.kev));
+  document.querySelectorAll(".chip[data-sev]").forEach(b=>
+    b.setAttribute("aria-pressed",String(state.sev.has(b.dataset.sev))));
+  syncLayerButtons();
+}
+function writeURL(){
+  const p=new URLSearchParams();
+  if(state.q)p.set("q",state.q);
+  if(state.layer)p.set("layer",state.layer);
+  if(state.year)p.set("year",state.year);
+  if(state.kev)p.set("kev","1");
+  if(state.sort!=="score")p.set("sort",state.sort);
+  if(state.sev.size)p.set("severity",[...state.sev].join(","));
+  const qs=p.toString();
+  history.replaceState(null,"",qs?`?${qs}#database`:location.pathname);
+  $("#reset").hidden=!qs;
+}
+
 function wire(){
   let t;
-  $("#q").addEventListener("input",e=>{clearTimeout(t);t=setTimeout(()=>{state.q=e.target.value.trim().toLowerCase();apply()},140)});
+  $("#q").addEventListener("input",e=>{clearTimeout(t);
+    t=setTimeout(()=>{state.q=e.target.value.trim().toLowerCase();apply()},140)});
   document.querySelectorAll(".chip[data-sev]").forEach(b=>b.addEventListener("click",()=>{
     const s=b.dataset.sev;
     state.sev.has(s)?state.sev.delete(s):state.sev.add(s);
     b.setAttribute("aria-pressed",String(state.sev.has(s)));apply();
   }));
-  $("#kev").addEventListener("click",e=>{state.kev=!state.kev;e.currentTarget.setAttribute("aria-pressed",String(state.kev));apply()});
+  $("#kev").addEventListener("click",e=>{state.kev=!state.kev;
+    e.currentTarget.setAttribute("aria-pressed",String(state.kev));apply()});
   $("#year").addEventListener("change",e=>{state.year=e.target.value;apply()});
   $("#sort").addEventListener("change",e=>{state.sort=e.target.value;apply()});
   $("#more").addEventListener("click",()=>render(true));
+  $("#reset").addEventListener("click",()=>{
+    state.q="";state.sev.clear();state.kev=false;state.layer=null;state.year="";state.sort="score";
+    $("#q").value="";$("#year").value="";$("#sort").value="score";
+    $("#kev").setAttribute("aria-pressed","false");
+    document.querySelectorAll(".chip[data-sev]").forEach(b=>b.setAttribute("aria-pressed","false"));
+    syncLayerButtons();apply();
+  });
 }
 
 function apply(){
@@ -320,10 +216,8 @@ function apply(){
     if(state.sev.size&&!state.sev.has(e.severity))return false;
     if(state.kev&&!e.kev)return false;
     if(state.year&&e.year!==state.year)return false;
-    if(q){
-      const hay=(e.id+" "+e.component+" "+e.title+" "+e.aliases.join(" ")+" "+e.layer_name).toLowerCase();
-      if(!hay.includes(q))return false;
-    }
+    if(q&&!(e.id+" "+e.component+" "+e.title+" "+e.aliases.join(" ")+" "+e.layer_name)
+        .toLowerCase().includes(q))return false;
     return true;
   });
   const by={
@@ -332,78 +226,42 @@ function apply(){
     component:(a,b)=>a.component.localeCompare(b.component)||(b.cvss_score??-1)-(a.cvss_score??-1),
   }[state.sort];
   view.sort(by);
-  shown=0; $("#list").innerHTML=""; render();
+  writeURL(); render();
 }
 
 function render(append){
-  if(!append)shown=0;
+  if(!append){shown=0;$("#list").innerHTML=""}
   const slice=view.slice(shown,shown+PAGE);
   $("#list").insertAdjacentHTML("beforeend",slice.map(card).join(""));
   shown+=slice.length;
 
-  const kev=view.filter(e=>e.kev).length;
-  const crit=view.filter(e=>e.severity==="critical").length;
-  $("#meta").innerHTML=view.length
-    ? `Showing <b>${Math.min(shown,view.length)}</b> of <b>${view.length.toLocaleString()}</b> entries · ${crit} critical · ${kev} known exploited`
-    : "";
-  $("#list").innerHTML=view.length?$("#list").innerHTML:
-    `<p class="empty">No entries match these filters. Clear a filter to widen the search.</p>`;
+  if(!view.length){
+    $("#list").innerHTML=`<p class="empty">No entries match these filters. Clear a filter to widen the search.</p>`;
+    $("#meta").textContent="";
+  }else{
+    const crit=view.filter(e=>e.severity==="critical").length;
+    const kev=view.filter(e=>e.kev).length;
+    $("#meta").innerHTML=`Showing <b>${Math.min(shown,view.length)}</b> of <b>${view.length.toLocaleString()}</b> entries · ${crit} critical · ${kev} known exploited`;
+  }
   $("#more").hidden=shown>=view.length;
   $("#more").textContent=`Show more (${(view.length-shown).toLocaleString()} remaining)`;
-  bind();
 }
 
 function card(e){
   const score=e.cvss_score!=null?e.cvss_score.toFixed(1):"—";
   const tags=[
+    `<span class="tag">${esc(e.cve||e.id)}</span>`,
     `<span class="tag">${esc(e.layer_name)}</span>`,
     e.kev?`<span class="tag kev">Known exploited</span>`:"",
     ...e.aliases.slice(0,2).map(a=>`<span class="tag alias">${esc(a)}</span>`),
   ].filter(Boolean).join("");
-  return `<article class="entry" id="${esc(e.id)}">
-    <button class="entry-head" aria-expanded="false">
-      <span class="score sev-${e.severity}">${score}<small>${SEV_LABEL[e.severity]||""}</small></span>
-      <span>
-        <span class="entry-title">${esc(e.title)}</span>
-        <span class="entry-sub"><span class="tag">${esc(e.cve||e.id)}</span>${tags}</span>
-      </span>
-      <span class="chev" aria-hidden="true">＋</span>
-    </button>
-  </article>`;
-}
-
-function detail(e){
-  const f=e.fleet||{};
-  const block=(h,v)=>v?`<div class="field"><h4>${h}</h4><p>${fmt(v)}</p></div>`:"";
-  const fleet=(f.ubiquity||f.remediation_pain||f.why_fleet_wide)?`
-    <div class="field"><h4>Fleet impact</h4><div class="fleet">
-      ${block("How widespread",f.ubiquity)}
-      ${block("Cost to remediate",f.remediation_pain)}
-      ${block("Why it hits the whole fleet",f.why_fleet_wide)}
-    </div></div>`:"";
-  const refs=e.references.length?`<div class="field"><h4>References</h4>
-    <div class="refs">${e.references.map(u=>`<a href="${esc(u)}" rel="noopener noreferrer" target="_blank">${esc(u)}</a>`).join("")}</div></div>`:"";
-  return `<div class="detail">
-    ${block("Impact",e.impact)}
-    ${block("Who can reach it",e.attack_vector)}
-    ${block("What to do",e.remediation)}
-    ${fleet}${refs}
-  </div>`;
-}
-
-function bind(){
-  $("#list").querySelectorAll(".entry-head:not([data-bound])").forEach(btn=>{
-    btn.dataset.bound="1";
-    btn.addEventListener("click",()=>{
-      const art=btn.closest(".entry");
-      const open=btn.getAttribute("aria-expanded")==="true";
-      btn.setAttribute("aria-expanded",String(!open));
-      btn.querySelector(".chev").textContent=open?"＋":"－";
-      if(open){art.querySelector(".detail")?.remove();return}
-      const e=view.find(x=>x.id===art.id);
-      if(e)art.insertAdjacentHTML("beforeend",detail(e));
-    });
-  });
+  return `<a class="card" href="/vuln/${encodeURIComponent(e.id)}">
+    <span class="score sev-${e.severity}">${score}<small>${SEV_LABEL[e.severity]||""}</small></span>
+    <span>
+      <span class="card-title">${esc(e.title)}</span>
+      <span class="card-tags">${tags}</span>
+    </span>
+  </a>`;
 }
 </script>
 </body>
