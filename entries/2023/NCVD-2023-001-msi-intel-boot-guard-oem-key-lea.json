@@ -18,5 +18,8 @@
   "references": [
     "https://www.helpnetsecurity.com/2023/05/08/msi-private-keys-leaked/"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

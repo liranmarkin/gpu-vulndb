@@ -18,5 +18,8 @@
   "references": [
     "https://wiretap.fail/"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

@@ -23,5 +23,8 @@
     "https://www.usenix.org/conference/usenixsecurity21/presentation/rothenberger",
     "https://arxiv.org/abs/2202.08080"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "node-reboot"
+  }
 }

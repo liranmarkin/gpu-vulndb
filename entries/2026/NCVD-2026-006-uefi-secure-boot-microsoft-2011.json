@@ -18,5 +18,8 @@
   "references": [
     "https://techcommunity.microsoft.com/blog/windows-itpro-blog/act-now-secure-boot-certificates-expire-in-june-2026/4426856"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "firmware-flash"
+  }
 }

@@ -20,5 +20,8 @@
     "https://www.usenix.org/conference/usenixsecurity21/presentation/chen-zitai",
     "https://github.com/zt-chen/voltpillager"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

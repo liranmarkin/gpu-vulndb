@@ -17,5 +17,8 @@
     "https://www.broadcom.com/support/resources/product-security-center",
     "https://www.microchip.com/en-us/solutions/embedded-security/how-to-report-potential-product-security-vulnerabilities"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "firmware-flash"
+  }
 }

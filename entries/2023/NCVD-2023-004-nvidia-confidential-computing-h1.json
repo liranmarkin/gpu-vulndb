@@ -19,5 +19,8 @@
     "https://docs.nvidia.com/confidential-computing-deployment-guide/",
     "https://docs.nvidia.com/cc-deployment-guide-tee.pdf"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "node-drain"
+  }
 }

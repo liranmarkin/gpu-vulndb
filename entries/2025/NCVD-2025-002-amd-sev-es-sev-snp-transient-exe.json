@@ -20,5 +20,8 @@
     "https://www.amd.com/en/resources/product-security/bulletin/amd-sb-3032.html",
     "https://www.amd.com/en/resources/product-security.html"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "hot-patch"
+  }
 }

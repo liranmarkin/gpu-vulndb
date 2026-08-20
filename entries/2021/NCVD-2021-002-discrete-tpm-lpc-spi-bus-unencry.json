@@ -20,5 +20,8 @@
     "https://dolosgroup.io/blog/2021/7/9/from-stolen-laptop-to-inside-the-company-network",
     "https://pulsesecurity.co.nz/articles/TPM-sniffing"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

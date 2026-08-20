@@ -18,5 +18,8 @@
   "references": [
     "https://www.intel.com/content/www/us/en/developer/topic-technology/software-security-guidance/overview.html"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "microcode + reboot"
+  }
 }

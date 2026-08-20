@@ -19,5 +19,8 @@
     "https://seclists.org/fulldisclosure/2026/May/24",
     "https://binreaper.pages.dev/posts/2026-05-27-bmcweb-disclosure/"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

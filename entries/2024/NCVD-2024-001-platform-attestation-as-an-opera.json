@@ -17,5 +17,8 @@
     "https://www.opencompute.org/projects/security",
     "https://trustedcomputinggroup.org/resource/tpm-library-specification/"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

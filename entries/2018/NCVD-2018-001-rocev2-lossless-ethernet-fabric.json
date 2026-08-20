@@ -23,5 +23,8 @@
     "https://arxiv.org/abs/1806.08159",
     "https://arxiv.org/abs/2207.10898"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "firmware-flash"
+  }
 }

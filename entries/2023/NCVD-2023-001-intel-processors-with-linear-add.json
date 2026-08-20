@@ -19,5 +19,8 @@
   "references": [
     "https://www.vusec.net/projects/slam/"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "node-reboot"
+  }
 }

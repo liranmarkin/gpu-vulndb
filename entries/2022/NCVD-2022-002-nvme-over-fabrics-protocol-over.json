@@ -21,5 +21,8 @@
     "https://arxiv.org/abs/2202.08080",
     "https://git.kernel.org/pub/scm/linux/security/vulns.git/plain/cve/published/2026/CVE-2026-64320.json"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "hot-patch"
+  }
 }

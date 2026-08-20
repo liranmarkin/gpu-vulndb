@@ -23,5 +23,8 @@
     "https://netsec.ethz.ch/publications/papers/sec21summer-redmark.pdf",
     "https://arxiv.org/abs/1903.09355"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

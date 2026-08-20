@@ -18,5 +18,8 @@
   "references": [
     "https://indirector.cpusec.org/"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "microcode + reboot"
+  }
 }

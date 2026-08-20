@@ -19,5 +19,8 @@
     "https://eclypsium.com/research/supply-chain-risk-from-gigabyte-app-center-backdoor/",
     "https://kb.cert.org/vuls/id/287178"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "firmware-flash"
+  }
 }

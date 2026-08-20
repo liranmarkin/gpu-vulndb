@@ -20,5 +20,8 @@
   "references": [
     "https://arxiv.org/abs/2006.03854"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

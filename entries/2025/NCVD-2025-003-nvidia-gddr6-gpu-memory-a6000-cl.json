@@ -19,5 +19,8 @@
     "https://gpuhammer.com/",
     "https://arxiv.org/abs/2507.08166"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "node-drain"
+  }
 }

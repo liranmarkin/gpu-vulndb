@@ -21,5 +21,8 @@
     "https://www.usenix.org/conference/usenixsecurity21/presentation/rothenberger",
     "https://netsec.ethz.ch/publications/papers/sec21summer-redmark.pdf"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

@@ -21,5 +21,8 @@
     "https://www.bleepingcomputer.com/news/hardware/hpe-warns-of-new-bug-that-kills-ssd-drives-after-40-000-hours/",
     "https://support.hpe.com/hpesc/public/docDisplay?docId=emr_na-a00097382en_us"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "node-drain"
+  }
 }

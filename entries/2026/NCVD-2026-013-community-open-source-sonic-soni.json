@@ -21,5 +21,8 @@
     "https://github.com/sonic-net/SONiC/security",
     "https://www.dell.com/support/kbdoc/en-us/000245655/dsa-2024-449-security-update-for-dell-enterprise-sonic-distribution-vulnerabilities"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

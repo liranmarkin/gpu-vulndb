@@ -21,5 +21,8 @@
     "https://mlq.me/download/takeaway.pdf",
     "https://www.amd.com/en/resources/product-security.html"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

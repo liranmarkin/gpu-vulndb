@@ -22,5 +22,8 @@
     "https://www.usenix.org/conference/nsdi23/presentation/kong",
     "https://github.com/host-bench/husky"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

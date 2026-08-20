@@ -18,5 +18,8 @@
   "references": [
     "https://github.com/DMTF/libspdm/security/advisories/GHSA-j54w-759w-xj3m"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "firmware-flash"
+  }
 }

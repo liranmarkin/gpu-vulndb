@@ -19,5 +19,8 @@
   "references": [
     "https://www.binarly.io/advisories"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "firmware-flash"
+  }
 }

@@ -21,5 +21,8 @@
     "https://developer.nvidia.com/blog/analyzing-baseboard-management-controllers-to-secure-data-center-infrastructure/",
     "https://www.binarly.io/blog/old-but-gold-the-underestimated-potency-of-decades-old-attacks-on-bmc-security"
   ],
-  "status": "curated"
+  "status": "curated",
+  "fleet": {
+    "pain_class": "firmware-flash"
+  }
 }
