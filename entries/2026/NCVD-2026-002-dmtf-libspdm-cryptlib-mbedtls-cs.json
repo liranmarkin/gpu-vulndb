@@ -5,8 +5,8 @@
     "DMTF-2026-0001"
   ],
   "title": "DMTF libspdm (cryptlib_mbedtls CSR generation, stack overflow): An over-long Common Name in a GET_CSR request writes",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "DMTF libspdm (cryptlib_mbedtls CSR generation, stack overflow)",
   "year": "2026",
   "cvss_score": null,

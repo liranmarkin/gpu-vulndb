@@ -5,8 +5,8 @@
     "Half-Double"
   ],
   "title": "DDR4 DRAM with in-DRAM TRR; a coupling effect that reaches rows at distance two rather than immediate neighbours",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "DDR4 DRAM with in-DRAM TRR; a coupling effect that reaches rows at distance two rather than immediate neighbours",
   "year": "2021",
   "cvss_score": null,

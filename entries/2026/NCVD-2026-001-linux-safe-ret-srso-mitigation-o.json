@@ -6,8 +6,8 @@
     "AMD-SB-7061"
   ],
   "title": "Linux Safe RET SRSO mitigation on AMD Zen 1-Zen 4 - interrupt-induced weakening: MULTI-TENANT ISOLATION: An attacker",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "Linux Safe RET SRSO mitigation on AMD Zen 1-Zen 4 - interrupt-induced weakening",
   "year": "2026",
   "cvss_score": null,

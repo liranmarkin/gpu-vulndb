@@ -1,0 +1,29 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+  "cwe": [
+    "CWE-306"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-041-rclone-rc-server-debug-pprof-han",
+  "cve": null,
+  "aliases": [
+    "GHSA-mfvx-7rcj-9m5g"
+  ],
+  "title": "rclone (rc server, /debug/pprof handler): The pprof debug handler is mounted as its own route on the rclone",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "rclone (rc server, /debug/pprof handler)",
+  "year": "2026",
+  "cvss_score": 5.3,
+  "severity": "medium",
+  "kev": false,
+  "impact": "The pprof debug handler is mounted as its own route on the rclone remote-control server, outside the fail-closed authentication check that guards everything else. An unauthenticated caller fetches /debug/pprof/cmdline and gets the full argv of the rclone process - which for a data mover means the object-storage access keys, bucket names and endpoints passed on the command line. The same gap also lets an unauthenticated caller enumerate the configured remote names.",
+  "attack_vector": "Anyone who can reach the rclone rc port. Data-staging jobs on GPU clusters routinely run rclone with --rc bound to the node interface so a controller can drive it, which puts this in reach of any co-tenant on the cluster network.",
+  "remediation": "Upgrade rclone to the release carrying this fix and restart the rc server. Independently, stop passing credentials as command-line arguments - move them to the rclone config file or environment - and bind --rc-addr to localhost with --rc-user/--rc-pass set. No CVE ID has been assigned; track it by the GHSA.",
+  "references": [
+    "https://github.com/rclone/rclone/security/advisories/GHSA-mfvx-7rcj-9m5g"
+  ],
+  "status": "curated"
+}

@@ -5,8 +5,8 @@
     "DMTF-2026-0002"
   ],
   "title": "DMTF libspdm (GET_MEASUREMENT_EXTENSION_LOG offset/length wrap): Wrapping addition of the Offset and Length fields",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "DMTF libspdm (GET_MEASUREMENT_EXTENSION_LOG offset/length wrap)",
   "year": "2026",
   "cvss_score": null,

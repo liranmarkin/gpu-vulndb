@@ -5,8 +5,8 @@
     "ECCploit"
   ],
   "title": "ECC DDR3 server memory on Intel Xeon (Haswell, Sandy Bridge) and AMD Opteron platforms",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "ECC DDR3 server memory on Intel Xeon (Haswell, Sandy Bridge) and AMD Opteron platforms; the technique generalises to…",
   "year": "2018",
   "cvss_score": null,

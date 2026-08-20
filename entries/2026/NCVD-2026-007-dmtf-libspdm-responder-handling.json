@@ -6,8 +6,8 @@
     "DMTF-2026-0001"
   ],
   "title": "DMTF libspdm responder handling of GET_MEASUREMENT_EXTENSION_LOG: A requester reads memory it was never authorised",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "DMTF libspdm responder handling of GET_MEASUREMENT_EXTENSION_LOG",
   "year": "2026",
   "cvss_score": 5.3,

@@ -1,0 +1,29 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+  "cwe": [
+    "CWE-522"
+  ],
+  "fleet": {
+    "pain_class": "hot-patch"
+  },
+  "id": "NCVD-2026-043-rclone-s3-backend-redirect-sanit",
+  "cve": null,
+  "aliases": [
+    "GHSA-8mxv-9xhp-86h4"
+  ],
+  "title": "rclone (S3 backend, redirect sanitization): When rclone's S3 backend follows a redirect it strips some sensitive",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "rclone (S3 backend, redirect sanitization)",
+  "year": "2026",
+  "cvss_score": 6.8,
+  "severity": "medium",
+  "kev": false,
+  "impact": "When rclone's S3 backend follows a redirect it strips some sensitive headers but not IBM IAM bearer tokens or SSE-C customer-supplied encryption keys. An attacker who can steer a redirect harvests the bearer token, and the SSE-C key is the thing standing between them and the plaintext of the encrypted objects - so this leaks both the credential and the key material for a dataset store in one shot.",
+  "attack_vector": "An attacker positioned to influence the HTTP redirect chain between rclone and the object store - a hostile or compromised endpoint, or a network position on the cluster's egress path.",
+  "remediation": "Upgrade rclone to the fixed release. Rotate any IBM IAM credentials and SSE-C keys that were used with a redirecting endpoint. Pin the S3 endpoint and disable redirect following where your object store does not need it. No CVE ID has been assigned; track it by the GHSA.",
+  "references": [
+    "https://github.com/rclone/rclone/security/advisories/GHSA-8mxv-9xhp-86h4"
+  ],
+  "status": "curated"
+}

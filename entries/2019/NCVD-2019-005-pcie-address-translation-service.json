@@ -7,8 +7,8 @@
     "IOMMU bypass via Address Translation Services"
   ],
   "title": "PCIe Address Translation Services on hosts using an IOMMU/SMMU for device isolation",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "PCIe Address Translation Services on hosts using an IOMMU/SMMU for device isolation - affects any DMA-capable…",
   "year": "2019",
   "cvss_score": null,

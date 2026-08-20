@@ -1,0 +1,30 @@
+{
+  "cvss_vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+  "cwe": [
+    "CWE-601"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2025-017-bentoml-1-3-9-open-redirect-in-t",
+  "cve": null,
+  "aliases": [
+    "GHSA-564p-rx2q-4c8v"
+  ],
+  "title": "BentoML 1.3.9 (open redirect in the serving UI): A crafted URL against the BentoML server bounces the visitor to an",
+  "layer": "ai-serving",
+  "layer_name": "AI/ML frameworks & serving",
+  "component": "BentoML 1.3.9 (open redirect in the serving UI)",
+  "year": "2025",
+  "cvss_score": 6.1,
+  "severity": "medium",
+  "kev": false,
+  "impact": "A crafted URL against the BentoML server bounces the visitor to an attacker-chosen site while the link still looks like it points at your model endpoint. Useful for credential phishing against the people who operate or consume the endpoint. No CVE was assigned to the BentoML advisory; the underlying Gradio issue is CVE-2024-4940.",
+  "attack_vector": "A remote unauthenticated attacker who gets a user to click a link pointing at the BentoML host.",
+  "remediation": "Upgrade BentoML past 1.3.9 and restart the serving pods. If you cannot upgrade, block off-host redirect targets at the ingress in front of the endpoint.",
+  "references": [
+    "https://github.com/advisories/GHSA-564p-rx2q-4c8v",
+    "https://huntr.com/bounties/2a284ff6-cc6c-4a10-b72e-1bb31c842bca"
+  ],
+  "status": "curated"
+}

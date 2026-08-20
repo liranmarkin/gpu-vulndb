@@ -7,8 +7,8 @@
     "Load+Reload"
   ],
   "title": "AMD Zen 1 / Zen+ / Zen 2 - L1D cache way predictor: MULTI-TENANT ISOLATION: AMD's L1D way predictor hashes virtual",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "AMD Zen 1 / Zen+ / Zen 2 - L1D cache way predictor",
   "year": "2020",
   "cvss_score": null,

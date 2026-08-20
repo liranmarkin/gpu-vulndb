@@ -1,0 +1,29 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
+  "cwe": [
+    "CWE-22"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-042-rclone-serve-s3",
+  "cve": null,
+  "aliases": [
+    "GHSA-8v25-v8p6-qf7v"
+  ],
+  "title": "rclone (serve s3): Path traversal in rclone's S3 gateway lets a caller read and overwrite files above the served root.",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "rclone (serve s3)",
+  "year": "2026",
+  "cvss_score": 6.5,
+  "severity": "medium",
+  "kev": false,
+  "impact": "Path traversal in rclone's S3 gateway lets a caller read and overwrite files above the served root. Sites use rclone serve s3 to put an S3 front end on a scratch or dataset directory for training jobs; this turns that gateway into arbitrary read/write on the host filesystem outside the intended prefix.",
+  "attack_vector": "Any client that can reach the rclone serve s3 endpoint, with no authentication required in the advisory's rating.",
+  "remediation": "Upgrade rclone to the fixed release and restart the serve process. Until then, run rclone serve s3 as an unprivileged user in a container or with a bind-mounted root so traversal cannot escape into anything that matters. No CVE ID has been assigned; track it by the GHSA.",
+  "references": [
+    "https://github.com/rclone/rclone/security/advisories/GHSA-8v25-v8p6-qf7v"
+  ],
+  "status": "curated"
+}

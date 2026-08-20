@@ -1,0 +1,31 @@
+{
+  "id": "NCVD-2026-044-nvme-admin-command-set-firmware",
+  "cve": null,
+  "aliases": [
+    "NVMe Firmware Image Download",
+    "NVMe Firmware Commit",
+    "firmware downgrade attack",
+    "unsigned drive firmware"
+  ],
+  "title": "NVMe admin command set - Firmware Image Download (opcode 11h) and Firmware Commit (opcode 10h) reachable from the host",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "NVMe admin command set - Firmware Image Download (opcode 11h) and Firmware Commit (opcode 10h) reachable from the",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "CLASS ENTRY, and the single highest-leverage tenant-handoff risk in this whole category. The NVMe specification puts firmware download and firmware commit in the standard admin command set, meaning a host with root can push a firmware image to the drive using nothing more exotic than nvme-cli. Whether that is safe depends entirely on the drive enforcing signature verification and anti-rollback - and that enforcement is uneven across vendors and generations, is not something the host can independently verify, and has been shown breakable even where present (the Kioxia CM6/PM6/PM7 JTAG work bypasses the RSA signature check outright). Where verification is weak or absent, a departing tenant flashes a modified image and owns the drive controller permanently: it outlives your wipe, your reimage and your reprovision, sees everything the next tenant writes, and lies to every host-side tool about its own version, its lock state and whether a sanitize succeeded. Even where signature checking holds, downgrade to an older SIGNED image with known vulnerabilities is a live path unless the drive enforces anti-rollback - and the RPMB replay flaw (CVE-2020-13799) undermines exactly that anti-rollback state across eMMC, UFS and all NVMe versions.",
+  "attack_vector": "A tenant with root on the bare-metal host, issuing standard NVMe admin commands to a locally attached drive. No physical access, no exotic tooling, no exploit needed where the drive does not enforce signing - the command path is a documented, supported feature. Also relevant in SR-IOV and DPU/computational-storage designs, where whether the admin queue and Security Send/Receive are properly filtered from a tenant-controlled function is a per-platform question most operators have never actually tested.",
+  "remediation": "Policy and platform configuration; there is no patch because the command path is by design. (1) Block it at the platform: filter Firmware Image Download and Firmware Commit - and vendor-specific and Security Send/Receive pass-through - so tenant-controlled hosts and virtual functions cannot reach them. Do not expose raw NVMe admin queues to tenants unless the product genuinely requires it. (2) TEST it rather than assuming: on a representative node, try to flash a drive from a tenant-equivalent shell and confirm you are refused. Most operators have never run this check and will be surprised by the result on at least one SKU. (3) Make signed firmware and enforced anti-rollback a written procurement requirement, and get the vendor to state it per SKU. (4) Inventory expected firmware version per drive serial in a store the host cannot write to, and alert on any change or any version that decreases. (5) For sensitive tenancies, retire local media at end of tenancy instead of recycling it. Assume that verifying firmware integrity across a 10,000-drive fleet is not achievable with host-side tooling - the controller is the thing answering your questions - so the control has to be preventing the write and controlling the media's lifecycle, not detecting the implant afterwards.",
+  "references": [
+    "https://www.nvmexpress.org/wp-content/uploads/NVM-Express-Base-Specification-2.0c-2022.10.04-Ratified.pdf",
+    "https://github.com/google/security-research/security/advisories/GHSA-3hh8-94j4-62rh",
+    "https://www.kb.cert.org/vuls/id/231329",
+    "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-88r1.pdf"
+  ],
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
+}

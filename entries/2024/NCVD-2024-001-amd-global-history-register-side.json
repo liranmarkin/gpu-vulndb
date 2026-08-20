@@ -6,8 +6,8 @@
     "AMD-SB-7026"
   ],
   "title": "AMD - Global History Register side channel: MULTI-TENANT ISOLATION: A side channel through the branch predictor's",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "AMD - Global History Register side channel",
   "year": "2024",
   "cvss_score": null,

@@ -1,0 +1,26 @@
+{
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2021-015-argo-workflows-argo-server-defau",
+  "cve": null,
+  "aliases": [
+    "GHSA-rc7p-gmvh-xfx2"
+  ],
+  "title": "Argo Workflows (Argo Server default --auth-mode=server before 3.0): MULTI-TENANT ISOLATION: Before 3.0 the Argo Server",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "Argo Workflows (Argo Server default --auth-mode=server before 3.0)",
+  "year": "2021",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION: Before 3.0 the Argo Server defaulted to --auth-mode=server, meaning every request ran as the server's own service account. An exposed UI therefore lets anonymous internet users submit workflows that execute arbitrary containers on the cluster. This is the configuration behind the observed crypto-mining campaigns against Argo Workflows clusters.",
+  "attack_vector": "Any unauthenticated user who can reach the Argo Workflows UI, which in the reported incidents meant the open internet.",
+  "remediation": "Move to --auth-mode=client and pull the UI off the internet immediately, then upgrade Argo Server to 3.x or later. Because this has been actively exploited in the wild, audit the cluster for unexpected workflows and workload pods before assuming it is clean.",
+  "references": [
+    "https://github.com/argoproj/argo-workflows/security/advisories/GHSA-rc7p-gmvh-xfx2",
+    "https://www.intezer.com/blog/container-security/new-attacks-on-kubernetes-via-misconfigured-argo-workflows/"
+  ],
+  "status": "curated"
+}

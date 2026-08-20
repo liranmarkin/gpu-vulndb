@@ -5,8 +5,8 @@
     "ZenHammer"
   ],
   "title": "AMD Zen 2, Zen 3 and Zen 4 platforms with DDR4 (7/10 Zen 2 and 6/10 Zen 3 devices flipped) and DDR5 (1/10 devices)",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "AMD Zen 2, Zen 3 and Zen 4 platforms with DDR4 (7/10 Zen 2 and 6/10 Zen 3 devices flipped) and DDR5 (1/10 devices)",
   "year": "2024",
   "cvss_score": null,

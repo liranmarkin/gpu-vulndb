@@ -63,7 +63,9 @@ LAYER_RULES: list[tuple[str, str]] = [
      r"tpm|firmware|microcode|psp\b|csme|\bme\b|sev-snp|sev\b|tdx|sgx|"
      r"connectx|bluefield|infiniband|opensm|ufm\b|rdma|roce|nvlink switch|"
      r"switch|eos\b|nx-os|junos|sonic|cumulus|pdu|ups\b|dcim|cooling|"
-     r"nvme.*firmware|ssd|opal|raid controller|megaraid|console server|kvm-over-ip",
+     r"nvme.*firmware|ssd|opal|raid controller|megaraid|console server|kvm-over-ip|"
+     # Switch operating systems and NIC drivers are the fabric, not the control plane.
+     r"smartfabric|\bos10\b|bnxt|mlx5|netxtreme|\bi40e\b|\bixgbe\b|\bice\b driver",
      "firmware-bmc-fabric"),
     (r"kubernetes|containerd|runc|docker|cri-o|podman|helm|argo|cilium|istio|envoy|"
      r"ingress|calico|kubelet|etcd", "container-orchestration"),
@@ -73,8 +75,20 @@ LAYER_RULES: list[tuple[str, str]] = [
      r"proxmox|nutanix", "kernel-hypervisor"),
     (r"slurm|lustre|beegfs|ceph|weka|vast|prometheus|grafana|terraform|ansible|"
      r"gitlab|jenkins|vault|openmanage|oneview|xclarity administrator|intersight|"
-     r"storage|backup", "control-plane"),
+     r"storage|backup|"
+     # Schedulers and workload managers: the thing that decides which tenant runs where.
+     r"htcondor|munge|pbs pro|openpbs|torque|grid engine|univa|\blsf\b|volcano|kueue|"
+     r"run:?ai|determined|skypilot|dstack|flyte|airflow|"
+     # Parallel and object filesystems, and the data movers that feed them.
+     r"glusterfs|gluster|minio|rclone|openzfs|\bzfs\b|nfsd|\bnfs\b|sunrpc|autofs|globus|"
+     r"netapp|ontap|purity|pure storage|qumulo|panasas|quobyte|spectrum scale|gpfs|"
+     r"\bs3\b|rados|rgw\b", "control-plane"),
 ]
+
+# Anything the rules do not recognise. Deliberately NOT the firmware layer: an unmatched
+# component used to land there, which quietly inflated the one layer this database is
+# judged on. Control plane is the honest bucket for "general infrastructure software".
+FALLBACK_LAYER = "control-plane"
 
 
 def infer_layer(component: str, hint: str | None) -> str:
@@ -86,7 +100,7 @@ def infer_layer(component: str, hint: str | None) -> str:
     for pattern, layer in LAYER_RULES:
         if re.search(pattern, text.lower()):
             return layer
-    return "firmware-bmc-fabric"
+    return FALLBACK_LAYER
 
 
 def bucket(score):

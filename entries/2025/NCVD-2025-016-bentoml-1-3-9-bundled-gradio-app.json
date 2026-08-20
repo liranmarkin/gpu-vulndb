@@ -1,0 +1,30 @@
+{
+  "cvss_vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+  "cwe": [
+    "CWE-400"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2025-016-bentoml-1-3-9-bundled-gradio-app",
+  "cve": null,
+  "aliases": [
+    "GHSA-hh3j-9m59-p8vc"
+  ],
+  "title": "BentoML 1.3.9 (bundled Gradio app, /login endpoint): The /login endpoint of the integrated Gradio app processes each",
+  "layer": "ai-serving",
+  "layer_name": "AI/ML frameworks & serving",
+  "component": "BentoML 1.3.9 (bundled Gradio app, /login endpoint)",
+  "year": "2025",
+  "cvss_score": 7.5,
+  "severity": "high",
+  "kev": false,
+  "impact": "The /login endpoint of the integrated Gradio app processes each appended character in a malformed multipart boundary, consuming resources until the service is unavailable. No CVE was assigned to the BentoML advisory itself; the underlying Gradio issue is tracked as CVE-2024-8966. Effect on an operator is a model server that stops serving while still holding its GPU.",
+  "attack_vector": "Unauthenticated, no user interaction. Anything that can reach the BentoML serving port.",
+  "remediation": "Upgrade BentoML past 1.3.9 and restart serving pods. Cap request size at the ingress in front of the endpoint as a durable mitigation for this whole class.",
+  "references": [
+    "https://github.com/advisories/GHSA-hh3j-9m59-p8vc",
+    "https://huntr.com/bounties/e467ec92-0ad1-4461-8468-1beabf701b9f"
+  ],
+  "status": "curated"
+}

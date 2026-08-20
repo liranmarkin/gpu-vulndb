@@ -6,8 +6,8 @@
     "DMTF-2026-0002"
   ],
   "title": "DMTF libspdm CSR generation under the mbedTLS crypto backend (cryptlib_mbedtls): Stack corruption inside the firmware",
-  "layer": "firmware-bmc-fabric",
-  "layer_name": "Firmware, BMC & network fabric",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
   "component": "DMTF libspdm CSR generation under the mbedTLS crypto backend (cryptlib_mbedtls)",
   "year": "2026",
   "cvss_score": 5.3,
