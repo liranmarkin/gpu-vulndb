@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getEntry } from "@/lib/entries";
 import { OG_BG, OG_SEV, Wordmark, ogFonts } from "@/lib/og";
-import { SEVERITY_LABEL } from "@/lib/schema";
+import { SEVERITY_LABEL, fmtDate } from "@/lib/schema";
 
 export const alt = "GPU Vulnerability Database entry";
 export const size = { width: 1200, height: 630 };
@@ -66,6 +66,12 @@ export default async function EntryOGImage({ params }: { params: Promise<{ id: s
           <span>{ident}</span>
           <span style={{ color: "rgba(255,255,255,0.38)" }}>·</span>
           <span>{entry.layer_name}</span>
+          {entry.published && (
+            <>
+              <span style={{ color: "rgba(255,255,255,0.38)" }}>·</span>
+              <span>{fmtDate(entry.published)}</span>
+            </>
+          )}
         </div>
 
         <div

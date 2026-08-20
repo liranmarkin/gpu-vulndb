@@ -13,12 +13,11 @@ let cache: Entry[] | null = null;
 export function getAllEntries(): Entry[] {
   if (cache) return cache;
 
+  // Dates are an enrichment (scripts/fetch_nvd_dates.py); the site must build without them.
   let dates: Record<string, string> = {};
   try {
     dates = JSON.parse(readFileSync(DATES_FILE, "utf8"));
-  } catch {
-    // Dates are an enrichment; the site must build without them.
-  }
+  } catch {}
   const entries: Entry[] = [];
   for (const year of readdirSync(ENTRIES_DIR, { withFileTypes: true })) {
     if (!year.isDirectory()) continue;
