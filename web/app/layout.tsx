@@ -27,11 +27,11 @@ export const metadata: Metadata = {
     template: "%s · GPU VulnDB",
   },
   description:
-    "An open database of vulnerabilities in the stack that GPU infrastructure runs on — BMC and GPU firmware through to model serving. Free, open source, community maintained.",
+    "An open project to list all known vulnerabilities in the stack GPU datacenters run on. Free, open source, community maintained.",
   openGraph: {
     title: "GPU Vulnerability Database",
     description:
-      "Vulnerabilities in the stack that GPU infrastructure runs on — BMC and GPU firmware through to model serving.",
+      "An open project to list all known vulnerabilities in the stack GPU datacenters run on.",
     url: "https://gpuvulndb.org",
     siteName: "GPU Vulnerability Database",
     type: "website",
@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </span>
             </Link>
             <nav className="ml-auto flex items-center gap-5 text-[14px] font-medium text-muted">
-              <Link href="/#database" className="hover:text-ink">Database</Link>
+              <Link href="/#database" className="hidden hover:text-ink min-[440px]:inline">Database</Link>
               <Link href="/data.json" className="hidden hover:text-ink sm:inline">JSON</Link>
               <Link href="/feed.xml" className="hidden hover:text-ink sm:inline">RSS</Link>
               <a href="https://github.com/liranmarkin/gpu-vulndb" className="hidden hover:text-ink sm:inline">
@@ -83,17 +83,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
             <div className="max-w-[64ch]">
               <p className="mb-2.5">
-                <strong className="font-semibold text-ink">GPU Vulnerability Database</strong> — an open
-                community project. Entries are curated from vendor advisories, NVD and CISA KEV, then
-                annotated for operators running GPU fleets. Corrections and additions are welcome{" "}
+                <strong className="font-semibold text-ink">GPU Vulnerability Database</strong> is an
+                open community project. Entries are curated from vendor advisories, NVD and CISA KEV,
+                then annotated for operators running GPU fleets. Corrections and additions are welcome{" "}
                 <a href="https://github.com/liranmarkin/gpu-vulndb" className="font-medium text-brand-ink hover:underline">
                   on GitHub
                 </a>
                 .
               </p>
               <p className="text-faint">
-                Data is licensed CC BY 4.0; tooling is MIT. This database is informational and makes no
-                warranty of completeness — always confirm against your vendor&apos;s advisory before acting.
+                Data is CC BY 4.0, tooling is MIT. Always confirm against your vendor&apos;s advisory
+                before acting.
               </p>
             </div>
           </div>

@@ -28,13 +28,8 @@ export default function Home() {
           <h1 className="mb-6 max-w-[13ch] font-display text-[clamp(38px,6vw,68px)] font-extrabold leading-[1.02] tracking-[-0.02em]">
             The stack is the attack surface.
           </h1>
-          <p className="mb-8 max-w-[60ch] text-[16.5px] leading-[1.65] text-white/78 sm:text-[17.5px]">
-            Running GPUs means running six layers of software and firmware, and an attacker only
-            needs one of them. This is an open, community-maintained record of the vulnerabilities
-            that matter to anyone operating GPU infrastructure — GPU clouds, colocation datacenters,
-            and enterprises with their own fleets. Every entry carries{" "}
-            <strong className="font-semibold text-white">what an operator has to do about it</strong>,
-            not just a CVSS score.
+          <p className="mb-8 max-w-[52ch] text-[17px] leading-[1.6] text-white/80 sm:text-[19px]">
+            An open project to list all known vulnerabilities in the stack GPU datacenters run on.
           </p>
           <p className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[13px] text-lavender">
             <span><b className="font-semibold text-white">{entries.length.toLocaleString()}</b> entries</span>

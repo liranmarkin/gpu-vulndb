@@ -137,7 +137,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
             onChange={(e) => setQ(e.target.value)}
             type="search"
             aria-label="Search entries"
-            placeholder="Search — try NVIDIAScape, BMC, runc, vLLM"
+            placeholder="Search GPU vulnerabilities..."
             className="h-14 w-full rounded-full border border-line bg-card pl-12.5 pr-6 text-[15px] text-ink shadow-[var(--shadow-float)] placeholder:text-faint focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/12"
           />
         </label>
@@ -201,7 +201,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
               </span>
             ))}
           </span>
-          <span>{layer ? "Selected — click again to clear" : "Select a layer to filter"}</span>
+          <span>{layer ? "Selected - click again to clear" : "Select a layer to filter"}</span>
         </div>
       </div>
 
@@ -360,7 +360,7 @@ function Tag({ children, tone, mono }: { children: React.ReactNode; tone?: "kev"
         ? "border-tint-line bg-tint text-silicon-800"
         : "border-line bg-paper text-muted";
   return (
-    <span className={`whitespace-nowrap rounded-full border px-2.5 py-0.5 text-[11.5px] font-medium ${mono ? "font-mono" : ""} ${cls}`}>
+    <span className={`max-w-full truncate rounded-full border px-2.5 py-0.5 text-[11.5px] font-medium ${mono ? "font-mono" : ""} ${cls}`}>
       {children}
     </span>
   );

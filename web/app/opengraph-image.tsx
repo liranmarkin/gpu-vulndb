@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { getAllEntries } from "@/lib/entries";
 import { Mark, OG_BG, Wordmark, ogFonts } from "@/lib/og";
 
-export const alt = "GPU Vulnerability Database — the stack is the attack surface";
+export const alt = "GPU Vulnerability Database - the stack is the attack surface";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -64,8 +64,7 @@ export default async function OGImage() {
               width: 680,
             }}
           >
-            An open vulnerability database for the six layers GPU infrastructure runs on —
-            firmware and BMC through to model serving.
+            An open project to list all known vulnerabilities in the stack GPU datacenters run on.
           </div>
 
           <div

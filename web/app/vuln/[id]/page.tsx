@@ -20,7 +20,7 @@ export async function generateMetadata({
   if (!entry) return {};
 
   const ident = entry.cve ?? entry.id;
-  const title = `${ident} — ${entry.component}`;
+  const title = `${ident} - ${entry.component}`;
   const description = (entry.impact || entry.title).slice(0, 180);
 
   return {
@@ -98,11 +98,11 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
           )}
 
           <p className="mt-12 rounded-2xl border border-line bg-card px-5 py-4 text-[13.5px] text-muted shadow-[var(--shadow-card)]">
-            This entry is <strong className="font-semibold text-ink">{entry.status}</strong>.{" "}
+            This entry is <strong className="font-semibold text-ink">{entry.status}</strong>
             {entry.status === "curated"
-              ? "It was imported from vendor advisories with machine assistance and has not been individually verified against primary sources."
-              : "A maintainer verified it against primary sources."}{" "}
-            Confirm against your vendor&apos;s advisory before acting on it, and{" "}
+              ? ": imported from vendor advisories with machine assistance, not yet individually verified."
+              : ": verified by a maintainer against primary sources."}{" "}
+            Confirm against your vendor&apos;s advisory before acting, and{" "}
             <a
               href="https://github.com/liranmarkin/gpu-vulndb/issues/new?template=correction.yml"
               className="font-medium text-brand-ink hover:underline"
@@ -183,7 +183,7 @@ function Tag({ children, tone, mono }: { children: React.ReactNode; tone?: "kev"
         ? "border-tint-line bg-tint text-silicon-800"
         : "border-line bg-card text-muted";
   return (
-    <span className={`whitespace-nowrap rounded-full border px-2.5 py-0.5 text-[11.5px] font-medium ${mono ? "font-mono" : ""} ${cls}`}>
+    <span className={`max-w-full truncate rounded-full border px-2.5 py-0.5 text-[11.5px] font-medium ${mono ? "font-mono" : ""} ${cls}`}>
       {children}
     </span>
   );

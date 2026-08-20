@@ -17,7 +17,7 @@ export function GET() {
     .map((e) => {
       const url = `${SITE}/vuln/${e.id}`;
       return (
-        `<item><title>${esc(`${e.cve ?? e.id} — ${e.title}`)}</title>` +
+        `<item><title>${esc(`${e.cve ?? e.id} - ${e.title}`)}</title>` +
         `<link>${url}</link><guid isPermaLink="true">${url}</guid>` +
         `<description>${esc(e.impact || e.title)}</description>` +
         `<category>${esc(e.layer_name)}</category></item>`

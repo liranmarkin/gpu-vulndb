@@ -3,8 +3,9 @@ import type { NextConfig } from "next";
 const config: NextConfig = {
   // The database lives outside web/, so the build traces one directory up.
   outputFileTracingRoot: process.cwd() + "/..",
-  // The OG image routes rasterise text with these faces at request time.
-  outputFileTracingIncludes: { "/**": ["./assets/fonts/*.ttf"] },
+  // The per-entry OG route renders on demand, so its fonts and the entries
+  // corpus must ship inside the function bundle.
+  outputFileTracingIncludes: { "/**": ["./assets/fonts/*.ttf", "../entries/**"] },
   async redirects() {
     return [{ source: "/vuln/:id.html", destination: "/vuln/:id", permanent: true }];
   },
