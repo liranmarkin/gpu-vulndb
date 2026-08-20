@@ -1,0 +1,30 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+  "cwe": [
+    "CWE-78"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-051-kubeedge-configupdatejob-handler",
+  "cve": null,
+  "aliases": [
+    "GHSA-m3c6-2p7h-cfr3",
+    "CVE-2026-62182 (reserved)"
+  ],
+  "title": "KubeEdge (ConfigUpdateJob handler, updateFields): REMOTE CODE EXECUTION ON EDGE NODES via a normal Kubernetes API",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "KubeEdge (ConfigUpdateJob handler, updateFields)",
+  "year": "2026",
+  "cvss_score": 8.8,
+  "severity": "high",
+  "kev": false,
+  "impact": "REMOTE CODE EXECUTION ON EDGE NODES via a normal Kubernetes API object. The ConfigUpdateJob handler concatenated caller-supplied updateFields values into a command string and ran it through a system shell, so shell metacharacters in a configuration field execute as commands on every targeted node with the privileges of the KubeEdge process. For anyone running distributed inference on edge or far-edge GPU boxes, the practical picture is that a namespaced RBAC grant intended to let a team push configuration turns into node-level execution across the fleet — and the fleet is the part of the estate with the least physical oversight and the weakest chance of anyone noticing.",
+  "attack_vector": "Network, authenticated: the attacker needs RBAC permission to create or update ConfigUpdateJob resources and an enrolled target edge node. No user interaction beyond the job being processed.",
+  "remediation": "Upgrade to KubeEdge 1.23.1, 1.22.2 or 1.21.2, where keadm config-update is invoked with structured arguments and the whole --set value is passed as a single literal. Before that lands, restrict RBAC on ConfigUpdateJob to trusted administrators, avoid ConfigUpdateJob where the input cannot be fully trusted, and monitor edge-node process activity for unexpected commands.",
+  "references": [
+    "https://github.com/kubeedge/kubeedge/security/advisories/GHSA-m3c6-2p7h-cfr3"
+  ],
+  "status": "curated"
+}

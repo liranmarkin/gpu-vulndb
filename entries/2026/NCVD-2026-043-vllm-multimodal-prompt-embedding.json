@@ -1,0 +1,33 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+  "cwe": [
+    "CWE-20",
+    "CWE-123",
+    "CWE-502",
+    "CWE-787"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-043-vllm-multimodal-prompt-embedding",
+  "cve": null,
+  "aliases": [
+    "GHSA-mcmc-2m55-j8jj"
+  ],
+  "title": "vLLM (multimodal prompt embeddings, sparse tensor validation): This is the advisory saying the earlier fix did not",
+  "layer": "ai-serving",
+  "layer_name": "AI/ML frameworks & serving",
+  "component": "vLLM (multimodal prompt embeddings, sparse tensor validation)",
+  "year": "2026",
+  "cvss_score": 8.8,
+  "severity": "high",
+  "kev": false,
+  "impact": "This is the advisory saying the earlier fix did not hold. The previous remediation for the prompt-embeds denial of service only flipped the feature off by default; the underlying flaw, missing sparse-tensor validation on caller-supplied embeddings, was never addressed. PyTorch disables sparse tensor invariant checks by default for performance, so a malformed tensor with out-of-range or negative indices is accepted and acted on, giving an out-of-bounds write primitive alongside the crash. Any operator who re-enables prompt embeds — which multimodal and embedding-serving deployments routinely do, since that is the feature — is exposed again on a supposedly patched version. Impact runs from killing a shared serving replica to memory corruption in the process holding other tenants' in-flight requests on the GPU node.",
+  "attack_vector": "Network, authenticated API client, on any deployment where the prompt-embeds feature is enabled. The attacker submits a crafted sparse tensor as multimodal embedding input in an ordinary request.",
+  "remediation": "Upgrade to vLLM 0.11.1 or later and restart the servers. Leave prompt embeds disabled unless you genuinely need them; if you need them, do not treat the earlier default-off change as a fix, since it only removed the default exposure. Enforce pod memory limits and restart policy so a corrupted or wedged worker is recycled.",
+  "references": [
+    "https://github.com/vllm-project/vllm/security/advisories/GHSA-mcmc-2m55-j8jj",
+    "https://github.com/vllm-project/vllm/pull/30649"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,29 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:H",
+  "cwe": [
+    "CWE-125"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2025-020-llama-cpp-gguf-vocabulary-parsin",
+  "cve": null,
+  "aliases": [
+    "GHSA-g4cc-763q-h9h6"
+  ],
+  "title": "llama.cpp (GGUF vocabulary parsing, llama_vocab::impl::print_info): MALICIOUS MODEL FILE CRASHES THE SERVER: the GGUF",
+  "layer": "ai-serving",
+  "layer_name": "AI/ML frameworks & serving",
+  "component": "llama.cpp (GGUF vocabulary parsing, llama_vocab::impl::print_info)",
+  "year": "2025",
+  "cvss_score": 6.6,
+  "severity": "medium",
+  "kev": false,
+  "impact": "MALICIOUS MODEL FILE CRASHES THE SERVER: the GGUF parser reads special token IDs without bounds-checking them against the vocabulary. special_bos_id defaults to 1, so a model whose vocabulary contains a single token makes print_info index id_to_token[1] out of bounds on the heap and segfault. Any deployment that loads user-supplied or third-party GGUF files — a model-hosting service, a shared inference gateway that lets tenants bring their own weights, a self-service fine-tune endpoint — can be taken down by uploading a small crafted file. It is a heap over-read rather than a write, so the realistic ceiling is denial of service, but on a GPU serving node that means the accelerator sitting idle and every co-tenant on that replica losing service until the process is recycled.",
+  "attack_vector": "Local to the loading process, reached remotely wherever the model path is attacker-influenced: the victim runs llama.cpp against a crafted GGUF file. Any bring-your-own-model or shared model-cache workflow puts this within reach of a tenant.",
+  "remediation": "Update llama.cpp past the fixed commit and restart the servers. Validate GGUF files before loading — reject models whose declared vocabulary size is smaller than the special token IDs they reference — and load only from model stores whose writers you trust. Set pod restart policies so a crashed serving process is recycled rather than leaving the GPU stranded.",
+  "references": [
+    "https://github.com/ggml-org/llama.cpp/security/advisories/GHSA-g4cc-763q-h9h6"
+  ],
+  "status": "curated"
+}

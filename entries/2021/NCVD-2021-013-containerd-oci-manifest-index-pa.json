@@ -1,0 +1,31 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:N/I:L/A:N",
+  "cwe": [
+    "CWE-843"
+  ],
+  "fleet": {
+    "pain_class": "node-drain"
+  },
+  "id": "NCVD-2021-013-containerd-oci-manifest-index-pa",
+  "cve": null,
+  "aliases": [
+    "GHSA-5j5w-g665-5m35"
+  ],
+  "title": "containerd (OCI manifest / index parsing, Content-Type handling): SUPPLY CHAIN: the image digest stops being an",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "containerd (OCI manifest / index parsing, Content-Type handling)",
+  "year": "2021",
+  "cvss_score": 3.0,
+  "severity": "low",
+  "kev": false,
+  "impact": "SUPPLY CHAIN: the image digest stops being an unambiguous identifier. Manifest and index documents in the OCI Distribution and Image specs are ambiguous without a Content-Type header, and affected containerd versions trust that header to decide how to deserialise the document. A registry that returns a different Content-Type across two pulls of the same digest gets that digest interpreted as two different images. Everything an operator builds on digest pinning — admission policies that pin by digest, signature verification bound to a digest, reproducible node images across a GPU fleet — quietly loses its guarantee, because the thing being verified and the thing being run can diverge while the digest matches.",
+  "attack_vector": "Network, requiring a malicious or compromised registry (or a MITM on registry traffic) able to vary the Content-Type it returns, plus a pull of the affected image. Low privileges and user interaction in the sense that someone has to pull.",
+  "remediation": "Upgrade containerd to 1.4.12 or 1.5.8 or later, which reject manifests containing a 'manifests' field and indices containing a 'layers' field; drain the node for the runtime restart. Until then, pull only from registries you control or trust, and treat digest pinning alone as insufficient assurance on affected versions.",
+  "references": [
+    "https://github.com/containerd/containerd/security/advisories/GHSA-5j5w-g665-5m35",
+    "https://github.com/opencontainers/distribution-spec/security/advisories/GHSA-mc8v-mgrf-8f4m",
+    "https://github.com/opencontainers/image-spec/security/advisories/GHSA-77vh-xpmg-72qh"
+  ],
+  "status": "curated"
+}

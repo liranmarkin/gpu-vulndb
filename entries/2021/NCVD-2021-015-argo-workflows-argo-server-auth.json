@@ -1,0 +1,29 @@
+{
+  "cwe": [
+    "CWE-285"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2021-015-argo-workflows-argo-server-auth",
+  "cve": null,
+  "aliases": [
+    "GHSA-prqf-xr2j-xf65"
+  ],
+  "title": "Argo Workflows (Argo Server, --auth-mode=client on Kubernetes >= 1.19): PRIVILEGE ESCALATION TO THE SERVER'S IDENTITY",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "Argo Workflows (Argo Server, --auth-mode=client on Kubernetes >= 1.19)",
+  "year": "2021",
+  "cvss_score": 3.9,
+  "severity": "low",
+  "kev": false,
+  "impact": "PRIVILEGE ESCALATION TO THE SERVER'S IDENTITY: in a specific configuration the client's authentication is silently ignored and the server's own credentials are used instead, so every caller gets whatever the Argo Server account can do. The conditions are narrow — Kubernetes 1.19 or newer, Argo Server running outside a Kubernetes pod (bare metal or a VM), --auth-mode=client without --auth-mode=server, clients authenticating with a client key, and the server holding more permissions than the connecting account. But the reason this matters to an operator is that it inverts the intended posture: client mode is what you switch to in order to make callers act as themselves, so the deployment that took the hardening step is the one that silently loses it. The maintainers describe it as a proactive fix with no known exploits.",
+  "attack_vector": "Network, low privileges: any client that can authenticate to an Argo Server running off-cluster in the configuration above. The escalation happens automatically rather than requiring a crafted request.",
+  "remediation": "Upgrade Argo Workflows to a release carrying the fix and restart the server. Prefer running Argo Server inside a Kubernetes pod, which takes the affected configuration off the table. Where it must run off-cluster, keep the server's own service account scoped no wider than the least-privileged caller you accept, so an ignored client identity does not hand out more than the caller already had.",
+  "references": [
+    "https://github.com/argoproj/argo-workflows/security/advisories/GHSA-prqf-xr2j-xf65",
+    "https://github.com/argoproj/argo-workflows/pull/6506"
+  ],
+  "status": "curated"
+}

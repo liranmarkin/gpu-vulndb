@@ -1,0 +1,31 @@
+{
+  "cvss_vector": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:L/A:N",
+  "cwe": [
+    "CWE-295"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2024-010-ceph-python-bindings-imap4-ssl-s",
+  "cve": null,
+  "aliases": [
+    "GHSA-xj9f-7g59-m4jx",
+    "CVE-2024-31884 (reserved)"
+  ],
+  "title": "Ceph (Python bindings, IMAP4_SSL/SMTP_SSL TLS clients): Ceph's Python code constructs imaplib.IMAP4_SSL and",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "Ceph (Python bindings, IMAP4_SSL/SMTP_SSL TLS clients)",
+  "year": "2024",
+  "cvss_score": 6.5,
+  "severity": "medium",
+  "kev": false,
+  "impact": "Ceph's Python code constructs imaplib.IMAP4_SSL and smtplib.SMTP_SSL without passing an SSL context, so no X.509 validation happens and any certificate is accepted. An attacker positioned on the path between a Ceph manager node and the mail server it uses for alerting can present their own certificate, harvest the mail credentials Ceph authenticates with, and read or tamper with cluster alert traffic. For a cluster operator the practical loss is twofold: reusable SMTP/IMAP credentials (frequently shared with other infrastructure) and the ability to suppress or forge the alert channel that is supposed to tell you a storage node is failing or a tenant is misbehaving.",
+  "attack_vector": "Network, machine-in-the-middle between the Ceph mgr node and its configured mail server. No credentials and no user interaction needed — the attacker only needs a position on the path, which is realistic when alerting egresses over a shared or upstream-provider network.",
+  "remediation": "Upgrade to a build carrying the fix (20.2.1, 19.2.4, 18.2.9 or later) and restart the mgr modules. Rotate the SMTP/IMAP credentials Ceph was configured with, since a MITM window means they may already be captured. Where possible route alert egress over a path you control rather than shared transit.",
+  "references": [
+    "https://github.com/ceph/ceph/security/advisories/GHSA-xj9f-7g59-m4jx",
+    "https://github.com/ceph/ceph/pull/66089"
+  ],
+  "status": "curated"
+}

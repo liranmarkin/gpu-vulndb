@@ -1,0 +1,24 @@
+{
+  "id": "NCVD-2026-066-raid-hba-controller-firmware-upd",
+  "cve": null,
+  "aliases": [],
+  "title": "RAID/HBA controller firmware update path as a class - Broadcom MegaRAID and LSI 9400/9500/9600 HBAs, Microchip Adaptec",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "RAID/HBA controller firmware update path as a class - Broadcom MegaRAID and LSI 9400/9500/9600 HBAs, Microchip",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "On most of these SKUs the controller firmware can be written from the running host OS by a root process using the vendor CLI (StorCLI, arcconf, perccli, ssacli) over the normal driver ioctl path. There is no host-verifiable attestation of what firmware the controller is actually running - the version string you read back is reported by the same firmware you are trying to verify. The controller is a PCIe device with DMA to host memory that sits below the operating system and below the boot chain, and its firmware is not covered by UEFI Secure Boot or by any measured-boot chain that a normal reimage re-establishes. For a bare-metal GPU rental, that means a tenant with root - which every bare-metal tenant has - can write persistent code beneath the next tenant's operating system, and a wipe-and-reimage handoff does not remove it. This is the concrete mechanism behind 'bare-metal tenant handoff is not a reimage', on a component operators rarely inventory at all.",
+  "attack_vector": "Local root on the bare-metal host: the legitimate tenant during their rental, or anyone who achieved root through any other path. No physical access, no BMC access, and no reboot required to stage the flash on most controllers.",
+  "remediation": "Not patchable and largely unmitigated on current SKUs. What operators can actually do: (1) make controller firmware version and checksum part of the handoff checklist and reflash from a vendor-signed image between tenants rather than trusting the reported version - budget the reboot into the OEM update utility and the node drain, and expect the OEM package to trail Broadcom/Microchip by months; (2) prefer platforms where the controller participates in a platform root of trust that the BMC can attest, and make that a procurement requirement rather than a hope; (3) blacklist or restrict the management ioctl path from tenant workloads where the workload does not need it; (4) accept and price the residual risk for SKUs where the firmware cannot be independently verified, and keep those nodes out of the pool you offer for security-sensitive tenants.",
+  "references": [
+    "https://www.broadcom.com/support/resources/product-security-center",
+    "https://www.microchip.com/en-us/solutions/embedded-security/how-to-report-potential-product-security-vulnerabilities"
+  ],
+  "status": "curated",
+  "fleet": {
+    "pain_class": "firmware-flash"
+  }
+}

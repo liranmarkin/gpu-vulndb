@@ -1,0 +1,28 @@
+{
+  "cwe": [
+    "CWE-312"
+  ],
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  },
+  "id": "NCVD-2020-006-etcd-write-ahead-log-user-authen",
+  "cve": null,
+  "aliases": [
+    "GHSA-528j-9r78-wffx"
+  ],
+  "title": "etcd (write-ahead log, user authentication entries): CONTROL-PLANE CREDENTIALS AT REST IN CLEARTEXT: etcd writes the",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "etcd (write-ahead log, user authentication entries)",
+  "year": "2020",
+  "cvss_score": 5.5,
+  "severity": "medium",
+  "kev": false,
+  "impact": "CONTROL-PLANE CREDENTIALS AT REST IN CLEARTEXT: etcd writes the user login and password into a WAL entry on each authentication, and etcd does not encrypt key/value data on disk at all. So the datastore behind the Kubernetes control plane keeps a plaintext record of every credential used against it, sitting in files whose protection is entirely the operator's problem. Anyone who reaches those files — through a node compromise, an unencrypted disk that leaves the rack, a backup or snapshot copied to object storage with looser permissions than the cluster itself, or a debug tarball — harvests working etcd credentials rather than hashes. In a GPU cluster the etcd backups are frequently the least-guarded copy of the most sensitive data in the estate. This is a documented design position rather than a bug the project intends to fix, which is why it carries no CVE and why it never expires.",
+  "attack_vector": "Local / at-rest file access: read access to etcd WAL files on a control-plane node, or to any backup, snapshot or disk image containing them. No etcd credentials are needed to start, since the credentials are the payload.",
+  "remediation": "There is no patch — the project's stated position is that etcd assumes on-disk files are secure and securing them is the operator's responsibility. Encrypt the volumes holding etcd data and WAL, restrict filesystem access on control-plane nodes, and treat etcd backups and snapshots with the same handling rules as the credentials themselves: encrypted at rest, tightly scoped access, short retention. Prefer certificate-based authentication over username/password so there is no password to write into the WAL in the first place.",
+  "references": [
+    "https://github.com/etcd-io/etcd/security/advisories/GHSA-528j-9r78-wffx"
+  ],
+  "status": "curated"
+}

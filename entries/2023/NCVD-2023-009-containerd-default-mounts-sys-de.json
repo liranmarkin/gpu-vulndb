@@ -1,0 +1,26 @@
+{
+  "fleet": {
+    "pain_class": "node-drain"
+  },
+  "id": "NCVD-2023-009-containerd-default-mounts-sys-de",
+  "cve": null,
+  "aliases": [
+    "GHSA-7ww5-4wqc-m92c"
+  ],
+  "title": "containerd (default mounts, /sys/devices/virtual/powercap RAPL): MULTI-TENANT SIDE CHANNEL: containers get read access",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "containerd (default mounts, /sys/devices/virtual/powercap RAPL)",
+  "year": "2023",
+  "cvss_score": 5.5,
+  "severity": "medium",
+  "kev": false,
+  "impact": "MULTI-TENANT SIDE CHANNEL: containers get read access to Intel RAPL power telemetry by default, which is the PLATYPUS attack surface. Fine-grained energy readings leak information about what the host CPU is doing, and were demonstrated against AES-NI keys (including inside SGX enclaves) and against KASLR. The kernel restricted this to root in 5.10, but that mitigation misses the container case: without user namespaces, root in a container is root for this purpose, and sysfs being mounted read-only does not help because reading is the entire attack. On a bare-metal multi-tenant GPU host — the standard neocloud shape, where a tenant gets a real container on real hardware rather than a VM — one tenant can measure the power behaviour of workloads belonging to another tenant or of the host itself. RAPL is only present on bare metal with the powercap module compiled in, so cloud VMs are out of scope and bare-metal GPU fleets are precisely in scope.",
+  "attack_vector": "Local, from inside any container on an affected bare-metal host with RAPL/powercap available and an unpatched or unmitigated CPU. Root inside the container, without user namespaces, is enough; only read access to sysfs is required.",
+  "remediation": "Upgrade containerd past 1.6.25 / 1.7.10 so /sys/devices/virtual/powercap is masked in the default mount configuration, and drain the node for the runtime restart. Independently: apply the CPU microcode updates that coarsened RAPL sampling resolution, enable user namespaces for tenant containers, and confirm the mask is actually present in running containers rather than assuming the default applies to workloads started before the upgrade.",
+  "references": [
+    "https://github.com/containerd/containerd/security/advisories/GHSA-7ww5-4wqc-m92c",
+    "https://platypusattack.com/"
+  ],
+  "status": "curated"
+}

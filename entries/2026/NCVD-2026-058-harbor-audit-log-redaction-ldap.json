@@ -1,0 +1,29 @@
+{
+  "cwe": [
+    "CWE-312",
+    "CWE-532"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-058-harbor-audit-log-redaction-ldap",
+  "cve": null,
+  "aliases": [
+    "GHSA-prh4-vhfh-24mj"
+  ],
+  "title": "Harbor (audit log redaction, LDAP password and OIDC client secret): CREDENTIAL DISCLOSURE VIA THE AUDIT TRAIL: Harbor",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "Harbor (audit log redaction, LDAP password and OIDC client secret)",
+  "year": "2026",
+  "cvss_score": 5.5,
+  "severity": "medium",
+  "kev": false,
+  "impact": "CREDENTIAL DISCLOSURE VIA THE AUDIT TRAIL: Harbor records the LDAP bind password and the OIDC client secret into its audit log without redaction. The audit log is by design a widely-readable artifact — it is shipped to SIEM, retained long, and read by compliance and platform staff who are deliberately not granted registry admin. So the identity-provider credentials for the registry end up in the one store an operator has consciously made broadly accessible. An LDAP bind credential typically reaches far beyond Harbor into the rest of the directory, and an OIDC client secret allows impersonating the registry integration to the identity provider. For a cluster operator this is a lateral-movement seed sitting in a low-suspicion location, and its lifetime is set by log retention rather than by patching.",
+  "attack_vector": "Local / log access: anyone able to read Harbor audit logs directly or via downstream aggregation. No registry privileges are required beyond audit-log visibility.",
+  "remediation": "Upgrade Harbor to a release carrying the redaction fix and restart the components. Then rotate the LDAP bind password and the OIDC client secret, since patching does not retract what is already written. Purge or expire affected audit-log ranges in your SIEM and archives, and re-check which roles can read Harbor audit data.",
+  "references": [
+    "https://github.com/goharbor/harbor/security/advisories/GHSA-prh4-vhfh-24mj"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,31 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:A/AC:L/PR:L/UI:N/S:C/C:H/I:L/A:L",
+  "cwe": [
+    "CWE-285"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-041-ceph-mon-config-key-store-mmonsu",
+  "cve": null,
+  "aliases": [
+    "GHSA-rg9p-5xcp-wm8h",
+    "CVE-2026-50152 (reserved)"
+  ],
+  "title": "Ceph MON (config-key store, MMonSubscribe handler): MULTI-TENANT ISOLATION AND HOST COMPROMISE: one crafted",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "Ceph MON (config-key store, MMonSubscribe handler)",
+  "year": "2026",
+  "cvss_score": 8.2,
+  "severity": "high",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION AND HOST COMPROMISE: one crafted MMonSubscribe message from any account with 'mon allow r' dumps the entire monitor config-key store. That store is where Ceph keeps OSD LUKS passphrases and, on cephadm-managed clusters, the SSH private key cephadm uses to reach every host in the fleet. Under the default cephadm setup that key is root-equivalent on every storage node, so a read-only monitor cap converts directly into root on the whole storage tier — and the LUKS passphrases mean an attacker who can also touch the disks gets the data at rest. 'mon allow r' is a cap operators hand out casually to monitoring agents, dashboards and tenant-facing tooling because it reads like a harmless read grant; here it is the whole cluster.",
+  "attack_vector": "Adjacent network: the attacker must reach the Ceph monitors and hold any CephX identity with 'mon allow r' capabilities. That includes most metrics collectors, dashboards, and any service account provisioned for cluster read access. No user interaction.",
+  "remediation": "Upgrade to Ceph 20.2.4 or 19.2.6 and restart the monitors. Then rotate what the store held: regenerate the cephadm SSH key across the fleet and re-key OSD LUKS where feasible, because a patched monitor does not un-leak secrets already read. Audit which identities hold 'mon allow r' and cut it back to the ones that truly need it.",
+  "references": [
+    "https://github.com/ceph/ceph/security/advisories/GHSA-rg9p-5xcp-wm8h",
+    "https://docs.ceph.com/en/latest/security/CVE-2026-50152/"
+  ],
+  "status": "curated"
+}

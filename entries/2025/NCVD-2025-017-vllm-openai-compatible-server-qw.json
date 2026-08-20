@@ -1,0 +1,31 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+  "cwe": [
+    "CWE-502"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2025-017-vllm-openai-compatible-server-qw",
+  "cve": null,
+  "aliases": [
+    "GHSA-79j6-g2m3-jgfw",
+    "CVE-2025-9141 (reserved)"
+  ],
+  "title": "vLLM OpenAI-compatible server (qwen3_coder tool-call parser): MULTI-TENANT ISOLATION: code execution inside the serving",
+  "layer": "ai-serving",
+  "layer_name": "AI/ML frameworks & serving",
+  "component": "vLLM OpenAI-compatible server (qwen3_coder tool-call parser)",
+  "year": "2025",
+  "cvss_score": 8.8,
+  "severity": "high",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION: code execution inside the serving process, which on a GPU node means execution next to the model weights, the GPU, and whatever credentials the inference pod holds. vLLM's Qwen3-Coder tool parser falls back to Python eval() when converting a tool-call parameter whose type it does not recognise. Any authenticated API user who can steer the model into emitting a crafted argument gets that string evaluated on the server. For an inference provider this is the worst shape of the multi-tenant problem: one customer's prompt reaches the interpreter on a box that is simultaneously serving other customers' requests, giving access to in-flight prompts and completions, the model artifacts on local disk, and the node's service-account token and cloud identity. Prompt content is attacker-controlled by definition in a serving product, so the 'requires authentication' qualifier buys very little.",
+  "attack_vector": "Network, any authenticated API client. Requires the server to be started with --enable-auto-tool-choice and --tool-call-parser qwen3_coder; the payload arrives as an ordinary completion request whose tool-call parameters carry an unrecognised type.",
+  "remediation": "Upgrade vLLM to 0.10.1.1 or later and restart the serving processes. If you cannot upgrade immediately, stop the server with the qwen3_coder parser or disable automatic tool choice — that removes the code path entirely. Longer term, run inference pods with a scoped service account and no ambient cloud credentials so an eval() foothold does not become a cluster foothold.",
+  "references": [
+    "https://github.com/vllm-project/vllm/security/advisories/GHSA-79j6-g2m3-jgfw",
+    "https://github.com/vllm-project/vllm/pull/21396"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,31 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H",
+  "cwe": [
+    "CWE-327"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-040-ceph-rgw-sts-session-tokens",
+  "cve": null,
+  "aliases": [
+    "GHSA-j73r-qrgx-jvq2",
+    "CVE-2026-39944 (reserved)"
+  ],
+  "title": "Ceph RGW (STS session tokens): MULTI-TENANT ISOLATION: any tenant holding one ordinary STS session token can edit it",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "Ceph RGW (STS session tokens)",
+  "year": "2026",
+  "cvss_score": 8.5,
+  "severity": "high",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION: any tenant holding one ordinary STS session token can edit it into RGW superuser. RGW STS tokens ride the same unauthenticated AES-128-CBC handler as CephX, so the ciphertext carries no integrity protection. The attacker bit-flips the acct_type, perm_type and is_admin fields inside a token they already legitimately hold; a forged is_admin trips the global override in rgw_process_authenticated(), which short-circuits every check_caps() decision. The result is full RGW administrative access: read and write on every bucket belonging to every other tenant on the object store, plus the ability to mint and manage users. Unlike the CephX flaw this needs no encryption oracle and no packet capture — it is offline arithmetic on a token the attacker was legitimately issued, then a normal S3 request. For a neocloud selling shared object storage next to GPU capacity, this collapses the tenant boundary on the data plane customers stage their training corpora in.",
+  "attack_vector": "Network, reachable from the ordinary RGW S3 endpoint. Requires STS to be enabled on the cluster and one valid STS token of any privilege level. The token does not need to carry elevated rights and no network observation is needed.",
+  "remediation": "Upgrade to Ceph 20.2.4 or 19.2.6 and restart radosgw. If STS is not used, disable it to remove the surface. After patching, invalidate outstanding STS sessions and review RGW admin-level operations in the logs for the exposure window, since forged tokens verify cleanly and leave no distinguishing trace.",
+  "references": [
+    "https://github.com/ceph/ceph/security/advisories/GHSA-j73r-qrgx-jvq2",
+    "https://docs.ceph.com/en/latest/security/CVE-2026-39944"
+  ],
+  "status": "curated"
+}

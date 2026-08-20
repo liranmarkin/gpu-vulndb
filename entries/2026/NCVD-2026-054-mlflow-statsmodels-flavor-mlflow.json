@@ -1,0 +1,29 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+  "cwe": [
+    "CWE-502"
+  ],
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  },
+  "id": "NCVD-2026-054-mlflow-statsmodels-flavor-mlflow",
+  "cve": null,
+  "aliases": [
+    "GHSA-gqvg-gmmx-x4hm"
+  ],
+  "title": "MLflow (statsmodels flavor, MLFLOW_ALLOW_PICKLE_DESERIALIZATION guard): SECURITY CONTROL BYPASS LEADING TO RCE: the",
+  "layer": "ai-serving",
+  "layer_name": "AI/ML frameworks & serving",
+  "component": "MLflow (statsmodels flavor, MLFLOW_ALLOW_PICKLE_DESERIALIZATION guard)",
+  "year": "2026",
+  "cvss_score": 8.8,
+  "severity": "high",
+  "kev": false,
+  "impact": "SECURITY CONTROL BYPASS LEADING TO RCE: the switch operators flip to stop pickle execution does not cover the statsmodels flavor. MLFLOW_ALLOW_PICKLE_DESERIALIZATION=False is the documented control for the 2024 pickle-RCE family, and mlflow/sklearn implements the guard as the reference pattern; mlflow/statsmodels has no such check anywhere in the file and calls smio.load_pickle() straight through. So an attacker who can place a crafted MLmodel artifact anywhere in a reachable artifact store executes code in any process that later calls mlflow.pyfunc.load_model() against it — even on a deployment the operator has explicitly hardened. In a shared GPU cluster the loading process is usually a training or serving pod with GPU access, registry credentials and a cluster identity, and artifact stores are frequently writable by more tenants than the set allowed to deploy models. The danger is the false assurance: teams that adopted the flag believe this class is closed.",
+  "attack_vector": "Network / artifact-store write. The attacker needs write access to any artifact store a victim will load from, and a victim process that calls mlflow.pyfunc.load_model() on the malicious model. No MLflow credentials are required if the store is writable through another path.",
+  "remediation": "Do not rely on MLFLOW_ALLOW_PICKLE_DESERIALIZATION as the boundary — treat model artifacts as executable code and control who can write to artifact stores with the same rigour as who can push container images. Restrict artifact-store write access per tenant, load models only from stores whose writers you trust, and run model-loading pods with a scoped service account and no ambient cloud credentials. Track the MLflow fix for the statsmodels flavor and upgrade when it ships.",
+  "references": [
+    "https://github.com/mlflow/mlflow/security/advisories/GHSA-gqvg-gmmx-x4hm"
+  ],
+  "status": "curated"
+}

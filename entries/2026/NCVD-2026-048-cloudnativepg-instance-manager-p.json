@@ -1,0 +1,31 @@
+{
+  "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H",
+  "cwe": [
+    "CWE-426"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-048-cloudnativepg-instance-manager-p",
+  "cve": null,
+  "aliases": [
+    "GHSA-x8c2-3p4r-v9r6",
+    "CVE-2026-55769 (reserved)"
+  ],
+  "title": "CloudNativePG instance manager (PostgreSQL connection search_path): MULTI-TENANT ISOLATION: the owner of any managed",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "CloudNativePG instance manager (PostgreSQL connection search_path)",
+  "year": "2026",
+  "cvss_score": 9.4,
+  "severity": "critical",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION: the owner of any managed database — a role CloudNativePG creates by default at bootstrap, so typically the tenant themselves — escalates to PostgreSQL superuser across every database in the cluster and then to OS command execution inside the instance pod. The instance manager opens superuser connections without pinning search_path in the startup packet, so resolution falls back through ALTER ROLE and ALTER DATABASE, both of which the database owner controls. The tenant plants overloads of built-in operators such as = and > in the public schema and re-points search_path at them. On the next reconcile, routine introspection queries run as the cluster postgres role and, although the relation is schema-qualified as pg_catalog.pg_extension, the operators in the same query are not — so the planted function bodies execute with superuser rights. From there: COPY ... FROM PROGRAM for shell inside the pod, then the pod ServiceAccount token, with the remaining blast radius set by that ServiceAccount's RBAC and the surrounding cloud workload identity. This is the CVE-2018-1058 pattern, and unlike the sibling password advisory it needs no unusual configuration.",
+  "attack_vector": "Network, low privileges: a role holding DATABASE OWNER on any CNPG-managed database. That role is created by default at cluster bootstrap and is normally the one handed to the application or tenant. Exploitation completes on the operator's own next reconcile, so no user interaction is needed.",
+  "remediation": "Upgrade CloudNativePG to 1.28.4, 1.29.2 or 1.30.0 and roll the operator and instance pods. Where you cannot upgrade yet, pin a fixed search_path on operator connections, or make sure no untrusted party holds DATABASE OWNER on a managed database. After patching, inspect the public schema of managed databases for planted operator or function overloads, since the fix does not remove what is already there, and rotate the instance pod ServiceAccount token if you find any.",
+  "references": [
+    "https://github.com/cloudnative-pg/cloudnative-pg/security/advisories/GHSA-x8c2-3p4r-v9r6",
+    "https://github.com/cloudnative-pg/cloudnative-pg/pull/10774"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,30 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L",
+  "cwe": [
+    "CWE-306"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-050-cloudnativepg-instance-manager-s",
+  "cve": null,
+  "aliases": [
+    "GHSA-7qwx-x8ff-3px9"
+  ],
+  "title": "CloudNativePG instance manager (status server, TCP/8000 control endpoints): A set of operator-only control endpoints",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "CloudNativePG instance manager (status server, TCP/8000 control endpoints)",
+  "year": "2026",
+  "cvss_score": 5.4,
+  "severity": "medium",
+  "kev": false,
+  "impact": "A set of operator-only control endpoints (/pg/mode/backup, /update, /pg/archive/partial, /pg/controldata) sit on the same unauthenticated mux as the kubelet probes on TCP/8000 of every PostgreSQL pod, with network isolation as the only intended boundary — and even with status-port-tls enabled the server never requested or verified a client certificate. Any workload that can reach that port without a NetworkPolicy in the way can drive backup orchestration, trigger WAL and checkpoint activity, and read operational metadata including replication and WAL state, the system identifier, and pg_controldata output. The vendor is careful to bound this: single-flight and self-cleaning backup control means bounded DoS and transient storage pressure, not unbounded WAL exhaustion, secret disclosure or code execution. The lesson for a cluster operator is the assumption, not the severity — a component shipped with 'protected by NetworkPolicy' as its security model, in clusters where NetworkPolicies are frequently absent or permissive.",
+  "attack_vector": "Adjacent network / in-cluster, unauthenticated. Any pod able to open TCP/8000 on a PostgreSQL instance pod qualifies, which in a cluster with no restricting NetworkPolicy means every pod including tenant workloads.",
+  "remediation": "Apply a NetworkPolicy restricting TCP/8000 on instance pods to the operator — this is the mitigation for all currently supported releases, since the hardening was not backported. Upgrading to 1.30.0 adds in-process operator authentication as defence in depth: the operator generates an in-memory ECDSA P-256 client certificate at startup, publishes the SHA-256 fingerprint in .status.operatorCertificateFingerprint, and the instance manager rejects calls to the sensitive endpoints without it. Probe endpoints and /pg/status stay unauthenticated by design.",
+  "references": [
+    "https://github.com/cloudnative-pg/cloudnative-pg/security/advisories/GHSA-7qwx-x8ff-3px9",
+    "https://github.com/cloudnative-pg/cloudnative-pg/pull/10579"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,28 @@
+{
+  "cwe": [
+    "CWE-295"
+  ],
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  },
+  "id": "NCVD-2020-007-etcd-gateway-discovery-srv-secur",
+  "cve": null,
+  "aliases": [
+    "GHSA-j86v-2vjr-fg8f"
+  ],
+  "title": "etcd gateway (--discovery-srv secure endpoint validation): TLS VALIDATION THAT VALIDATES NOTHING: the etcd gateway's",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "etcd gateway (--discovery-srv secure endpoint validation)",
+  "year": "2020",
+  "cvss_score": 5.9,
+  "severity": "medium",
+  "kev": false,
+  "impact": "TLS VALIDATION THAT VALIDATES NOTHING: the etcd gateway's secure endpoint validation, run when --discovery-srv is enabled, only confirms that the endpoint is reachable over TCP. It never confirms the endpoint actually accepts TLS, so a plaintext listener sitting behind an HTTPS URL passes the check and the gateway proceeds to connect. An operator reading the configuration sees TLS-validated endpoints; what they have is TCP-reachable ones. Because the gateway fronts access to the cluster datastore, that gap means control-plane traffic can be routed to an endpoint offering no transport protection — and an attacker who can influence the SRV records or stand up a listener at a discovered address inherits that traffic. Surfaced by the etcd security audit; the maintainers accepted documentation plus deprecation of the misleading validation as the resolution rather than a code fix.",
+  "attack_vector": "Network: requires the gateway to be started with --discovery-srv, plus the ability to influence DNS SRV discovery results or to occupy a discovered endpoint address with a non-TLS listener.",
+  "remediation": "Do not rely on the gateway's endpoint validation as a TLS guarantee — the maintainers' resolution was documentation and deprecation, not a code change. Configure etcd client endpoints explicitly rather than via SRV discovery, verify TLS termination at each endpoint out of band, and lock down the DNS zone serving the SRV records. Review the etcd gateway documentation for the current supported posture before depending on this path.",
+  "references": [
+    "https://github.com/etcd-io/etcd/security/advisories/GHSA-j86v-2vjr-fg8f"
+  ],
+  "status": "curated"
+}

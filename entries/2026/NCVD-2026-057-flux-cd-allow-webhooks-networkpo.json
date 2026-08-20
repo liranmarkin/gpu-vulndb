@@ -1,0 +1,31 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:H",
+  "cwe": [
+    "CWE-400",
+    "CWE-923"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-057-flux-cd-allow-webhooks-networkpo",
+  "cve": null,
+  "aliases": [
+    "GHSA-mwcp-qpcg-fr7c"
+  ],
+  "title": "Flux CD (allow-webhooks NetworkPolicy, notification-controller event server): CROSS-TENANT EVENT FORGERY: the",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "Flux CD (allow-webhooks NetworkPolicy, notification-controller event server)",
+  "year": "2026",
+  "cvss_score": 7.1,
+  "severity": "high",
+  "kev": false,
+  "impact": "CROSS-TENANT EVENT FORGERY: the NetworkPolicy Flux installs by default, allow-webhooks, admits ingress to notification-controller from every namespace and names no port, so the event server on 9090 — whose only security boundary is namespace isolation — is reachable by every pod in the cluster. Any compromised or malicious workload in any namespace then injects forged Flux events. Concretely that means denial of service against the event server and the downstream notification providers, forged alerts landing in other tenants' Slack, Teams and PagerDuty channels, attacker-authored comments posted to a tenant's pull requests where the PR URL is known, and forged commit statuses where a commit hash in the target repo is known. The alerting channel operators rely on to tell them something is wrong becomes something a neighbour tenant can write to — and a forged green commit status is a nudge toward shipping code that was never actually validated.",
+  "attack_vector": "Network / in-cluster, low privileges: any pod in any namespace of a cluster bootstrapped with the Flux CLI defaults can reach notification-controller on port 9090 and post events. No credentials for the notification providers are needed.",
+  "remediation": "Upgrade to Flux v2.9.4, which patches the allow-webhooks policy and includes notification-controller v1.9.3 with the DoS mitigation. If you cannot upgrade now, apply the port restriction as a bootstrap customization: patch the allow-webhooks NetworkPolicy in your gotk-components kustomization so ingress is limited to the ports and sources that actually need it. Review notification channels and PR comment history for forged entries during the exposure window.",
+  "references": [
+    "https://github.com/fluxcd/flux2/security/advisories/GHSA-mwcp-qpcg-fr7c",
+    "https://github.com/fluxcd/flux2/pull/6028"
+  ],
+  "status": "curated"
+}

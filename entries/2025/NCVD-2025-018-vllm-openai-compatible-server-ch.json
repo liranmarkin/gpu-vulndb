@@ -1,0 +1,33 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+  "cwe": [
+    "CWE-20",
+    "CWE-400",
+    "CWE-770",
+    "CWE-789"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2025-018-vllm-openai-compatible-server-ch",
+  "cve": null,
+  "aliases": [
+    "GHSA-6fvq-23cw-5628",
+    "CVE-2025-61620 (reserved)"
+  ],
+  "title": "vLLM OpenAI-compatible server (chat_template / chat_template_kwargs): NOISY-NEIGHBOUR DENIAL OF SERVICE: one tenant",
+  "layer": "ai-serving",
+  "layer_name": "AI/ML frameworks & serving",
+  "component": "vLLM OpenAI-compatible server (chat_template / chat_template_kwargs)",
+  "year": "2025",
+  "cvss_score": 6.5,
+  "severity": "medium",
+  "kev": false,
+  "impact": "NOISY-NEIGHBOUR DENIAL OF SERVICE: one tenant takes down a shared inference endpoint, and the GPU sits idle while it happens. The OpenAI-compatible server lets callers supply a Jinja template through chat_template. Jinja has loops and nesting, so a small request body can pin CPU and balloon memory until the server stops answering anyone. The operationally important detail is that blocking the chat_template parameter is not enough: the server builds its kwargs dict and then calls dict.update() with the caller's chat_template_kwargs, so an attacker simply nests a chat_template key inside chat_template_kwargs and overwrites the template anyway. Any filtering you wrote against the obvious parameter name misses the real one. On a GPU fleet the cost is the expensive resource stranded behind a wedged Python process, plus every co-tenant on that replica losing service.",
+  "attack_vector": "Network, any client authenticated to the OpenAI-compatible endpoint, if that endpoint accepts chat_template or chat_template_kwargs from untrusted callers. A single ordinary-looking chat completion request is sufficient.",
+  "remediation": "Upgrade vLLM to 0.11.0 or later and restart the servers. If you front vLLM with a gateway, strip both chat_template and chat_template_kwargs from inbound requests — stripping only chat_template does not close it. Set per-pod CPU and memory limits with a restart policy so a wedged replica is recycled rather than dragging the node, and rate-limit per tenant.",
+  "references": [
+    "https://github.com/vllm-project/vllm/security/advisories/GHSA-6fvq-23cw-5628"
+  ],
+  "status": "curated"
+}

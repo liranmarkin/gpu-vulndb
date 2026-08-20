@@ -1,0 +1,29 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+  "cwe": [
+    "CWE-400"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-044-vllm-deepstream-video-backend-vi",
+  "cve": null,
+  "aliases": [
+    "GHSA-cqm8-jxg6-fqfq"
+  ],
+  "title": "vLLM (DeepStream video backend, VideoMediaIO backend selection): A performance feature merged past two existing",
+  "layer": "ai-serving",
+  "layer_name": "AI/ML frameworks & serving",
+  "component": "vLLM (DeepStream video backend, VideoMediaIO backend selection)",
+  "year": "2026",
+  "cvss_score": 5.3,
+  "severity": "medium",
+  "kev": false,
+  "impact": "A performance feature merged past two existing security boundaries and reopened both. vLLM guards against request-level selection of GPU video backends by asking backend_requires_gpu(), but that function returns false for any name it does not know — and DeepStream was never registered, so it reads as a non-GPU backend and the guard waves it through. Its decode path also skips VLLM_MAX_IMAGE_PIXELS, the frame-dimension limit added specifically to stop compressed media from exhausting memory. An unauthenticated client therefore activates NVDEC/GStreamer at request time, initialises the process-wide GPU decode pool outside the startup memory reservation, and submits video every other backend would have rejected. Measured effect was half of lightweight canary requests timing out. For a multi-tenant serving fleet this is one caller degrading GPU decode capacity for everyone on the replica, from an unauthenticated position.",
+  "attack_vector": "Network, unauthenticated, against a vLLM deployment on 0.26.x that accepts video input. The attacker names the deepstream backend in the request to bypass the GPU-backend restriction and then submits oversized media.",
+  "remediation": "Upgrade to vLLM 0.27.0 or later and restart the servers. In the interim, reject request-level video_backend and backend parameters at your gateway rather than relying on the in-process check, and cap request body size and video dimensions upstream. Verify GPU memory reservation covers any decode pool your deployment can actually reach.",
+  "references": [
+    "https://github.com/vllm-project/vllm/security/advisories/GHSA-cqm8-jxg6-fqfq"
+  ],
+  "status": "curated"
+}

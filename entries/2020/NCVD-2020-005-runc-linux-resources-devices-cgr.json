@@ -1,0 +1,28 @@
+{
+  "cwe": [
+    "CWE-276"
+  ],
+  "fleet": {
+    "pain_class": "node-drain"
+  },
+  "id": "NCVD-2020-005-runc-linux-resources-devices-cgr",
+  "cve": null,
+  "aliases": [
+    "GHSA-g54h-m393-cpwq"
+  ],
+  "title": "runc (linux.resources.devices cgroup list handling): MULTI-TENANT DEVICE ISOLATION: runc implemented the",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "runc (linux.resources.devices cgroup list handling)",
+  "year": "2020",
+  "cvss_score": 5.5,
+  "severity": "medium",
+  "kev": false,
+  "impact": "MULTI-TENANT DEVICE ISOLATION: runc implemented the linux.resources.devices list as a blacklist by default, contrary to the OCI runtime specification, which mandates a whitelist. Any caller that builds its own config.json without prefixing an explicit deny-all rule gets no protection from the devices cgroup at all. On a GPU node this is the control that is supposed to guarantee a container sees only the accelerators assigned to it: with the list defaulting open, a sufficiently privileged container holding CAP_MKNOD can create arbitrary device inodes and operate on any device node its Unix DAC permissions allow — including /dev/nvidia* entries belonging to another tenant's allocation, and other host devices entirely. The bug hid for years precisely because the common runtimes all write their own deny-all rule and the spec examples include one, so it only bites custom or hand-rolled OCI configs — which is exactly what bespoke GPU scheduling and device-plugin integration work tends to produce.",
+  "attack_vector": "Local, from inside a container, on a host whose OCI config.json was generated without a leading deny-all devices rule. The container additionally needs CAP_MKNOD to create inodes, and normal Unix DAC permissions on whatever device it then targets.",
+  "remediation": "Upgrade runc to a release that treats the devices list as a whitelist per the OCI spec, and drain the node for the runtime change. Independently, audit any custom config.json generation in your stack for a leading deny-all rule ({\"allow\": false, \"permissions\": \"rwm\"}), and drop CAP_MKNOD from tenant containers, which removes the inode-creation half of the primitive regardless of runtime version.",
+  "references": [
+    "https://github.com/opencontainers/runc/security/advisories/GHSA-g54h-m393-cpwq"
+  ],
+  "status": "curated"
+}

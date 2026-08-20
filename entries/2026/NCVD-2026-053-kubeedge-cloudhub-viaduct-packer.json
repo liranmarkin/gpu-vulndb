@@ -1,0 +1,30 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+  "cwe": [
+    "CWE-789"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-053-kubeedge-cloudhub-viaduct-packer",
+  "cve": null,
+  "aliases": [
+    "GHSA-gfw4-49f9-cp25",
+    "CVE-2026-62370 (reserved)"
+  ],
+  "title": "KubeEdge CloudHub (viaduct packer, pkg/viaduct/pkg/packer): ONE COMPROMISED EDGE NODE TAKES DOWN CLOUD-EDGE",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "KubeEdge CloudHub (viaduct packer, pkg/viaduct/pkg/packer)",
+  "year": "2026",
+  "cvss_score": 6.5,
+  "severity": "medium",
+  "kev": false,
+  "impact": "ONE COMPROMISED EDGE NODE TAKES DOWN CLOUD-EDGE COMMUNICATION FOR THE FLEET. The viaduct packer read a 32-bit payload length from the message header and allocated a buffer that size with no upper bound, so an authenticated peer sends a header declaring an enormous payload and CloudHub allocates accordingly. Repeat it and CloudHub climbs into OOM termination and restart loops, cutting the control channel to every edge node, not just the attacker's. The asymmetry is what matters for an operator: a single stolen or decommissioned-but-not-revoked node credential — the credential class hardest to keep clean across a distributed estate — is enough to deny the whole cloud-edge plane.",
+  "attack_vector": "Network, authenticated: any peer that can establish a viaduct connection to CloudHub, i.e. a malicious or compromised enrolled edge node. No unauthenticated access and no code execution.",
+  "remediation": "Upgrade to KubeEdge 1.23.1, 1.22.2 or 1.21.2, which enforce a 32 MiB maximum viaduct payload in both reader and writer and reject oversized lengths before allocation. Before that: restrict the CloudHub endpoint to trusted edge networks, rotate edge-node credentials and actively revoke those of decommissioned nodes, set memory limits and a restart policy on the CloudHub workload, and alert on CloudHub memory growth and unusual connection activity.",
+  "references": [
+    "https://github.com/kubeedge/kubeedge/security/advisories/GHSA-gfw4-49f9-cp25"
+  ],
+  "status": "curated"
+}

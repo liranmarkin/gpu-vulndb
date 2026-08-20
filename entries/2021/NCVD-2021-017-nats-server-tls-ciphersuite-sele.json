@@ -1,0 +1,27 @@
+{
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2021-017-nats-server-tls-ciphersuite-sele",
+  "cve": null,
+  "aliases": [
+    "GHSA-jj54-5q2m-q7pj",
+    "CVE-2021-32026 (reserved)"
+  ],
+  "title": "NATS server (TLS ciphersuite selection via CLI flags): A configuration footgun in the cluster message bus: NATS",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "NATS server (TLS ciphersuite selection via CLI flags)",
+  "year": "2021",
+  "cvss_score": 3.7,
+  "severity": "low",
+  "kev": false,
+  "impact": "A configuration footgun in the cluster message bus: NATS defaults to a restricted modern ciphersuite set (RSA/ECDSA with AES-GCM plus SHA2, or ChaCha20/Poly1305), but if an administrator sets the TLS key and certificate through command-line options rather than a configuration file, those restrictions are dropped and every ciphersuite Go supports is enabled. Clients then negotiate suites the operator never intended to offer. The vendor is explicit that none of the additional suites are broken, so this is a hardening regression rather than a break — no embargo was applied and no rushed release was made. It is worth carrying for an AI-cluster operator because NATS commonly carries job dispatch and control-plane messaging between components, CLI-flag configuration is exactly what container entrypoints and Helm charts generate, and the failure is invisible: the deployment looks TLS-enabled and the negotiated posture is silently weaker than the documented default.",
+  "attack_vector": "Network, against a nats-server started with TLS parameters supplied as command-line options rather than in a configuration file. A client chooses among the unexpectedly widened ciphersuite set during the handshake.",
+  "remediation": "Upgrade nats-server to 2.2.3 or later and restart. Workaround without upgrading: move TLS parameters out of CLI flags into a configuration file, which preserves the restricted default set. Audit container entrypoints and Helm values for TLS flags passed on the command line, since that is where this configuration shape originates.",
+  "references": [
+    "https://github.com/nats-io/nats-server/security/advisories/GHSA-jj54-5q2m-q7pj",
+    "https://advisories.nats.io/CVE/CVE-2021-32026.txt"
+  ],
+  "status": "curated"
+}

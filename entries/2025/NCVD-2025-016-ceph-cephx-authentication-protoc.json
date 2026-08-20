@@ -1,0 +1,31 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:A/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:L",
+  "cwe": [
+    "CWE-327"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2025-016-ceph-cephx-authentication-protoc",
+  "cve": null,
+  "aliases": [
+    "GHSA-7q3q-3975-qw3q",
+    "CVE-2025-30156 (reserved)"
+  ],
+  "title": "Ceph CephX (authentication protocol): MULTI-TENANT ISOLATION: a tenant holding one low-privilege CephX client key ends",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "Ceph CephX (authentication protocol)",
+  "year": "2025",
+  "cvss_score": 8.9,
+  "severity": "high",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION: a tenant holding one low-privilege CephX client key ends up with cluster-wide daemon credentials. CephX wraps tickets in AES-128-CBC with no MAC and a hard-coded IV, so ciphertext is malleable and identical plaintexts are visibly identical. An attacker asks the monitor for tickets on entity names they choose, using the monitor as an encryption oracle, then splices the returned blocks into forged credentials for Manager, MDS and OSD identities. A second, cheaper path found by CLYSO needs only a single bit-flip in a service ticket to set the allow_all field true. Either way the tenant stops being a tenant and becomes the storage fabric: every other customer's RBD volumes, CephFS trees and RGW buckets on the shared cluster are readable and writable, and OSD-level access lets them tamper with data underneath other tenants' checkpoints and datasets. This is the Kerberos 4 PERILS flaw reappearing in the storage substrate that most GPU clouds run their training data on.",
+  "attack_vector": "Adjacent network: the attacker must be able to speak to the Ceph monitors on the cluster/messenger network and must already hold one valid CephX key of any privilege level (a normal tenant client key qualifies). The oracle path additionally wants the ability to observe CephX ciphertext on the wire. No user interaction, no admin caps.",
+  "remediation": "Upgrade to Ceph 20.2.4 or 19.2.6 and roll every daemon (mon, mgr, osd, mds, rgw) so the hardened handler is actually in use. Because forged credentials may already exist and are indistinguishable from real ones, treat this as a credential-compromise event: rotate CephX keys after the upgrade rather than only patching. Keep the cluster/messenger network off any tenant-reachable VLAN in the meantime.",
+  "references": [
+    "https://github.com/ceph/ceph/security/advisories/GHSA-7q3q-3975-qw3q",
+    "https://docs.ceph.com/en/latest/security/CVE-2025-30156/"
+  ],
+  "status": "curated"
+}

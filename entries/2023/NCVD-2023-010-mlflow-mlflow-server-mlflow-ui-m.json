@@ -1,0 +1,28 @@
+{
+  "cwe": [
+    "CWE-23"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2023-010-mlflow-mlflow-server-mlflow-ui-m",
+  "cve": null,
+  "aliases": [
+    "GHSA-83fm-w79m-64r5"
+  ],
+  "title": "MLflow (mlflow server / mlflow ui, Model Registry): REMOTE FILE ACCESS on the host running the tracking and registry",
+  "layer": "ai-serving",
+  "layer_name": "AI/ML frameworks & serving",
+  "component": "MLflow (mlflow server / mlflow ui, Model Registry)",
+  "year": "2023",
+  "cvss_score": 9.8,
+  "severity": "critical",
+  "kev": false,
+  "impact": "REMOTE FILE ACCESS on the host running the tracking and registry server. Anyone who can query an mlflow server or mlflow ui instance below 2.3.1 can traverse to files outside the intended artifact path. In an AI cluster the tracking server is a high-value target precisely because it is boring infrastructure: it typically holds or can reach object-store credentials, database connection strings, and the pointers to every team's model artifacts, and it is very often deployed on an internal network with no auth in front of it on the theory that it is 'just experiment tracking'. Reading files off that host converts into credentials for the artifact store, and from there into the ability to plant models that other pipelines will load and execute. Affects only deployments that actually run the mlflow server or mlflow ui commands; managed offerings that do not invoke them are out of scope.",
+  "attack_vector": "Network, unauthenticated in the common deployment. Anyone able to send requests to the tracking or registry server is in scope — which is everyone, unless the operator has separately put a VPC boundary, IP allowlist or auth middleware in front of it, since MLflow ships none.",
+  "remediation": "Upgrade MLflow to 2.3.1 or later and restart the tracking/registry servers. Independently of the patch, put an actual authentication and authorization layer in front of MLflow and restrict inbound access by network policy or IP allowlist — the vendor's own guidance is that these servers are not designed to be exposed. Rotate any credentials reachable from the server host if it has been broadly reachable.",
+  "references": [
+    "https://github.com/mlflow/mlflow/security/advisories/GHSA-83fm-w79m-64r5"
+  ],
+  "status": "curated"
+}

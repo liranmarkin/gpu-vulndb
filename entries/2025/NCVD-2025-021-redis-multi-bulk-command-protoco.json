@@ -1,0 +1,26 @@
+{
+  "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:H",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  },
+  "id": "NCVD-2025-021-redis-multi-bulk-command-protoco",
+  "cve": null,
+  "aliases": [
+    "GHSA-2r7g-8hpc-rpq9"
+  ],
+  "title": "Redis (multi-bulk command protocol handling): PERMANENT, VENDOR-ACKNOWLEDGED DENIAL OF SERVICE WITH NO FIX PLANNED. An",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "Redis (multi-bulk command protocol handling)",
+  "year": "2025",
+  "cvss_score": 7.0,
+  "severity": "high",
+  "kev": false,
+  "impact": "PERMANENT, VENDOR-ACKNOWLEDGED DENIAL OF SERVICE WITH NO FIX PLANNED. An authenticated client can abuse the multi-bulk command network protocol to degrade or halt the database it has access to. Redis's position is that this does not violate their security model because it requires authentication, so no CVE was assigned, and that a code fix would harm legitimate functionality and performance — so they published a Security Advisory instead and are shipping no patch. For a cluster operator that changes the nature of the item: it is not a patch-and-forget entry but a standing architectural constraint on every Redis instance shared between tenants. In AI infrastructure Redis is rarely just a cache — it backs Celery and RQ job queues, feature stores, KV caches and session state for inference gateways — so a single authenticated tenant can stall the queue or state layer that other tenants' jobs depend on, and there will never be a version number that resolves it.",
+  "attack_vector": "Network, authenticated: any client that successfully authenticates to the Redis instance. Reported against Redis 8.0 and earlier. No privilege escalation and no code execution.",
+  "remediation": "There is no patch and none is planned — treat this as an architectural control. Do not share a Redis instance across trust boundaries; give each tenant its own instance or at minimum its own ACL user with a tightly scoped command set. Enforce strong access controls and identity-provider integration per the vendor's security guidance, apply connection and resource limits, and monitor for availability degradation. Assume any party you grant authenticated Redis access can deny service to everyone else on that instance.",
+  "references": [
+    "https://github.com/redis/redis/security/advisories/GHSA-2r7g-8hpc-rpq9"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,30 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H",
+  "cwe": [
+    "CWE-345",
+    "CWE-367"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-055-crossplane-package-manager-cosig",
+  "cve": null,
+  "aliases": [
+    "GHSA-wfqx-gjrf-g28r"
+  ],
+  "title": "Crossplane package manager (cosign signature verification via ImageConfig): SUPPLY CHAIN, TIME-OF-CHECK TO TIME-OF-USE",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "Crossplane package manager (cosign signature verification via ImageConfig)",
+  "year": "2026",
+  "cvss_score": 9.0,
+  "severity": "critical",
+  "kev": false,
+  "impact": "SUPPLY CHAIN, TIME-OF-CHECK TO TIME-OF-USE: Crossplane verifies a package's signature and then installs a different package. When a package is referenced by tag rather than digest, the package manager resolves that tag separately for the verification step and for the pull step, so a malicious registry serves a correctly signed image to the verifier and an unsigned one to the installer. Signature verification reports success and unsigned attacker code lands in the cluster with whatever privileges the Crossplane package holds — and Crossplane packages are control-plane extensions that reconcile cloud and infrastructure resources, so that is typically broad. The failure mode is the worst kind for an operator: the control is enabled, the dashboard is green, and it is providing no protection.",
+  "attack_vector": "Network, unauthenticated from the attacker's side: requires a malicious or compromised OCI registry able to vary what it serves per request. Only affects users who enable signature verification, install by tag rather than digest, and pull from registries they do not control.",
+  "remediation": "Install packages by image digest rather than tag — this defeats the race entirely and is the vendor's stated mitigation as well as general best practice. Upgrade to Crossplane 2.3.3 or 2.2.3, where the tag is resolved once and the resulting digest is used for both verification and fetch. Note the maintainers are not backporting to 1.20, so 1.20 clusters must rely on digest pinning permanently.",
+  "references": [
+    "https://github.com/crossplane/crossplane/security/advisories/GHSA-wfqx-gjrf-g28r"
+  ],
+  "status": "curated"
+}

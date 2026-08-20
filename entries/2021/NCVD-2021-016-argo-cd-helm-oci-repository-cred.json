@@ -1,0 +1,29 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:N",
+  "cwe": [
+    "CWE-532"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2021-016-argo-cd-helm-oci-repository-cred",
+  "cve": null,
+  "aliases": [
+    "GHSA-6w87-g839-9wv7"
+  ],
+  "title": "Argo CD (Helm OCI repository credential logging): CREDENTIAL DISCLOSURE THROUGH THE LOG PIPELINE: Argo CD wrote the",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "Argo CD (Helm OCI repository credential logging)",
+  "year": "2021",
+  "cvss_score": 6.6,
+  "severity": "medium",
+  "kev": false,
+  "impact": "CREDENTIAL DISCLOSURE THROUGH THE LOG PIPELINE: Argo CD wrote the credentials for authenticated Helm OCI repositories into its pod logs. Anyone with read access to those logs gets the repository credentials — and in a real cluster that population is much larger than the set of people trusted with registry writes, because logs are aggregated into a centralized platform where operators, SREs and often tenant-facing observability tooling can read them. Repository credentials for an OCI registry mean the ability to publish charts that Argo CD will then reconcile onto the cluster, which turns a log-read into a deployment primitive against everything that GitOps controller manages. The exposure is retroactive and lives in log retention rather than in the running system.",
+  "attack_vector": "Local / log access: anyone with permission to read Argo CD pod logs via the Kubernetes control plane, or any downstream log aggregation system into which those logs were shipped. Affects all versions before 1.7.14 and 1.8.7 that connect to Helm OCI repositories with authentication enabled.",
+  "remediation": "Upgrade Argo CD to 1.7.14 or 1.8.7 or later. Then rotate the Helm OCI repository credentials — patching stops new writes but does nothing about what is already sitting in log retention and downstream indexes. Purge or expire the affected log ranges in your aggregation platform, and review who has read access to Argo CD logs.",
+  "references": [
+    "https://github.com/argoproj/argo-cd/security/advisories/GHSA-6w87-g839-9wv7"
+  ],
+  "status": "curated"
+}

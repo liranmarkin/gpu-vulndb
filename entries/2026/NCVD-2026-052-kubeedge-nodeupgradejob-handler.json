@@ -1,0 +1,30 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+  "cwe": [
+    "CWE-78"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-052-kubeedge-nodeupgradejob-handler",
+  "cve": null,
+  "aliases": [
+    "GHSA-5jpj-293f-rhvj",
+    "CVE-2026-62371 (reserved)"
+  ],
+  "title": "KubeEdge (NodeUpgradeJob handler, v1alpha2 API): REMOTE CODE EXECUTION ON EDGE NODES through the upgrade path. The",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "KubeEdge (NodeUpgradeJob handler, v1alpha2 API)",
+  "year": "2026",
+  "cvss_score": 8.8,
+  "severity": "high",
+  "kev": false,
+  "impact": "REMOTE CODE EXECUTION ON EDGE NODES through the upgrade path. The handler built its 'keadm upgrade edge' invocation by concatenating the user-controlled spec.version and spec.image fields into a shell command, so metacharacters in either field run as commands on the targeted node with the upgrade process's privileges. The affected range goes back to 1.12.0, far wider than the sibling ConfigUpdateJob issue. What makes this the sharper of the two operationally is the field involved: spec.image is exactly the kind of value operators parameterise in GitOps repos and let platform teams or automation set, so the injection point sits in a value that routinely flows from a less-trusted source into a cluster-wide job.",
+  "attack_vector": "Network, authenticated: RBAC permission to create or update NodeUpgradeJob resources through the v1alpha2 API, targeting an enrolled edge node.",
+  "remediation": "Upgrade to KubeEdge 1.23.1, 1.22.2 or 1.21.2, which invoke keadm through exec.Command with version and image as separate literal arguments. In the interim restrict NodeUpgradeJob create/update to trusted administrators, never let untrusted users or tenants influence spec.version or spec.image, and avoid NodeUpgradeJob-based upgrades where those fields come from automation you do not fully control.",
+  "references": [
+    "https://github.com/kubeedge/kubeedge/security/advisories/GHSA-5jpj-293f-rhvj"
+  ],
+  "status": "curated"
+}

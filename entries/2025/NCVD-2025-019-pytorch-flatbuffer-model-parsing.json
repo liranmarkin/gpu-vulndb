@@ -1,0 +1,25 @@
+{
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2025-019-pytorch-flatbuffer-model-parsing",
+  "cve": null,
+  "aliases": [
+    "GHSA-g6v3-crfc-cggj"
+  ],
+  "title": "PyTorch (flatbuffer model parsing, torch::load / parse_and_initialize_mobile_module): MALICIOUS MODEL FILE TO MEMORY",
+  "layer": "ai-serving",
+  "layer_name": "AI/ML frameworks & serving",
+  "component": "PyTorch (flatbuffer model parsing, torch::load / parse_and_initialize_mobile_module)",
+  "year": "2025",
+  "cvss_score": 7.8,
+  "severity": "high",
+  "kev": false,
+  "impact": "MALICIOUS MODEL FILE TO MEMORY CORRUPTION: loading an untrusted model through torch::load reaches an arbitrary-address write. When the input matches the flatbuffer file format, GetMutableRoot in module.h adds a pointer to a value dereferenced from that same attacker-controlled buffer, so the resulting flatbuffer_module address can be corrupted; the same pattern recurs in flatbuffer_loader.cpp where IndirectHelper::Read applies an attacker-supplied offset. The corrupted pointer chain ends up in func, which parseFunction then writes through. Found by fuzzing with sydr-fuzz. The operator-facing point is that this sits below the pickle discussion everyone knows about: teams that switched to non-pickle model formats specifically to avoid arbitrary code execution still have a memory-safety parser in the load path, and in a GPU cluster the process doing the loading is a training or serving pod with the accelerator, the weights and a cluster identity.",
+  "attack_vector": "Local / artifact delivery: the victim process calls torch::load on an attacker-supplied file in flatbuffer format. Reaching the victim usually means write access to a model registry, artifact store or dataset mount that the cluster loads from.",
+  "remediation": "Upgrade PyTorch to 2.1.0 or later and restart the workloads that load models. Treat model files as untrusted input regardless of format: restrict who can write to model registries and artifact stores per tenant, verify artifact signatures before load, and run model-loading pods with a scoped service account so a corruption foothold does not inherit cluster credentials.",
+  "references": [
+    "https://github.com/pytorch/pytorch/security/advisories/GHSA-g6v3-crfc-cggj"
+  ],
+  "status": "curated"
+}

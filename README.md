@@ -27,7 +27,29 @@ There is no shortage of vulnerability databases. There is a specific and checkab
 
 - **Package-centric databases cannot represent this hardware.** The [OSV schema](https://ossf.github.io/osv-schema/) keys every record to a package in a registry or distro. There is no ecosystem for firmware, BMC images, BIOS, or a GPU driver shipped as a `.run` installer, and no way to add one without changing the spec.
 - **NVD tells you a score, not what to do.** A CVSS vector does not tell an operator whether the fix is a config change, a daemon restart, draining every GPU node, or flashing firmware across a fleet. For this stack, that difference is the entire cost of the fix.
+- **You cannot find this hardware by searching for it.** The Linux kernel CVE corpus records which *source files* a vulnerability affects. NVD does not carry that field, so NVD can only be searched by text — and for this stack the text does not name the hardware. See below.
 - **Cloud vulnerability databases cover the provider's services, not the substrate.** [cloudvulndb.org](https://www.cloudvulndb.org/) catalogues issues in hyperscaler services, where remediation is the provider's job and usually already done. Here, *you are the provider*. Nobody patches it for you.
+
+
+### What text search costs you
+
+Measured against `vulns.git` at commit `dc9e43dc` (2026-08-20), scoping to kernel CVE records whose
+`programFiles` sit under `drivers/infiniband`, `drivers/nvme/`, `drivers/net/ethernet/mellanox`,
+`net/smc` or `net/rds`:
+
+| | Records |
+| --- | ---: |
+| Affect those paths | **592** |
+| Findable by searching Mellanox / InfiniBand / NVIDIA / ConnectX | 58 (9.8%) |
+| Findable once quoted crash-trace paths are discounted | 25 (4.2%) |
+| Findable by an expert who already knows the subsystem names | 438 (74.0%) |
+
+Even the expert search misses a quarter. Only filtering on affected source path finds all 592.
+
+The sharpest version needs no qualifier: of the **176** kernel CVEs whose affected files live under
+`drivers/net/ethernet/mellanox`, only **19** mention "Mellanox" anywhere in their description, and
+**none** mention "ConnectX". An operator asking "what affects my Mellanox NICs?" is searching a
+field the answer was never written in.
 
 So every entry here carries three fields a CVE record does not: **what an attacker actually gets**, **who has to be able to reach it**, and **what the operator has to do about it**.
 
@@ -45,31 +67,31 @@ It is built for the people who operate this stack: GPU clouds, colocation datace
 
 | Layer | What it covers | Entries |
 | --- | --- | ---: |
-| `ai-serving` | Inference servers, training frameworks, model formats | 269 |
-| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 408 |
-| `control-plane` | Cluster management, storage, CI/CD, observability | 699 |
-| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 329 |
-| `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,183 |
-| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 883 |
+| `ai-serving` | Inference servers, training frameworks, model formats | 277 |
+| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 420 |
+| `control-plane` | Cluster management, storage, CI/CD, observability | 717 |
+| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 351 |
+| `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,193 |
+| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 912 |
 
-**Design-level weaknesses that will never get a CVE are in scope too.** Unauthenticated IPMI over LAN, RDMA fabrics with no cryptographic binding between a packet and its connection, physical DRAM interposers that both Intel and AMD classify as out of scope - these carry an `NCVD-` id. There are 119 of them, and they are frequently a bigger problem than anything with a CVSS score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which is a large part of why this one exists.
+**Design-level weaknesses that will never get a CVE are in scope too.** Unauthenticated IPMI over LAN, RDMA fabrics with no cryptographic binding between a packet and its connection, physical DRAM interposers that both Intel and AMD classify as out of scope - these carry an `NCVD-` id. There are 159 of them, and they are frequently a bigger problem than anything with a CVSS score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which is a large part of why this one exists.
 
 Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undisclosed issues (this is not a disclosure venue), and anything you cannot back with a public reference.
 
 ## 💸 Cost to remediate
 
-The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,344 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
+The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,443 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
 
 | Class | Entries | What it means |
 | --- | ---: | --- |
-| `hot-patch` | 68 | Fixable without interrupting workloads |
-| `daemon-restart` | 190 | Service restart on affected nodes |
-| `node-drain` | 172 | Tenant workloads evicted from each node |
-| `node-reboot` | 1,232 | Full reboot of each affected node |
+| `hot-patch` | 69 | Fixable without interrupting workloads |
+| `daemon-restart` | 219 | Service restart on affected nodes |
+| `node-drain` | 175 | Tenant workloads evicted from each node |
+| `node-reboot` | 1,291 | Full reboot of each affected node |
 | `microcode + reboot` | 54 | Microcode update and a reboot |
-| `firmware-flash` | 526 | Firmware flash, usually with the node out of service |
+| `firmware-flash` | 527 | Firmware flash, usually with the node out of service |
 | `physical access` | 2 | Someone has to be at the machine |
-| `unpatchable / mitigate-only` | 96 | **No vendor fix exists** |
+| `unpatchable / mitigate-only` | 102 | **No vendor fix exists** |
 
 These are extracted from remediation prose that names the action, never guessed. Where a remediation does not state a cost, the field is left unset rather than inferred.
 

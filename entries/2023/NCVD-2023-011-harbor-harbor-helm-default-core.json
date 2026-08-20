@@ -1,0 +1,25 @@
+{
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2023-011-harbor-harbor-helm-default-core",
+  "cve": null,
+  "aliases": [
+    "GHSA-j7jh-fmcm-xxwv"
+  ],
+  "title": "Harbor (harbor-helm, default core.secretName JWT signing key): SUPPLY CHAIN, UNAUTHENTICATED REGISTRY ACCESS: Harbor",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "Harbor (harbor-helm, default core.secretName JWT signing key)",
+  "year": "2023",
+  "cvss_score": 8.6,
+  "severity": "high",
+  "kev": false,
+  "impact": "SUPPLY CHAIN, UNAUTHENTICATED REGISTRY ACCESS: Harbor installed via harbor-helm without core.secretName set falls back to a default public/private keypair to sign the JWT tokens that authorize image push and pull. The key is public, so anyone can forge a token and push or pull images in that Harbor with no authentication at all. For a GPU cluster whose registry is the source of every container image the fleet runs, forging push tokens means planting an image that nodes will pull and execute; forging pull tokens means reading every tenant's private images. Two details make this nastier than a normal default-credential bug: upgrading harbor-helm does not fix an already-installed instance, since the key is baked into the existing deployment, and robot accounts derive their tokens from the same key, so remediation forces regeneration of every robot token — legacy-marked robot accounts cannot be rotated at all and must be deleted and recreated.",
+  "attack_vector": "Network, fully unauthenticated. Anyone who can reach the Harbor API and knows the public default key can mint valid push/pull tokens. Applies to instances installed with affected harbor-helm versions where core.secretName was left unset; docker-compose, harbor-tile and TKG/Carvel installs are not affected.",
+  "remediation": "Do not treat the harbor-helm upgrade as the fix for a running instance. Set core.secretName to a generated secret and apply it to the existing deployment, then restart the core component. Regenerate every robot account token afterwards, and delete and recreate any robot account marked Legacy since it cannot be rotated. Audit the registry for images pushed during the exposure window and re-verify digests of anything running in the fleet. Fixed harbor-helm versions that remove the insecure default: 1.3.18, 1.9.6, 1.10.4, 1.11.1.",
+  "references": [
+    "https://github.com/goharbor/harbor/security/advisories/GHSA-j7jh-fmcm-xxwv"
+  ],
+  "status": "curated"
+}

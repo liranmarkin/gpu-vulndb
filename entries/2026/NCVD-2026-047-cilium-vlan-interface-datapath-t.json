@@ -1,0 +1,26 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:N",
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-047-cilium-vlan-interface-datapath-t",
+  "cve": null,
+  "aliases": [
+    "GHSA-vh48-r624-p8v7"
+  ],
+  "title": "Cilium (VLAN interface datapath, TCX attachment): Ingress host policies and L7 network policies silently stop being",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "Cilium (VLAN interface datapath, TCX attachment)",
+  "year": "2026",
+  "cvss_score": 7.2,
+  "severity": "high",
+  "kev": false,
+  "impact": "Ingress host policies and L7 network policies silently stop being enforced on nodes where Cilium is attached to both a VLAN interface and its parent. The datapath misreads packets arriving on the VLAN interface as having already traversed the proxy and the host firewall, so it skips enforcement at the destination endpoint. An operator reading their policy objects sees deny rules that look correct and are not running. Anyone who can send traffic to a pod on such a node reaches it regardless of policy — from outside the node, unauthenticated. VLAN-per-tenant is a common physical-network design in GPU colocation and bare-metal neocloud builds, and TCX attachment is on by default on kernel 6.2 and newer, so the affected configuration is the modern one rather than an exotic one. Same-node pod traffic and non-host L3/L4 policies are not affected, which narrows the blast radius but also makes the gap easy to miss in testing.",
+  "attack_vector": "Network, unauthenticated, from outside the node. Requires the node to have Cilium attached to both a VLAN interface and its parent interface, with TCX attachment enabled.",
+  "remediation": "Upgrade to Cilium 1.18.9 or 1.17.15. If you cannot upgrade now, disable TCX with the agent flag --enable-tcx=false or bpf.enableTCX: false in the Helm chart, accepting the performance change. Egress policies on the source side, where configured to deny, may still hold and are worth checking as interim cover. Verify enforcement empirically on VLAN-attached nodes rather than trusting the policy objects.",
+  "references": [
+    "https://github.com/cilium/cilium/security/advisories/GHSA-vh48-r624-p8v7"
+  ],
+  "status": "curated"
+}

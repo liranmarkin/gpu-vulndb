@@ -1,0 +1,30 @@
+{
+  "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:N/I:H/A:N",
+  "cwe": [
+    "CWE-295",
+    "CWE-347"
+  ],
+  "fleet": {
+    "pain_class": "hot-patch"
+  },
+  "id": "NCVD-2026-056-sigstore-cosign-verify-blob-veri",
+  "cve": null,
+  "aliases": [
+    "GHSA-fx35-mq7g-6g98"
+  ],
+  "title": "Sigstore cosign (verify-blob / verify-blob-attestation, legacy JSON bundle): SUPPLY CHAIN, VERIFICATION BYPASS: keyless",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "Sigstore cosign (verify-blob / verify-blob-attestation, legacy JSON bundle)",
+  "year": "2026",
+  "cvss_score": 7.4,
+  "severity": "high",
+  "kev": false,
+  "impact": "SUPPLY CHAIN, VERIFICATION BYPASS: keyless identity checks silently stop applying. When cosign verify-blob reads the cert field of a legacy JSON bundle and it fails to parse as an X.509 certificate, cosign quietly falls back to treating the input as a raw public key and sets co.SigVerifier. Downstream, whenever co.SigVerifier is set, certificate chain validation and CheckCertificatePolicy are skipped — so --certificate-identity and --certificate-oidc-issuer are ignored and verification passes for any key the attacker chooses, as long as the signature is valid for it. Worse for anyone using explicit keys: the fallback assigns unconditionally, so a public key embedded in a legacy bundle overwrites a key the operator passed via --key. For a GPU cluster this sits on the path where model weights, datasets and release blobs get validated before being pulled onto nodes; the verification step returns success while checking nothing meaningful. OCI image verification (cosign verify) and the modern protobuf bundle format are not affected.",
+  "attack_vector": "Network / artifact delivery, unauthenticated from the attacker's side, with user interaction in that a victim runs verify-blob against an attacker-supplied legacy JSON bundle. Affects cosign v3 up to 3.1.2 and v2 up to 2.6.4.",
+  "remediation": "Upgrade cosign past 3.1.2 (v3) or 2.6.4 (v2) wherever it runs — CI runners, admission controllers, node bootstrap scripts, developer machines. Move off legacy JSON bundles to the standardized Sigstore bundle format (--new-bundle-format), which is unaffected and is the default in cosign v3. Re-verify any blob whose only assurance came from a legacy-bundle verify-blob run on an affected version.",
+  "references": [
+    "https://github.com/sigstore/cosign/security/advisories/GHSA-fx35-mq7g-6g98"
+  ],
+  "status": "curated"
+}
