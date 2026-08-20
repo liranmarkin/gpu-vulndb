@@ -21,6 +21,14 @@ ENTRIES = ROOT / "entries"
 RESEARCH = ROOT / "research"
 
 CVE_RE = re.compile(r"^CVE-\d{4}-\d{4,7}$")
+VECTOR_RE = re.compile(r"^CVSS:[34]\.\d/")
+CWE_RE = re.compile(r"^CWE-\d+$")
+
+PAIN_CLASSES = {
+    "hot-patch", "daemon-restart", "node-drain", "node-reboot",
+    "microcode + reboot", "firmware-flash", "physical access",
+    "unpatchable / mitigate-only", "other",
+}
 
 LAYER_NAMES = {
     "gpu-stack": "NVIDIA / GPU stack",
@@ -185,7 +193,28 @@ def normalize(raw: dict, source: str, seq: Counter) -> tuple[dict | None, str | 
 
     layer = infer_layer(component, raw.get("layer_hint"))
 
+    # Structured fields a research batch may supply directly. Preferred over deriving them
+    # afterwards: the researcher read the advisory, the extractor only reads prose.
+    extra: dict = {}
+
+    vector = (raw.get("cvss_vector") or "").strip()
+    if VECTOR_RE.match(vector):
+        extra["cvss_vector"] = vector
+
+    cwes = [c.strip() for c in (raw.get("cwe") or []) if isinstance(c, str)]
+    cwes = [c for c in cwes if CWE_RE.match(c)]
+    if cwes:
+        extra["cwe"] = list(dict.fromkeys(cwes))
+
+    pain = (raw.get("pain_class") or "").strip()
+    if pain in PAIN_CLASSES:
+        extra["fleet"] = {"pain_class": pain}
+    elif pain:
+        # Silently dropping a bad value would hide a mislabelled batch.
+        return None, f"{component}: unknown pain_class {pain!r}"
+
     return {
+        **extra,
         "id": entry_id,
         "cve": cve,
         "aliases": [a.strip() for a in (raw.get("aliases") or []) if isinstance(a, str) and a.strip()],
