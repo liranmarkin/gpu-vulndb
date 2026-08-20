@@ -1,6 +1,24 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { Bricolage_Grotesque, Instrument_Sans, Spline_Sans_Mono } from "next/font/google";
 import Link from "next/link";
+import Logo from "./_components/Logo";
 import "./globals.css";
+
+const display = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-bricolage",
+});
+const sans = Instrument_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-instrument",
+});
+const mono = Spline_Sans_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-spline-mono",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gpuvulndb.org"),
@@ -22,52 +40,62 @@ export const metadata: Metadata = {
   alternates: { types: { "application/rss+xml": "/feed.xml" } },
 };
 
-const FONT_LINK =
-  "https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap";
+export const viewport: Viewport = {
+  themeColor: "#1f0f45",
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="stylesheet" href={FONT_LINK} />
-      </head>
+    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
       <body>
-        <header className="sticky top-0 z-50 border-b border-rail bg-void/85 backdrop-blur-md">
-          <div className="mx-auto flex h-15 max-w-[1200px] items-center gap-5 px-[22px]">
-            <Link
-              href="/"
-              className="font-display text-[15.5px] font-extrabold uppercase tracking-[0.05em] text-ink hover:text-white"
-            >
-              GPU<span className="text-rail-lit">/</span>VulnDB
+        <header className="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur-md">
+          <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-6 px-[22px]">
+            <Link href="/" className="flex items-center gap-2.5 text-ink hover:opacity-85">
+              <Logo size={28} />
+              <span className="font-display text-[17px] font-bold tracking-[-0.01em]">
+                GPU VulnDB
+              </span>
             </Link>
-            <nav className="ml-auto flex gap-5 font-mono text-[13px] text-dim">
+            <nav className="ml-auto flex items-center gap-5 text-[14px] font-medium text-muted">
               <Link href="/#database" className="hover:text-ink">Database</Link>
-              <Link href="/data.json" className="hover:text-ink">JSON</Link>
-              <Link href="/feed.xml" className="hover:text-ink">RSS</Link>
-              <a href="https://github.com/liranmarkin/gpu-vulndb" className="hover:text-ink">GitHub</a>
+              <Link href="/data.json" className="hidden hover:text-ink sm:inline">JSON</Link>
+              <Link href="/feed.xml" className="hidden hover:text-ink sm:inline">RSS</Link>
+              <a href="https://github.com/liranmarkin/gpu-vulndb" className="hidden hover:text-ink sm:inline">
+                GitHub
+              </a>
+              <a
+                href="https://github.com/liranmarkin/gpu-vulndb/blob/main/CONTRIBUTING.md"
+                className="rounded-full bg-brand px-4 py-2 text-[13.5px] font-semibold text-white transition hover:bg-brand-deep"
+              >
+                Contribute
+              </a>
             </nav>
           </div>
         </header>
 
         {children}
 
-        <footer className="mt-18 border-t border-rail py-10 text-[13.5px] text-dimmer">
-          <div className="mx-auto max-w-[1200px] px-[22px]">
-            <p className="mb-2.5 max-w-[72ch]">
-              <strong className="font-medium text-ink">GPU Vulnerability Database</strong> — an open
-              community project. Entries are curated from vendor advisories, NVD and CISA KEV, then
-              annotated for operators running GPU fleets. Corrections and additions are welcome{" "}
-              <a href="https://github.com/liranmarkin/gpu-vulndb" className="text-link hover:underline">
-                on GitHub
-              </a>
-              .
-            </p>
-            <p className="max-w-[72ch]">
-              Data is licensed CC BY 4.0; tooling is MIT. This database is informational and makes no
-              warranty of completeness — always confirm against your vendor&apos;s advisory before acting.
-            </p>
+        <footer className="mt-20 border-t border-line bg-card py-12 text-[13.5px] text-muted">
+          <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[22px] sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-center gap-2.5">
+              <Logo size={24} />
+              <span className="font-display text-[15.5px] font-bold text-ink">GPU VulnDB</span>
+            </div>
+            <div className="max-w-[64ch]">
+              <p className="mb-2.5">
+                <strong className="font-semibold text-ink">GPU Vulnerability Database</strong> — an open
+                community project. Entries are curated from vendor advisories, NVD and CISA KEV, then
+                annotated for operators running GPU fleets. Corrections and additions are welcome{" "}
+                <a href="https://github.com/liranmarkin/gpu-vulndb" className="font-medium text-brand-ink hover:underline">
+                  on GitHub
+                </a>
+                .
+              </p>
+              <p className="text-faint">
+                Data is licensed CC BY 4.0; tooling is MIT. This database is informational and makes no
+                warranty of completeness — always confirm against your vendor&apos;s advisory before acting.
+              </p>
+            </div>
           </div>
         </footer>
       </body>
