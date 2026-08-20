@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { getAllEntries } from "@/lib/entries";
 import { Mark, OG_BG, Wordmark, ogFonts } from "@/lib/og";
 
-export const alt = "GPU Vulnerability Database - the stack is the attack surface";
+export const alt = "The Open GPU Vulnerability Database";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -43,14 +43,14 @@ export default async function OGImage() {
           <div
             style={{
               fontFamily: "Bricolage Grotesque",
-              fontSize: 76,
-              lineHeight: 1.02,
+              fontSize: 72,
+              lineHeight: 1.04,
               letterSpacing: "-0.02em",
               color: "#ffffff",
               display: "flex",
             }}
           >
-            The stack is the attack surface.
+            The Open GPU Vulnerability Database
           </div>
 
           <div

@@ -4,11 +4,9 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { IndexEntry, Severity } from "@/lib/schema";
 import { LAYERS, SEVERITIES } from "@/lib/schema";
+import VendorIcon from "./VendorIcon";
 
 const PAGE = 60;
-const SHORT: Record<Severity, string> = {
-  critical: "Crit", high: "High", medium: "Med", low: "Low", unscored: "n/a",
-};
 const SEV_VAR: Record<Severity, string> = {
   critical: "var(--color-critical)", high: "var(--color-high)", medium: "var(--color-medium)",
   low: "var(--color-low)", unscored: "var(--color-unscored)",
@@ -109,6 +107,8 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
 
   const critical = view.filter((e) => e.severity === "critical").length;
   const exploited = view.filter((e) => e.kev).length;
+  const totalCritical = entries.filter((e) => e.severity === "critical").length;
+  const totalExploited = entries.filter((e) => e.kev).length;
   const filtered = params.length > 0;
 
   function toggleSev(s: Severity) {
@@ -126,7 +126,88 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
 
   return (
     <>
-      {/* ---------- the search floats out of the wafer ---------- */}
+      {/* ---------- the wafer hero, with the stack elevation resting on it ---------- */}
+      <section className="wafer relative mt-6 overflow-hidden rounded-[28px] px-6 pb-16 pt-10 text-white sm:mt-8 sm:px-12 sm:pb-20 sm:pt-14">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-14">
+          <div>
+            <h1 className="mb-5 font-display text-[clamp(32px,3.9vw,52px)] font-extrabold leading-[1.06] tracking-[-0.02em]">
+              The Open GPU Vulnerability Database
+            </h1>
+            <p className="mb-7 max-w-[46ch] text-[16.5px] leading-[1.6] text-white/80 sm:text-[18px]">
+              An open project to list all known vulnerabilities in the stack GPU datacenters run on.
+            </p>
+            <p className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[13px] text-lavender">
+              <span><b className="font-semibold text-white">{entries.length.toLocaleString()}</b> entries</span>
+              <span><b className="font-semibold text-white">{totalCritical}</b> critical</span>
+              <span><b className="font-semibold text-white">{totalExploited}</b> known exploited</span>
+            </p>
+          </div>
+
+          {/* the stack, top to bottom: a rack elevation that is also the primary filter */}
+          <div className="overflow-hidden rounded-2xl bg-card shadow-[var(--shadow-float)]">
+            <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-3">
+              <span className="font-mono text-[10.5px] uppercase tracking-[0.15em] text-faint">
+                The stack, top to bottom
+              </span>
+              <span className="font-mono text-[10.5px] uppercase tracking-[0.15em] text-faint tabular-nums">
+                6 layers
+              </span>
+            </div>
+
+            {counts.map((l, i) => {
+              const active = layer === l.id;
+              return (
+                <button
+                  key={l.id}
+                  onClick={() => setLayer(active ? null : l.id)}
+                  aria-pressed={active}
+                  style={{ animationDelay: `${i * 55}ms` }}
+                  className={`group grid w-full grid-cols-[24px_1fr_86px_44px] items-center gap-3 border-t border-line px-4 py-2.5 text-left transition-colors duration-150 first:border-t-0 motion-safe:animate-[rackIn_.5s_ease-out_backwards] sm:px-5 ${
+                    active ? "bg-tint/60 shadow-[inset_3px_0_0_var(--color-brand)]" : "hover:bg-paper"
+                  }`}
+                >
+                  <DepthGlyph index={i} active={active} />
+
+                  <span className="min-w-0">
+                    <span className={`block truncate text-[13.5px] font-medium ${active ? "text-silicon-800" : "text-ink"}`}>
+                      {l.name}
+                    </span>
+                    <span className="mt-px block truncate font-mono text-[9.5px] uppercase tracking-[0.08em] text-faint">
+                      {l.depth}
+                    </span>
+                  </span>
+
+                  <span className="hidden h-1.5 overflow-hidden rounded-full bg-line/70 min-[380px]:flex" aria-hidden>
+                    <span className="flex h-full overflow-hidden rounded-full" style={{ width: `${Math.max(10, (l.total / maxLayer) * 100)}%` }}>
+                      {l.segments.map((s) => (
+                        <i key={s.severity} style={{ width: `${s.pct}%`, background: SEV_VAR[s.severity] }} />
+                      ))}
+                    </span>
+                  </span>
+
+                  <span className={`text-right font-mono text-[13px] tabular-nums ${active ? "text-silicon-800" : "text-muted"} group-hover:text-ink`}>
+                    {l.total}
+                  </span>
+                </button>
+              );
+            })}
+
+            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-line bg-paper/60 px-4 py-2.5 font-mono text-[10px] text-faint sm:px-5">
+              <span className="flex flex-wrap gap-3">
+                {SEVERITIES.filter((s) => s !== "unscored").map((s) => (
+                  <span key={s} className="inline-flex items-center gap-1.5">
+                    <i className="block h-1.5 w-1.5 rounded-[2px]" style={{ background: SEV_VAR[s] }} />
+                    {s}
+                  </span>
+                ))}
+              </span>
+              <span>{layer ? "Selected - click again to clear" : "Select a layer to filter"}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- the search floats out of the wafer, right above what it filters ---------- */}
       <div className="relative z-10 mx-auto -mt-7 max-w-[720px]">
         <label className="relative flex items-center">
           <svg viewBox="0 0 24 24" aria-hidden className="pointer-events-none absolute left-5 h-4.5 w-4.5 fill-none stroke-faint stroke-2">
@@ -143,76 +224,10 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
         </label>
       </div>
 
-      {/* ---------- the stack: a rack elevation that is also the primary filter ---------- */}
-      <div className="mx-auto mt-12 max-w-[880px] overflow-hidden rounded-2xl border border-line bg-card shadow-[var(--shadow-card)]">
-        <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-3.5 sm:px-6">
-          <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-faint">
-            The stack, top to bottom
-          </span>
-          <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-faint tabular-nums">
-            {entries.length.toLocaleString()} entries
-          </span>
-        </div>
-
-        {counts.map((l, i) => {
-          const active = layer === l.id;
-          return (
-            <button
-              key={l.id}
-              onClick={() => setLayer(active ? null : l.id)}
-              aria-pressed={active}
-              style={{ animationDelay: `${i * 55}ms` }}
-              className={`group grid w-full grid-cols-[26px_1fr_58px] items-center gap-4 border-t border-line px-5 py-4 text-left transition-colors duration-150 first:border-t-0 motion-safe:animate-[rackIn_.5s_ease-out_backwards] sm:grid-cols-[26px_1fr_190px_58px] sm:px-6 ${
-                active ? "bg-tint/60 shadow-[inset_3px_0_0_var(--color-brand)]" : "hover:bg-paper"
-              }`}
-            >
-              <DepthGlyph index={i} active={active} />
-
-              <span className="min-w-0">
-                <span className={`block truncate text-[15px] font-medium ${active ? "text-silicon-800" : "text-ink"}`}>
-                  {l.name}
-                </span>
-                <span className="mt-0.5 block font-mono text-[10.5px] uppercase tracking-[0.1em] text-faint">
-                  {l.depth}
-                </span>
-              </span>
-
-              <span className="hidden h-2 overflow-hidden rounded-full bg-line/70 sm:flex" aria-hidden>
-                <span className="flex h-full overflow-hidden rounded-full" style={{ width: `${Math.max(8, (l.total / maxLayer) * 100)}%` }}>
-                  {l.segments.map((s) => (
-                    <i key={s.severity} style={{ width: `${s.pct}%`, background: SEV_VAR[s.severity] }} />
-                  ))}
-                </span>
-              </span>
-
-              <span className={`text-right font-mono text-[14.5px] tabular-nums ${active ? "text-silicon-800" : "text-muted"} group-hover:text-ink`}>
-                {l.total}
-              </span>
-            </button>
-          );
-        })}
-
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line bg-paper/60 px-5 py-3 font-mono text-[11px] text-faint sm:px-6">
-          <span className="flex flex-wrap gap-4">
-            {SEVERITIES.filter((s) => s !== "unscored").map((s) => (
-              <span key={s} className="inline-flex items-center gap-1.5">
-                <i className="block h-2 w-2 rounded-[3px]" style={{ background: SEV_VAR[s] }} />
-                {s}
-              </span>
-            ))}
-          </span>
-          <span>{layer ? "Selected - click again to clear" : "Select a layer to filter"}</span>
-        </div>
-      </div>
-
-      <p className="mx-auto mt-3.5 max-w-[880px] font-mono text-[11.5px] text-faint">
-        Serving sits at the top. Firmware sits under everything, and reboots the slowest.
-      </p>
-
       {/* ---------- controls ---------- */}
       <div
         id="database"
-        className="sticky top-16 z-40 -mx-[22px] mt-12 scroll-mt-16 border-y border-line bg-paper/92 px-[22px] py-3.5 backdrop-blur-md"
+        className="sticky top-16 z-40 -mx-[22px] mt-8 scroll-mt-16 border-y border-line bg-paper/92 px-[22px] py-3.5 backdrop-blur-md"
       >
         <div className="flex flex-wrap items-center gap-2.5">
           {(["critical", "high", "medium"] as Severity[]).map((s) => (
@@ -327,21 +342,22 @@ function Card({ entry: e }: { entry: IndexEntry }) {
   return (
     <Link
       href={`/vuln/${e.id}`}
-      className="grid grid-cols-[56px_1fr] items-start gap-4 rounded-2xl border border-line bg-card p-4 shadow-[var(--shadow-card)] transition duration-150 hover:-translate-y-px hover:border-line-strong hover:shadow-[var(--shadow-card-hover)] sm:grid-cols-[64px_1fr] sm:gap-5 sm:p-5"
+      className="relative grid grid-cols-[38px_1fr] items-start gap-3.5 overflow-hidden rounded-2xl border border-line bg-card p-4 pl-5 shadow-[var(--shadow-card)] transition duration-150 hover:-translate-y-px hover:border-line-strong hover:shadow-[var(--shadow-card-hover)] sm:gap-4 sm:p-5 sm:pl-6"
     >
       <span
-        className={`flex h-14 w-14 flex-col items-center justify-center rounded-xl border sm:h-16 sm:w-16 sev-tile-${e.severity}`}
-      >
-        <span className="font-mono text-[17px] font-semibold leading-none tabular-nums sm:text-[19px]">
-          {e.cvss_score != null ? e.cvss_score.toFixed(1) : "—"}
-        </span>
-        <span className="mt-1 text-[8.5px] font-semibold uppercase tracking-[0.1em] opacity-80">
-          {SHORT[e.severity]}
-        </span>
-      </span>
+        aria-hidden
+        className="absolute inset-y-0 left-0 w-[3px]"
+        style={{ background: SEV_VAR[e.severity] }}
+      />
+      <VendorIcon component={e.component} size={38} />
       <span className="min-w-0">
         <span className="mb-2 block text-[15.5px] font-medium leading-normal text-ink">{e.title}</span>
         <span className="flex flex-wrap items-center gap-1.5">
+          <span
+            className={`max-w-full truncate rounded-full border px-2.5 py-0.5 text-[11.5px] font-semibold capitalize sev-tile-${e.severity}`}
+          >
+            {e.severity}
+          </span>
           <Tag mono>{e.cve ?? e.id}</Tag>
           <Tag>{e.layer_name}</Tag>
           {e.kev && <Tag tone="kev">Known exploited</Tag>}

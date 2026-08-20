@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import VendorIcon from "@/app/_components/VendorIcon";
 import { getAllEntries, getEntry } from "@/lib/entries";
 import { PAIN_HINT, SEVERITY_LABEL } from "@/lib/schema";
 
@@ -53,9 +54,12 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
             </Link>
           </p>
 
-          <h1 className="mb-5 font-display text-[clamp(26px,3.5vw,38px)] font-bold leading-[1.15] tracking-[-0.015em]">
-            {entry.title}
-          </h1>
+          <div className="mb-5 flex items-start gap-4">
+            <VendorIcon component={entry.component} size={46} />
+            <h1 className="font-display text-[clamp(26px,3.5vw,38px)] font-bold leading-[1.15] tracking-[-0.015em]">
+              {entry.title}
+            </h1>
+          </div>
 
           <div className="mb-10 flex flex-wrap gap-2">
             <Tag mono>{ident}</Tag>
