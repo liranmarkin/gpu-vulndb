@@ -47,6 +47,17 @@
       "type": "string",
       "enum": ["critical", "high", "medium", "low", "unscored"]
     },
+    "cvss_vector": {
+      "type": "string",
+      "description": "CVSS v3.x or v4.0 vector string, preferably the vendor's own. Since April 2026 NIST only fully enriches CVEs that reach KEV, so for most of this corpus the vendor vector is the only one that exists.",
+      "pattern": "^CVSS:[34]\\.\\d/"
+    },
+    "cwe": {
+      "type": "array",
+      "description": "CWE identifiers for the underlying weakness class.",
+      "items": { "type": "string", "pattern": "^CWE-\\d+$" },
+      "uniqueItems": true
+    },
     "kev": {
       "type": "boolean",
       "description": "Listed in the CISA Known Exploited Vulnerabilities catalog."
