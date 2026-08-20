@@ -1,0 +1,24 @@
+{
+  "id": "NCVD-2026-013-supermicro-s-public-security-adv",
+  "cve": null,
+  "aliases": [],
+  "title": "Supermicro's public security advisory portal itself: An operator cannot programmatically track Supermicro firmware advisories. Supermicro publishes real, detailed…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Supermicro's public security advisory portal itself",
+  "year": "2026",
+  "cvss_score": 0.0,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "An operator cannot programmatically track Supermicro firmware advisories. Supermicro publishes real, detailed BMC and BIOS advisories on a roughly quarterly cadence, but the pages are unreadable to any scanner, SBOM pipeline, or vulnerability-management tool that fetches them without a browser session. The practical result is that Supermicro firmware CVEs enter operator awareness late and by hand, via NVD or a vendor account manager, and that fleet-wide 'are we patched' questions cannot be answered automatically. On a Supermicro-heavy GPU fleet this is a measurement gap, not a vulnerability - but it is the reason the vulnerability entries above have vendor advisory links that will not resolve for your tooling. (supermicro.com/en/support/security_center and the dated security_BMC_IPMI_* / security_BIOS_* advisory pages). Every one of them returns HTTP 403 from ordinary automated clients, including the site root and deliberately bogus paths, which means it is a blanket WAF block rather than a missing page.",
+  "attack_vector": "Not an attack - a visibility failure. It affects anyone trying to automate firmware advisory ingestion for a Supermicro fleet from a datacenter or CI egress IP rather than a human browser.",
+  "remediation": "There is no fix an operator can apply to the vendor's WAF. What works: subscribe to Supermicro's security notification mailing list through your reseller or account team so advisories arrive by email rather than by scraping; mirror each advisory's contents into your own internal tracker when it lands, since you cannot re-fetch it later; and drive automated detection off NVD and the CVE Program's cvelistV5 records, which do carry the Supermicro CNA entries and are freely fetchable. Budget a human in the loop for every Supermicro advisory cycle.",
+  "references": [
+    "https://nvd.nist.gov/vuln/detail/CVE-2024-36435",
+    "https://raw.githubusercontent.com/CVEProject/cvelistV5/main/cves/2025/12xxx/CVE-2025-12006.json"
+  ],
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
+}

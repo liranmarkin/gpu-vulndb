@@ -1,0 +1,29 @@
+{
+  "id": "NCVD-2011-002-ata-secure-erase-nvme-sanitize-f",
+  "cve": null,
+  "aliases": [
+    "NIST SP 800-88",
+    "Reliably Erasing Data From Flash-Based Solid State Drives",
+    "sanitize verification gap"
+  ],
+  "title": "ATA Secure Erase / NVMe Sanitize / Format NVM across SSD vendors - drives that report sanitization success while data remains: CLASS ENTRY and the empirical foundation under every specific CVE in…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "ATA Secure Erase / NVMe Sanitize / Format NVM across SSD vendors - drives that report sanitization success while…",
+  "year": "2011",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "CLASS ENTRY and the empirical foundation under every specific CVE in this file. UCSD researchers physically desoldered NAND from twelve SSDs after running the built-in sanitize commands and read the raw flash back. Findings, verbatim in substance: built-in commands are effective but manufacturers sometimes implement them INCORRECTLY; of eight drives claiming ATA SECURITY support only four executed ERASE UNIT reliably; two more silently erased just the first LBA unless the firmware had recently been reset; and one drive REPORTED SANITIZATION SUCCESS WHILE ALL DATA REMAINED INTACT - the filesystem was still mountable afterwards. They also found that overwriting the full visible address space twice is usually but not always sufficient, and that single-file sanitization techniques consistently FAIL on SSDs, because the FTL keeps copies at physical addresses the host cannot address. BREAKS TENANT HANDOFF generically: your 'secure erase between customers' step may silently do nothing, and the drive's success code is not evidence. The next tenant carves the previous tenant's checkpoints, datasets and cloud credentials out of blocks your wipe never reached.",
+  "attack_vector": "The next tenant on the reclaimed bare-metal host, reading unallocated or remapped blocks; or anyone who obtains the physical drive later and is willing to read the NAND directly, which is the only method that sees over-provisioned, retired and bad blocks at all.",
+  "remediation": "There is no patch - this is a verification and architecture problem. (1) Follow NIST SP 800-88 Rev 1 and pick the sanitization tier that matches the data: for anything that held tenant data, Purge (cryptographic erase or a verified device sanitize) at minimum, and Destroy for high-sensitivity media. (2) Stop trusting return codes. Sample-verify: after sanitize, read back a statistical sample of LBAs and confirm they are zeroed or random, and keep the evidence. This does NOT cover over-provisioned or retired blocks, which no host-side read can reach - be honest in your compliance story about that limit rather than claiming a guarantee you cannot make. (3) The only sanitization that is both fast and verifiable at fleet scale is throwing away a key YOU control: run LUKS/dm-crypt per tenant with the key in your KMS, so reclaim is a key-destruction event you can log and audit in milliseconds, and the drive's own erase behaviour stops mattering. (4) Qualify each SKU's sanitize implementation once, in a lab, before it enters the fleet - the researchers' own conclusion was that every implementation must be individually tested before it can be trusted. Verifying erase across a 10,000-drive fleet is a weeks-long operation that most operators never perform at all, which is exactly why a drive that lies about it survives undetected for years.",
+  "references": [
+    "https://www.usenix.org/legacy/events/fast11/tech/full_papers/Wei.pdf",
+    "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-88r1.pdf",
+    "https://nvd.nist.gov/vuln/detail/CVE-2021-33082"
+  ],
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
+}

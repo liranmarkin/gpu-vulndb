@@ -1,0 +1,21 @@
+{
+  "id": "NCVD-2026-025-landlord-owned-facility-control",
+  "cve": null,
+  "aliases": [],
+  "title": "Landlord-owned facility control network in a leased colo or wholesale hall (governance gap): Almost every neocloud and bare-metal GPU provider runs in space it does not own, which means the entire…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Landlord-owned facility control network in a leased colo or wholesale hall (governance gap)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Almost every neocloud and bare-metal GPU provider runs in space it does not own, which means the entire cooling and BMS layer - the thing that can kill a whole hall of accelerators in minutes - is operated by a third party the tenant has no technical visibility into and no ability to patch. The tenant carries the full financial consequence of a thermal event (lost training runs, missed SLAs, damaged accelerators, customer churn) while holding none of the controls. In practice the tenant does not know which BMS vendor is deployed, what firmware the controllers run, whether the BACnet segment is isolated from the building's office network, whether the mechanical contractor has a permanent remote-access tunnel in, or who else has a badge to the mechanical rooms. In multi-tenant halls it is worse: cooling is shared infrastructure, so a compromise driven through a neighbouring tenant's contractor lands on your racks. This also directly breaks tenant handoff - when a hall is re-let, nothing in the facility control layer is reset, re-flashed or credential-rotated between occupants.",
+  "attack_vector": "Not a single vector - a structural one. The realistic entry points are the mechanical contractor's remote-support path, the landlord's corporate network being flat with the building VLAN, an unmonitored BBMD bridging BACnet across zones, a shared BMS supervisor serving all tenants, and physical access to mechanical rooms and control panels by staff and contractors who are outside the tenant's security program entirely.",
+  "remediation": "You cannot patch this - it is the landlord's equipment. The honest remediation is contractual and it needs to be in the lease or the master services agreement, not a security questionnaire answered once. Ask for and get in writing: the BMS/BAS vendor and product versions serving your halls; a network diagram showing the facility VLAN and every route off it; confirmation that no tenant or corporate network can route to the BACnet/Modbus segments; the list of remote-access paths into building controls and who holds them; a commitment to notify you within a defined window when CISA publishes an ICS advisory affecting deployed equipment, with a patch SLA; the right to have a third party validate the segmentation; and physical access logs for mechanical rooms. Also negotiate what you actually need operationally - independent temperature telemetry you own (your own sensors on your own network, not the landlord's BMS feed), so you can detect a thermal excursion without trusting a system you cannot audit, and a documented, tested time-to-thermal-shutdown figure for your rack density so you know how many minutes of margin you are buying.",
+  "references": [
+    "https://www.cisa.gov/news-events/ics-advisories",
+    "https://www.cisa.gov/resources-tools/resources/layering-network-security-through-segmentation"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "NCVD-2026-012-qct-quanta-cloud-technology-serv",
+  "cve": null,
+  "aliases": [],
+  "title": "QCT (Quanta Cloud Technology) server security centre: QCT firmware is unmeasurable from public data despite the appearance of a PSIRT. This is worse than having no…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "QCT (Quanta Cloud Technology) server security centre",
+  "year": "2026",
+  "cvss_score": 0.0,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "QCT firmware is unmeasurable from public data despite the appearance of a PSIRT. This is worse than having no page, because an operator doing vendor due diligence sees a security centre, ticks the box, and moves on - while in reality no QCT-originated BMC or BIOS vulnerability has ever been disclosed publicly, and the channel has been dormant for six years. Quanta is one of the largest ODM server manufacturers in the world and its boards are widely present in cloud and AI datacenter builds, so a substantial amount of deployed BMC firmware has no disclosure history whatsoever. An operator cannot distinguish 'this firmware has no known vulnerabilities' from 'nobody has ever looked, or looked and never told you'. A PSIRT page does exist at qct.io/Press-Releases/index/PR/Server/Security-Center and is readable, but every entry on it is an Intel advisory passed through - Intel-SA-00086, 00088, 00115, 00161, 00125/00131, 00233 - and the newest item dates to 2019. QCT has published no first-party BMC or BIOS advisory at all.",
+  "attack_vector": "Not an attack path - a disclosure gap that applies to any operator running QCT or Quanta-manufactured server and GPU chassis hardware.",
+  "remediation": "Nothing to flash and nothing to subscribe to. Practical steps: route firmware and security questions through your QCT account team in writing and keep the responses, since the public channel will not serve you; require a firmware support and vulnerability-notification commitment in the purchase agreement before the next order; and in the absence of vendor disclosure, apply the generic BMC controls that do not depend on knowing about specific CVEs - disable IPMI-over-LAN in favour of Redfish over TLS, use per-node unique BMC credentials, disable virtual media and SSH/SMASH on the BMC where unused, isolate the management VLAN, and baseline firmware hashes at turnup so change is at least detectable.",
+  "references": [
+    "https://www.qct.io/Press-Releases/index/PR/Server/Security-Center"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "NCVD-2026-024-bacnet-bacnet-ip-as-a-protocol-f",
+  "cve": null,
+  "aliases": [],
+  "title": "BACnet / BACnet IP as a protocol (facility control plane): BACnet has no authentication, no integrity protection and no encryption at the network layer. Any device that…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "BACnet / BACnet IP as a protocol (facility control plane)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "BACnet has no authentication, no integrity protection and no encryption at the network layer. Any device that can put a BACnet frame on the wire can issue a WriteProperty to any object on any controller that will accept it - fan speed, damper position, chilled-water setpoint, occupancy schedule, alarm enable. There is no credential to steal because none exists, and there is no log entry that distinguishes a legitimate command from a forged one. This is the single highest-leverage weakness in the whole facility stack for an AI datacenter: an attacker who reaches the BACnet segment does not need to exploit anything, they simply operate the building. Against a hall of 40-140 kW GPU racks, writing setpoints or zeroing fan commands crosses accelerator thermal-shutdown thresholds in minutes, taking down every in-flight training job and stressing hardware through repeated thermal cycles. It also breaks tenant handoff in a shared building: BACnet gives no way to scope one tenant's control authority away from another's equipment, so a compromised neighbour on the same building segment can command your cooling.",
+  "attack_vector": "Any host on the BACnet/IP segment, unauthenticated, using off-the-shelf tooling (YABE, Wireshark's BACnet dissector, the open-source BACnet stack utilities). Reachability is everything: the segment typically includes mechanical rooms, IDF closets, the fire and lighting integrators' gear, the landlord's building network, and every controls contractor's laptop that has ever been plugged in. BACnet/IP uses UDP 47808 and relies on broadcast, so it also crosses VLANs wherever a BBMD (BACnet Broadcast Management Device) has been configured to bridge them - operators routinely do not know where their BBMDs are. BACnet MS/TP behind a BACnet router is reachable from IP through that router.",
+  "remediation": "Unpatchable by design; the protocol will never authenticate. Three real options, in order of what most operators can actually do. First, segmentation: BACnet on a dedicated VLAN with no route to tenant, corporate or internet networks, an inventory of every BBMD, and switch-level port security or 802.1X on ports serving mechanical spaces. Second, physical security: locked mechanical rooms and control panels, because RS-485 field bus access is a wirecutter away. Third, the actual protocol fix - BACnet Secure Connect (BACnet/SC), which adds TLS and certificate-based device identity; it is supported by newer controller generations and is a controller-replacement project, so treat it as a capital line item for any new build and a multi-year migration for an existing one. For a leased colo the honest answer is that you cannot fix this yourself: it is the landlord's control network. Put it in the contract - require BACnet segment isolation, require disclosure of BBMD placement, require that no tenant network can route to it, and require evidence rather than assurance.",
+  "references": [
+    "https://www.cisa.gov/news-events/ics-advisories/icsa-26-078-08",
+    "https://nvd.nist.gov/vuln/detail/CVE-2026-32666",
+    "https://www.cisa.gov/resources-tools/resources/secure-design-alert-security-design-improvements-scada-devices"
+  ],
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
+}

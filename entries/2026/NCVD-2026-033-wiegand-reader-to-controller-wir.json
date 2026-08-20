@@ -1,0 +1,22 @@
+{
+  "id": "NCVD-2026-033-wiegand-reader-to-controller-wir",
+  "cve": null,
+  "aliases": [],
+  "title": "Wiegand reader-to-controller wiring and legacy 125 kHz proximity / MIFARE Classic credentials: Two structural weaknesses in nearly every badge system installed before roughly the last decade, and…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Wiegand reader-to-controller wiring and legacy 125 kHz proximity / MIFARE Classic credentials",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Two structural weaknesses in nearly every badge system installed before roughly the last decade, and plenty installed since. First, the Wiegand protocol between the card reader and the door controller is unauthenticated, unencrypted plaintext over a few wires - anyone who can reach the back of the reader, which is on the unsecured side of the door, can splice in a small logger to capture every credential presented, or inject a previously captured credential to open the door. Second, 125 kHz proximity cards and MIFARE Classic credentials are cloneable in seconds with a sub-hundred-dollar reader from a pocket's distance, so an attacker who stands near an employee in a coffee shop can walk into the hall an hour later. Neither of these produces an anomalous event: the badge system records a valid credential at a valid door at a plausible time. What follows from being inside the cage is the whole point - drives with model weights and customer data, server console ports, an unlocked out-of-band switch, and the ability to plant a hardware implant that survives everything your software security program looks at. For a multi-tenant operator this also defeats the cage boundary you sell to customers, and it defeats it in a way that leaves no forensic trace.",
+  "attack_vector": "Physical presence. For Wiegand tapping: brief access to the reader housing, which is mounted outside the secured area by definition and usually held on with a security screw. For card cloning: proximity to any credential holder, or access to a credential left in a desk. No network access is required for either, which is exactly why network-centric security programs miss them. Note that many datacenter cages are protected by a single badge reader with no second factor, and that contractor and landlord staff badges frequently open more doors than the tenant realises.",
+  "remediation": "Not patchable - these are design properties of the installed hardware. The real fixes are hardware replacements and they cost money: move reader-to-controller communication from Wiegand to OSDP v2 with Secure Channel (encrypted and mutually authenticated), which requires readers and controllers that support it and a rewiring pass; and migrate credentials from 125 kHz prox and MIFARE Classic to a cryptographic credential (DESFire EV2/EV3 with a properly managed site key, or mobile credentials) which requires new cards and new readers. In the meantime: add a second independent factor at the hall and cage doors (PIN pad or biometric, on a separate system from the badge reader), fit tamper switches on reader housings and alarm on them, put a camera covering every cage door with retention long enough to be useful, and run a periodic reconciliation of who actually holds a badge that opens your hall - including landlord and contractor staff. For leased space, cage-door credential technology is a lease negotiation item; ask what credential format is in use and treat '125 kHz prox' as a finding.",
+  "references": [
+    "https://www.cisa.gov/news-events/ics-advisories/icsa-23-061-03",
+    "https://nvd.nist.gov/vuln/detail/CVE-2022-40633",
+    "https://www.securityindustry.org/industry-standards/open-supervised-device-protocol/"
+  ],
+  "status": "curated"
+}

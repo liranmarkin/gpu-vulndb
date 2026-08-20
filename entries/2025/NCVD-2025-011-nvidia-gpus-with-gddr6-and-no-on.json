@@ -1,0 +1,26 @@
+{
+  "id": "NCVD-2025-011-nvidia-gpus-with-gddr6-and-no-on",
+  "cve": null,
+  "aliases": [
+    "GPUHammer"
+  ],
+  "title": "NVIDIA GPUs with GDDR6 and no on-die ECC - demonstrated on RTX A6000. Not reproduced on A100 (HBM), H100 or RTX 5090, which have on-die ECC: The first working Rowhammer against GPU memory, driven…",
+  "layer": "gpu-stack",
+  "layer_name": "NVIDIA / GPU stack",
+  "component": "NVIDIA GPUs with GDDR6 and no on-die ECC - demonstrated on RTX A6000. Not reproduced on A100 (HBM), H100 or RTX…",
+  "year": "2025",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "The first working Rowhammer against GPU memory, driven from ordinary user-level CUDA. It flips bits in a neighbouring tenant's GPU memory. The headline result is the one that should worry an AI datacenter: a single bit flip in the exponent of a floating-point weight took an ImageNet model from 80% to 0.1% accuracy. There is no crash, no XID, no ECC event on an ECC-off GPU - the victim's model simply stops working and they have no way to attribute it to you. In a fleet that time-slices or MIG-partitions GPUs between customers, this is a cross-tenant integrity attack against the actual product you sell, and it breaks tenant handoff: residual flips persist in the physical DRAM after the previous tenant leaves.",
+  "attack_vector": "A tenant running unprivileged CUDA on a GPU whose memory is shared with, or was previously allocated to, the victim - MIG partitions, time-sliced sharing, MPS, or simply the next tenant on a re-let card. No driver exploit and no privilege escalation required.",
+  "remediation": "Enable ECC on every GPU that does not have on-die ECC: `nvidia-smi -e 1`, then reset or reboot the GPU. It is not free - roughly a 10% inference slowdown on an A6000 and about 6.25% of memory capacity gone, which on a rental fleet is directly billable capacity you stop selling. Cards with on-die ECC (H100, GB200-class HBM3e, RTX 5090) are not affected in the demonstrated form. Practical fleet policy: refuse to share a physical GPU between untrusted tenants at all, scrub and reset GPU memory between tenants, and audit that ECC has not been disabled by a tenant with elevated access. Verify ECC state per GPU rather than assuming the fleet default held.",
+  "references": [
+    "https://gpuhammer.com/",
+    "https://arxiv.org/abs/2507.08166"
+  ],
+  "status": "curated",
+  "fleet": {
+    "pain_class": "node-reboot"
+  }
+}

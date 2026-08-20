@@ -1,0 +1,26 @@
+{
+  "id": "NCVD-2026-015-wiwynn-celestica-ingrasys-foxcon",
+  "cve": null,
+  "aliases": [],
+  "title": "Wiwynn / Celestica / Ingrasys (Foxconn) / AIC BMC firmware: This vendor's firmware is unmeasurable from public data, and that is the finding. An operator running Wiwynn…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Wiwynn / Celestica / Ingrasys (Foxconn) / AIC BMC firmware",
+  "year": "2026",
+  "cvss_score": 0.0,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "This vendor's firmware is unmeasurable from public data, and that is the finding. An operator running Wiwynn, Celestica, Ingrasys or AIC hardware cannot answer basic questions: is there a known vulnerability in this BMC, has a fix shipped, what version am I supposed to be on. There is no feed to subscribe to and no advisory to correlate against a CVE. Since these builders ship BMC firmware derived from the same AMI MegaRAC and ASPEED lineage as everything else in this database, the realistic assumption is that they inherit the same vulnerability classes - unauthenticated REST handlers, weak firmware verification, credential exposure - without any of the disclosure that would let an operator act. A neocloud whose fleet is largely ODM whitebox is running an out-of-band management plane whose security posture it has no mechanism to assess. Four ODM whitebox and OCP chassis builders whose hardware carries a meaningful share of hyperscale and neocloud GPU capacity. Their corporate websites were fetched and read directly and none of them publishes a security advisory page, a PSIRT contact, or a CVE disclosure channel of any kind. Ingrasys serves HTTP 200 for every path including nonsense ones, and its /security and /psirt paths render the site's 404 message.",
+  "attack_vector": "Not an attack path - a disclosure gap. It applies to any operator whose GPU capacity sits on OCP or ODM whitebox chassis from builders who sell to hyperscalers under contract and have never built a public-facing security function.",
+  "remediation": "There is no patch, because there is no advisory. What an operator can actually do: make PSIRT existence a procurement requirement and get firmware-update commitments and a security contact written into the purchase contract, since these vendors will respond to a customer of size even without a public channel. Obtain firmware through the integrator or hyperscaler channel that sourced the hardware. Treat these BMCs as permanently unpatched and isolate them accordingly - dedicated management VLAN, no route from tenant networks, explicit management-host allowlist. Finally, measure independently: capture a firmware hash baseline at node turnup so you can at least detect change, since you will never be told about a vulnerability.",
+  "references": [
+    "https://www.wiwynn.com/",
+    "https://www.celestica.com/",
+    "https://www.ingrasys.com/",
+    "https://www.aicipc.com/"
+  ],
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
+}

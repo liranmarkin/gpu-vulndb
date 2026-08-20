@@ -1,0 +1,25 @@
+{
+  "id": "NCVD-2026-027-modbus-tcp-as-an-unauthenticated",
+  "cve": null,
+  "aliases": [],
+  "title": "Modbus TCP as an unauthenticated control channel on facility gear: Modbus TCP has no authentication, no authorization and no integrity checking. A write-single-register from…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Modbus TCP as an unauthenticated control channel on facility gear",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Modbus TCP has no authentication, no authorization and no integrity checking. A write-single-register from any host on the segment is indistinguishable from a legitimate one. In a datacenter Modbus is the lingua franca for exactly the equipment you least want touched: CDU and liquid-cooling controllers, chiller and CRAH controllers, generator and transfer-switch controllers, power meters, and the gateways that expose all of the above to the BMS and DCIM. Where a register is writable, an attacker can command an ATS to transfer, a chiller to stop, or a CDU pump to change speed. Where it is read-only, they can still feed false telemetry to the systems that make automated decisions from it. The physical consequence in a GPU hall is immediate: coolant flow or air handling commanded away from 40-140 kW racks means thermal shutdown of the fleet in minutes and hardware stress from the cycle. Modbus DoS is equally cheap - malformed frames crash many embedded Modbus stacks outright, as the Socomec DIRIS Digiware cluster shows.",
+  "attack_vector": "Any host that can reach TCP 502 on the device. No credentials. Many facility devices additionally expose Modbus RTU tunnelled over TCP on non-standard ports, which operators forget to inventory. The gear is on the facility VLAN, generally managed by the landlord or the mechanical contractor rather than by the datacenter operator, and frequently reachable from the DCIM collector - so a compromised monitoring server is a direct control path. Internet-exposed Modbus on port 502 remains a standing Shodan finding for building and industrial gear.",
+  "remediation": "Unpatchable by design. Controls in order of effectiveness: put Modbus devices on a dedicated segment with a default-deny policy that permits TCP 502 only from the specific poller address; where the device supports it, disable Modbus writes entirely and run read-only, which many facility integrations do not actually need; where a Modbus-to-BACnet or Modbus-to-SNMP gateway exists, terminate Modbus at the gateway and never route it further; and monitor for write function codes (5, 6, 15, 16, 22, 23) on a segment that should only ever see reads - that is a cheap, high-signal detection most operators do not have. For leased space, the equipment and the segment belong to the landlord, so this becomes a contractual item: demand to know which facility devices speak Modbus, whether writes are enabled, and what filters exist in front of port 502.",
+  "references": [
+    "https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-103a",
+    "https://nvd.nist.gov/vuln/detail/CVE-2024-48882",
+    "https://www.cisa.gov/resources-tools/resources/secure-design-alert-security-design-improvements-scada-devices"
+  ],
+  "status": "curated",
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
+}

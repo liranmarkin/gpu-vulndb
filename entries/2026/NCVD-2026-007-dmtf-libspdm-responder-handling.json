@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2026-007-dmtf-libspdm-responder-handling",
+  "cve": null,
+  "aliases": [
+    "GHSA-m4wc-xmvg-369f",
+    "DMTF-2026-0001"
+  ],
+  "title": "DMTF libspdm responder handling of GET_MEASUREMENT_EXTENSION_LOG: A requester reads memory it was never authorised to read, out of the responder - which in a datacenter is…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "DMTF libspdm responder handling of GET_MEASUREMENT_EXTENSION_LOG",
+  "year": "2026",
+  "cvss_score": 5.3,
+  "severity": "medium",
+  "kev": false,
+  "impact": "A requester reads memory it was never authorised to read, out of the responder - which in a datacenter is typically the firmware of a GPU, NIC, or the BMC acting as an SPDM responder. What leaks is whatever sits adjacent to the measurement extension log in that component's address space: potentially keys, measurement state, or other firmware data. Because the responder is a device that multiple hosts or tenants may talk to over the life of a node, this is a cross-boundary read from a component that is supposed to be the root of the attestation story rather than a target of it. The Offset and Length fields are added with wrapping arithmetic before the bounds check, so a crafted pair overflows and passes validation. Requires the responder to advertise MEL_CAP and CHUNK_CAP.",
+  "attack_vector": "Anything that can act as an SPDM requester to the affected responder - a host driver, a management controller, or a peer device on the fabric. On bare metal that includes the tenant's own host software if the platform lets host drivers speak SPDM to accelerators, which most do.",
+  "remediation": "This one has no CVE assigned, only a GHSA and a DMTF advisory number, so it will not appear in NVD-driven scanning at all - operators tracking firmware risk off CVE feeds alone will simply never see it. Remediation is a libspdm update followed by per-vendor firmware rebuilds and per-device flashes, on each vendor's own timeline. If your responders do not need the measurement extension log, having the vendor build with MEL_CAP disabled removes the reachable path, but that is a firmware build option rather than something an operator can toggle.",
+  "references": [
+    "https://github.com/DMTF/libspdm/security/advisories/GHSA-m4wc-xmvg-369f"
+  ],
+  "status": "curated"
+}

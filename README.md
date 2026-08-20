@@ -35,18 +35,45 @@ actually gets, who has to be able to reach it, and what the operator has to do a
 
 ## What's in scope
 
+3,447 entries covering 3,344 distinct CVEs, spanning 2011 to 2026.
+
 | Layer | What it covers | Entries |
 | --- | --- | ---: |
-| `ai-serving` | Inference servers, training frameworks, model formats | 250 |
-| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 379 |
-| `control-plane` | Cluster management, storage, CI/CD, observability | 171 |
-| `kernel-hypervisor` | Host kernel, userspace, virtualization | 162 |
-| `gpu-stack` | GPU drivers, CUDA, container toolkit, vGPU, DCGM | 354 |
-| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs | 88 |
+| `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,170 |
+| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,133 |
+| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 380 |
+| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 317 |
+| `ai-serving` | Inference servers, training frameworks, model formats | 254 |
+| `control-plane` | Cluster management, storage, CI/CD, observability | 193 |
 
 Design-level weaknesses that will never receive a CVE — unauthenticated IPMI over LAN, RDMA
-fabrics that trust the network, internet-exposed BMCs — are in scope and carry an `NCVD-` id.
-They are frequently a bigger problem than anything with a CVSS score.
+fabrics with no cryptographic binding between a packet and its connection, physical DRAM
+interposers that both Intel and AMD classify as out of scope — are in scope and carry an `NCVD-`
+id. There are 103 of them, and they are frequently a bigger problem than anything with a CVSS
+score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which
+is a large part of why this one exists.
+
+## Cost to remediate
+
+The field that makes this more than an advisory mirror. A CVSS score tells you how bad a
+vulnerability is; it does not tell you whether fixing it costs a config change or a firmware
+flash across every node you own. 2,087 entries carry a `fleet.pain_class`, ordered here from
+cheapest to most disruptive:
+
+| Class | Entries | What it means |
+| --- | ---: | --- |
+| `hot-patch` | 50 | Fixable without interrupting workloads |
+| `daemon-restart` | 54 | Service restart on affected nodes |
+| `node-drain` | 159 | Tenant workloads evicted from each node |
+| `node-reboot` | 1,163 | Full reboot of each affected node |
+| `microcode + reboot` | 54 | Microcode update and a reboot |
+| `firmware-flash` | 509 | Firmware flash, usually with the node out of service |
+| `physical access` | 2 | Someone has to be at the machine |
+| `unpatchable / mitigate-only` | 92 | **No vendor fix exists** |
+
+These are extracted from remediation prose that names the action, never guessed. Where a
+remediation does not state a cost, the field is left unset rather than inferred — 1,360 entries
+are in that state.
 
 Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undisclosed issues
 (this is not a disclosure venue), and anything you cannot back with a public reference.
@@ -85,6 +112,8 @@ anywhere. There is an RSS feed at [/feed.xml](https://gpuvulndb.org/feed.xml).
 entries/<year>/<id>.json   the database — one file per entry, the source of truth
 schema/entry.schema.json   the schema, enforced in CI
 scripts/validate.py        what CI runs; run it before opening a pull request
+scripts/ingest.py          merges researched batches into entries/, idempotent
+scripts/derive_pain.py     extracts remediation cost from prose that states it
 scripts/build.py           one-off importer from the original source CSVs, not part of contributing
 web/                       the website (Next.js 16, React 19, Tailwind 4)
 ```
@@ -113,7 +142,7 @@ python3 -m venv .venv && .venv/bin/pip install jsonschema
 ## License
 
 Data in `entries/` and `schema/` is [CC BY 4.0](LICENSE-DATA). Tooling in `scripts/` and the site
-in `site/` is [MIT](LICENSE). Attribution to the GPU Vulnerability Database is required when you
+in `web/` is [MIT](LICENSE). Attribution to the GPU Vulnerability Database is required when you
 redistribute the data.
 
 This database is informational and carries no warranty of completeness or accuracy.

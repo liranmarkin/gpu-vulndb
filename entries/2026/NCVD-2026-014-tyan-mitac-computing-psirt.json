@@ -1,0 +1,21 @@
+{
+  "id": "NCVD-2026-014-tyan-mitac-computing-psirt",
+  "cve": null,
+  "aliases": [],
+  "title": "Tyan / MiTAC Computing PSIRT: For Tyan, this vendor's firmware is unmeasurable from public data - the only substantive Tyan BMC…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Tyan / MiTAC Computing PSIRT",
+  "year": "2026",
+  "cvss_score": 0.0,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "For Tyan, this vendor's firmware is unmeasurable from public data - the only substantive Tyan BMC vulnerability in the public record, the S5552 TLS private key disclosure, was published by a third-party research lab rather than the vendor, and there is now no vendor channel at all through which fixed firmware or future advisories could be obtained. An operator with Tyan hardware in the fleet has a BMC with a known credential-grade disclosure bug and no path to a fix. For Advantech the situation is different but leads to the same operator conclusion: a working PSIRT exists, so subscribe to it, but do not expect it to cover server BMC or BIOS firmware, because it never has. Tyan has been absorbed into MiTAC Computing; www.tyan.com now serves a TLS certificate for *.mitaccomputing.com that does not match its own hostname, www.tyan.com.tw is a stub linking onward to MiTAC, and mitaccomputing.com returns HTTP 403 to automated clients. Advantech, checked alongside as an industrial-server vendor, does run a real and actively maintained PSIRT at advantech.com/en/security-advisory with ACIRT/AQIRT advisory IDs and an RSS feed - but every advisory on it covers IoT, wireless and software products, with no BMC or BIOS content.",
+  "attack_vector": "Not an attack path - a vendor-continuity and disclosure gap. It applies to any operator carrying Tyan-branded server boards, which persist in secondhand and budget capacity builds long after the brand's own support channel has gone.",
+  "remediation": "For Tyan hardware, assume no firmware fix will arrive. Approach MiTAC Computing directly through a sales channel if you need firmware, and otherwise treat these nodes as permanently unpatched: replace the BMC TLS certificate with one you control, isolate the management VLAN with an explicit allowlist, disable IPMI-over-LAN and virtual media, use per-node unique credentials, and plan the hardware out of the fleet on a defined timeline rather than indefinitely. For Advantech, subscribe to the ACIRT feed but keep server firmware tracking on a separate mechanism, since the feed does not cover it.",
+  "references": [
+    "https://www.advantech.com/en/security-advisory",
+    "https://www.nozominetworks.com/labs/vulnerability-advisories-cve-2023-2538/"
+  ],
+  "status": "curated"
+}
