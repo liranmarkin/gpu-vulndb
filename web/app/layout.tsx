@@ -77,7 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {children}
 
-        <footer className="mt-20 border-t border-line bg-card py-12 text-[13.5px] text-muted">
+        <footer className="mt-20 border-t border-line bg-card pb-8 pt-12 text-[13.5px] text-muted">
           <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[22px] sm:flex-row sm:items-start sm:justify-between">
             <div>
               <div className="mb-5 flex items-center gap-2.5">
@@ -107,6 +107,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 before acting.
               </p>
             </div>
+          </div>
+          <div className="mx-auto mt-10 flex max-w-[1200px] flex-wrap items-center justify-between gap-3 border-t border-line px-[22px] pt-6 text-[13px] text-faint">
+            <span>
+              Made with <span aria-label="love">❤️</span> by{" "}
+              <a href="https://liranmarkin.com" className="font-medium text-muted hover:text-brand-ink">
+                Liran Markin
+              </a>
+            </span>
+            <a href="mailto:contact@gpuvulndb.org" className="font-medium text-muted hover:text-brand-ink">
+              contact@gpuvulndb.org
+            </a>
           </div>
         </footer>
         <Analytics />
