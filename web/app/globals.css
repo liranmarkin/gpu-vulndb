@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/* Cold-aisle palette: deep blue-black metal, warm hues reserved for risk only. */
+@theme {
+  --color-void: #070b14;
+  --color-rack: #0d1524;
+  --color-rack-2: #121c30;
+  --color-rack-3: #16223a;
+  --color-rail: #1c2942;
+  --color-rail-lit: #31456b;
+  --color-ink: #e3e9f5;
+  --color-dim: #8497b6;
+  --color-dimmer: #5e7191;
+  --color-link: #63a5ff;
+
+  --color-critical: #ff5f5f;
+  --color-high: #ff9a3c;
+  --color-medium: #f2c63d;
+  --color-low: #5baaea;
+  --color-unscored: #6b7c99;
+
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: "Archivo", "IBM Plex Sans", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-void);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background-image: radial-gradient(
+    900px 500px at 50% -260px,
+    rgba(70, 120, 220, 0.1),
+    transparent 70%
+  );
+  background-repeat: no-repeat;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* The one thing colour means on this site is severity. */
+.sev-critical { color: var(--color-critical); }
+.sev-high { color: var(--color-high); }
+.sev-medium { color: var(--color-medium); }
+.sev-low { color: var(--color-low); }
+.sev-unscored { color: var(--color-unscored); }
+
+.prose-field code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--color-rack-2);
+  border: 1px solid var(--color-rail);
+  border-radius: 4px;
+  padding: 1.5px 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/* Rack units settle in from below as the elevation is read top to bottom. */
+@keyframes rackIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
