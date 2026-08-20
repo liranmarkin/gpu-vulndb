@@ -91,7 +91,7 @@ It is built for the people who operate this stack: GPU clouds, colocation datace
 | `ai-serving` | Inference servers, training frameworks, model formats | 277 |
 | `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 423 |
 | `control-plane` | Cluster management, storage, CI/CD, observability | 721 |
-| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 711 |
+| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 722 |
 | `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,205 |
 | `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,040 |
 
@@ -101,14 +101,14 @@ Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undi
 
 ## 💸 Cost to remediate
 
-The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,929 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
+The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,940 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
 
 | Class | Entries | What it means |
 | --- | ---: | --- |
 | `hot-patch` | 69 | Fixable without interrupting workloads |
 | `daemon-restart` | 227 | Service restart on affected nodes |
 | `node-drain` | 183 | Tenant workloads evicted from each node |
-| `node-reboot` | 1,752 | Full reboot of each affected node |
+| `node-reboot` | 1,763 | Full reboot of each affected node |
 | `microcode + reboot` | 54 | Microcode update and a reboot |
 | `firmware-flash` | 535 | Firmware flash, usually with the node out of service |
 | `physical access` | 2 | Someone has to be at the machine |
