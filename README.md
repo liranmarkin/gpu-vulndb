@@ -69,29 +69,29 @@ It is built for the people who operate this stack: GPU clouds, colocation datace
 | --- | --- | ---: |
 | `ai-serving` | Inference servers, training frameworks, model formats | 277 |
 | `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 420 |
-| `control-plane` | Cluster management, storage, CI/CD, observability | 717 |
-| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 367 |
+| `control-plane` | Cluster management, storage, CI/CD, observability | 718 |
+| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 368 |
 | `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,196 |
-| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 921 |
+| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 932 |
 
-**Design-level weaknesses that will never get a CVE are in scope too.** Unauthenticated IPMI over LAN, RDMA fabrics with no cryptographic binding between a packet and its connection, physical DRAM interposers that both Intel and AMD classify as out of scope - these carry an `NCVD-` id. There are 159 of them, and they are frequently a bigger problem than anything with a CVSS score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which is a large part of why this one exists.
+**Design-level weaknesses that will never get a CVE are in scope too.** Unauthenticated IPMI over LAN, RDMA fabrics with no cryptographic binding between a packet and its connection, physical DRAM interposers that both Intel and AMD classify as out of scope - these carry an `NCVD-` id. There are 160 of them, and they are frequently a bigger problem than anything with a CVSS score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which is a large part of why this one exists.
 
 Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undisclosed issues (this is not a disclosure venue), and anything you cannot back with a public reference.
 
 ## 💸 Cost to remediate
 
-The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,471 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
+The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,484 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
 
 | Class | Entries | What it means |
 | --- | ---: | --- |
 | `hot-patch` | 69 | Fixable without interrupting workloads |
-| `daemon-restart` | 219 | Service restart on affected nodes |
+| `daemon-restart` | 221 | Service restart on affected nodes |
 | `node-drain` | 181 | Tenant workloads evicted from each node |
-| `node-reboot` | 1,313 | Full reboot of each affected node |
+| `node-reboot` | 1,315 | Full reboot of each affected node |
 | `microcode + reboot` | 54 | Microcode update and a reboot |
-| `firmware-flash` | 527 | Firmware flash, usually with the node out of service |
+| `firmware-flash` | 535 | Firmware flash, usually with the node out of service |
 | `physical access` | 2 | Someone has to be at the machine |
-| `unpatchable / mitigate-only` | 102 | **No vendor fix exists** |
+| `unpatchable / mitigate-only` | 103 | **No vendor fix exists** |
 
 These are extracted from remediation prose that names the action, never guessed. Where a remediation does not state a cost, the field is left unset rather than inferred.
 
