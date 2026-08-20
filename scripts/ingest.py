@@ -120,12 +120,20 @@ def bucket(score):
 TITLE_MAX = 120
 
 
-def make_title(component, impact):
+def make_title(component, impact, supplied=None):
     """One line, at most TITLE_MAX chars, no trailing ellipsis - the schema enforces both.
+
+    A batch that supplies its own title wins: deriving one from the head of `impact` cuts
+    long prose mid-sentence, which reads as a truncation bug on the site. Derivation stays
+    as the fallback for batches that supply nothing.
 
     An ellipsis would promise detail the title cannot deliver; the full text is in `impact`
     either way, so the title is cut at a word boundary and simply ends there.
     """
+    supplied = (supplied or "").strip().rstrip(" .…")
+    if 8 <= len(supplied) <= TITLE_MAX:
+        return supplied
+
     head = re.split(r"\s*(?:→|->|;)\s*", (impact or "").strip())[0].strip().rstrip(". ")
     title = f"{component}: {head}" if head else component
 
@@ -237,7 +245,7 @@ def normalize(raw: dict, source: str, seq: Counter) -> tuple[dict | None, str | 
         "id": entry_id,
         "cve": cve,
         "aliases": [a.strip() for a in (raw.get("aliases") or []) if isinstance(a, str) and a.strip()],
-        "title": make_title(component, impact),
+        "title": make_title(component, impact, raw.get("title")),
         "layer": layer,
         "layer_name": LAYER_NAMES[layer],
         "component": component,
@@ -257,10 +265,13 @@ def normalize(raw: dict, source: str, seq: Counter) -> tuple[dict | None, str | 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true", help="write entries instead of a dry run")
+    ap.add_argument("--research", type=Path, default=RESEARCH,
+                    help="directory of batch files to merge; defaults to research/")
     args = ap.parse_args()
 
-    if not RESEARCH.exists():
-        sys.exit("no research/ directory")
+    research = args.research
+    if not research.exists():
+        sys.exit(f"no {research} directory")
 
     have_ids, have_cves, have_keys = existing_ids()
     seq: Counter = Counter()
@@ -269,7 +280,7 @@ def main():
     dupes = 0
     per_source: Counter = Counter()
 
-    for path in sorted(RESEARCH.glob("*.json")):
+    for path in sorted(research.glob("*.json")):
         try:
             batch = json.loads(path.read_text())
         except json.JSONDecodeError as e:
@@ -302,7 +313,7 @@ def main():
             accepted[entry["id"]] = entry
             per_source[path.stem] += 1
 
-    print(f"research files : {len(list(RESEARCH.glob('*.json')))}")
+    print(f"research files : {len(list(research.glob('*.json')))}")
     print(f"new entries    : {len(accepted)}")
     print(f"already present: {dupes}")
     print(f"rejected       : {len(rejected)}")

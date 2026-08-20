@@ -7,7 +7,7 @@
 **Every known vulnerability in the stack GPU datacenters run on - firmware to model serving.**
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fgpuvulndb.org&label=gpuvulndb.org&up_color=5a31d8)](https://gpuvulndb.org)
-![Entries](https://img.shields.io/badge/entries-3%2C566-5a31d8)
+![Entries](https://img.shields.io/badge/entries-4%2C388-5a31d8)
 [![Validation](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml/badge.svg)](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml)
 [![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-2b1663)](LICENSE-DATA)
 [![Code: MIT](https://img.shields.io/badge/code-MIT-2b1663)](LICENSE)
@@ -84,7 +84,7 @@ It is built for the people who operate this stack: GPU clouds, colocation datace
 
 ## 🧱 What's in scope
 
-**3,566 entries covering 3,460 distinct CVEs, spanning 2011 to 2026** - organized by the six layers of the stack, top to bottom:
+**4,388 entries covering 4,201 distinct CVEs, spanning 2010 to 2026** - organized by the six layers of the stack, top to bottom:
 
 | Layer | What it covers | Entries |
 | --- | --- | ---: |
@@ -126,6 +126,15 @@ Every entry declares how much human verification it has had, so the database can
 
 Always confirm against your vendor's advisory before acting on an entry.
 
+### How new entries arrive
+
+A scheduled sweep runs once a day: it pulls every CVE whose NVD record changed in the last few
+days, filters on the vocabulary of this stack, and hands what survives to a model that makes the
+scope call and drafts the operator-facing fields. Everything it produces lands at `curated` and
+is committed only if `scripts/validate.py` passes. It is a coverage mechanism, not a review one -
+which is exactly why verifying a `curated` entry is the most useful thing you can contribute.
+The whole path is in `scripts/daily_update.sh`; nothing about it is private to the maintainers.
+
 ## ⚡ Using the data
 
 Entries are one JSON file each, at `entries/<year>/<id>.json`. The filename is always the id. There is no build artifact to trust and no API to depend on - clone the repo:
@@ -152,6 +161,7 @@ scripts/ingest.py          merges researched batches into entries/, idempotent
 scripts/derive_pain.py     extracts remediation cost from prose that states it
 scripts/fetch_nvd_dates.py joins NVD published dates into web/data/nvd-dates.json
 scripts/fetch_vendor_icons.mjs downloads vendor favicons for the site
+scripts/daily_update.sh    the daily sweep: fetch, triage, ingest, validate, commit
 web/                       the website (Next.js 16, React 19, Tailwind 4)
 ```
 

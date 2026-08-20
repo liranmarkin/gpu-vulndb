@@ -19,9 +19,15 @@ cves = {e["cve"] for e in rows if e["cve"]}
 
 path = ROOT / "README.md"
 text = path.read_text()
-text = re.sub(r"[\d,]+ entries covering [\d,]* distinct CVEs, spanning \d{4} to \d{4}\.",
+before = text
+
+text = re.sub(r"[\d,]+ entries covering [\d,]* distinct CVEs, spanning \d{4} to \d{4}",
               f"{len(rows):,} entries covering {len(cves):,} distinct CVEs, "
-              f"spanning {years[0]} to {years[-1]}.", text)
+              f"spanning {years[0]} to {years[-1]}", text)
+# The shields.io badge carries the same number, URL-encoded, and drifts the moment it is not
+# rewritten alongside the prose.
+text = re.sub(r"(badge/entries-)[\d%A-C]+(-\w+\))",
+              rf"\g<1>{len(rows):,}\g<2>".replace(",", "%2C"), text)
 for layer, n in layers.items():
     text = re.sub(rf"(\| `{re.escape(layer)}` \|[^|]*\| )[\d,]+( \|)", rf"\g<1>{n:,}\g<2>", text)
 for cls, n in pain.items():
@@ -34,3 +40,7 @@ text = re.sub(r"— [\d,]+ entries\nare in that state",
               f"— {len(rows) - sum(pain.values()):,} entries\nare in that state", text)
 path.write_text(text)
 print(f"README: {len(rows):,} entries, {len(cves):,} CVEs, {sum(pain.values()):,} with a cost class")
+if text == before:
+    # A silent no-op here is how the README came to claim 3,566 entries for months: the prose
+    # was reworded and the substitutions stopped matching anything. Say so rather than exit 0.
+    print("WARNING: nothing in README.md matched - the counts above were not written anywhere")
