@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2020-003-nvidia-multi-instance-gpu-mig-pa",
+  "cve": null,
+  "aliases": [
+    "MIG side-channel caveat"
+  ],
+  "title": "NVIDIA Multi-Instance GPU (MIG) partitioning: MULTI-TENANT ISOLATION: MIG gives each instance its own SM slice, L2 slice, memory slice and memory-bandwidth…",
+  "layer": "gpu-stack",
+  "layer_name": "NVIDIA / GPU stack",
+  "component": "NVIDIA Multi-Instance GPU (MIG) partitioning",
+  "year": "2020",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION: MIG gives each instance its own SM slice, L2 slice, memory slice and memory-bandwidth allocation, and NVIDIA documents it as providing fault and performance isolation between instances. What it does NOT claim is protection against microarchitectural side channels, and it does not encrypt instance memory. Operators routinely sell MIG partitions as if they were independent GPUs. They are strong performance and fault isolation, not a cryptographic boundary - the shared GPU chip, shared power/thermal domain and shared memory controller remain observable.",
+  "attack_vector": "A tenant holding one MIG instance, observing shared resources used by a tenant on another instance of the same physical GPU. No exploit is needed for the telemetry channel; the frequency/power domain is shared by construction.",
+  "remediation": "Not a patchable defect - it is the documented scope of the feature. If your product promises isolation stronger than performance isolation, back MIG with NVIDIA Confidential Computing (Hopper and later, and note that CC and MIG have version-dependent compatibility constraints), or with whole-GPU allocation. Verify what you tell customers matches what MIG actually guarantees; also confirm MIG instances are actually destroyed and recreated between tenants rather than reused, because instance teardown is what triggers memory scrubbing.",
+  "references": [
+    "https://docs.nvidia.com/datacenter/tesla/mig-user-guide/",
+    "https://docs.nvidia.com/confidential-computing-deployment-guide/"
+  ],
+  "status": "curated"
+}

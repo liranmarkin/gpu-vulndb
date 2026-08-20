@@ -1,0 +1,25 @@
+{
+  "id": "NCVD-2022-002-nvme-over-fabrics-protocol-over",
+  "cve": null,
+  "aliases": [
+    "NeVerMore NVMe-oF attacks",
+    "NQN spoofing",
+    "NVMe-oF controller hijack over RDMA"
+  ],
+  "title": "NVMe-over-Fabrics protocol over RDMA - SPDK NVMe-oF target and Linux kernel nvmet: TENANT ISOLATION: NeVerMore implemented seven attacks against the NVMe-oF protocol itself and confirmed them…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "NVMe-over-Fabrics protocol over RDMA - SPDK NVMe-oF target and Linux kernel nvmet",
+  "year": "2022",
+  "cvss_score": 8.6,
+  "severity": "high",
+  "kev": false,
+  "impact": "TENANT ISOLATION: NeVerMore implemented seven attacks against the NVMe-oF protocol itself and confirmed them on the two implementations that matter operationally - SPDK and Linux nvmet. The core finding is that NVMe-oF's access control leans on the RDMA connection and on the host NQN string, neither of which is authenticated by default. A host NQN is just a text identifier the initiator asserts; there is nothing stopping a tenant from claiming another tenant's NQN and being handed their namespaces. For a neocloud selling disaggregated NVMe to GPU tenants, this means dataset and checkpoint volumes belonging to one customer can be attached read-write by another.",
+  "attack_vector": "The attacker connects to the target's discovery and I/O controllers over RDMA (or TCP) and presents a forged Host NQN, or hijacks an existing connection using the RDMA injection primitives above. Because NVMe-oF allow-lists are typically written as 'NQN X may see subsystem Y', spoofing the NQN is sufficient. Discovery controllers make reconnaissance trivial by listing every subsystem NQN and transport address on the fabric to any peer that asks.",
+  "remediation": "Config change, and it is the single highest-value one in this slice: enable NVMe-oF in-band authentication (DH-HMAC-CHAP, supported in Linux nvmet since 6.0 and in SPDK) so the NQN is proven rather than asserted, and enable TLS (NVMe/TCP) or fabric-level crypto where available. No reboot; nvmet accepts this via configfs at runtime, though initiators must be reconfigured in step so plan a rolling attach/detach. Additionally restrict the discovery controller to an authenticated management network rather than the tenant fabric, and put storage traffic on its own VLAN/P_Key. For SPDK, upgrade to a current release (process restart, brief I/O pause).",
+  "references": [
+    "https://arxiv.org/abs/2202.08080",
+    "https://git.kernel.org/pub/scm/linux/security/vulns.git/plain/cve/published/2026/CVE-2026-64320.json"
+  ],
+  "status": "curated"
+}

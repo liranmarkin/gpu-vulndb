@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2023-001-intel-processors-with-linear-add",
+  "cve": null,
+  "aliases": [
+    "SLAM",
+    "Spectre based on Linear Address Masking"
+  ],
+  "title": "Intel processors with Linear Address Masking (LAM): SLAM: Linear Address Masking, a feature intended to let software store metadata in unused address bits, makes…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Intel processors with Linear Address Masking (LAM)",
+  "year": "2023",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "SLAM: Linear Address Masking, a feature intended to let software store metadata in unused address bits, makes previously impractical Spectre gadgets exploitable by widening the set of usable pointer-chasing gadgets - so a performance and usability feature became a security regression. Notable as a case where the mitigation was to ship the hardware feature disabled by default in Linux.",
+  "attack_vector": "Local unprivileged code on a host with LAM enabled.",
+  "remediation": "Linux disables LAM by default in response; keep it disabled unless you have a specific requirement and have assessed the tradeoff. Kernel-level configuration - a kernel update and reboot, no microcode or BIOS. Verify LAM state on your nodes rather than assuming the default held through a kernel upgrade.",
+  "references": [
+    "https://www.vusec.net/projects/slam/"
+  ],
+  "status": "curated"
+}

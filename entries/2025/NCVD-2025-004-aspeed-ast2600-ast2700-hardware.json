@@ -1,0 +1,25 @@
+{
+  "id": "NCVD-2025-004-aspeed-ast2600-ast2700-hardware",
+  "cve": null,
+  "aliases": [
+    "ASPEED secure boot disabled by default",
+    "OpenBMC RoT not enabled"
+  ],
+  "title": "ASPEED AST2600 / AST2700 hardware root of trust in OpenBMC builds: AST2600 has a fuse-backed secure boot that verifies the BMC firmware image against an RSA key, and AST2700…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "ASPEED AST2600 / AST2700 hardware root of trust in OpenBMC builds",
+  "year": "2025",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "AST2600 has a fuse-backed secure boot that verifies the BMC firmware image against an RSA key, and AST2700 adds the OCP Caliptra-based scheme. Both ship off. The default OpenBMC build configuration leaves secure boot disabled because that is convenient for board bring-up, and plenty of production images never turn it on. Where it is off, anything that can write the BMC's SPI flash - a compromised BMC userspace process, a host-side AHB bridge write, or a supply-chain-tampered update package - installs code that persists across power cycles, OS reimage, and node redeployment to the next tenant, with nothing in the boot chain to reject it. On a GPU cluster this is the difference between a compromised node you can rebuild and a compromised node you have to physically retire.",
+  "attack_vector": "Any write path to BMC SPI flash: code execution on the BMC, a host-side AHB bridge, or a malicious/unsigned firmware update accepted by the update daemon. Not remotely reachable by itself - it is the amplifier that turns a one-shot BMC compromise into a permanent one.",
+  "remediation": "Enabling it is a one-way door: it means burning OTP fuses with your signing key on every node, which cannot be undone and cannot be done remotely. Practically this is an order-time decision with the ODM, not something an operator retrofits on a deployed fleet. For fleets already racked, audit whether secure boot is fused on each SKU, demand the answer in writing from the ODM, and where it is off, compensate with SPI flash content attestation (hash the image out-of-band and compare against a known-good) plus strict control over who can push BMC firmware. Note that a hardware root of trust also does not help if the signed image itself has a signature-verification bug - see the Supermicro image-parser entries.",
+  "references": [
+    "https://eclypsium.com/wp-content/uploads/OpenBMC-Security-in-Practice.pdf",
+    "https://developer.nvidia.com/blog/analyzing-baseboard-management-controllers-to-secure-data-center-infrastructure/",
+    "https://www.binarly.io/blog/old-but-gold-the-underestimated-potency-of-decades-old-attacks-on-bmc-security"
+  ],
+  "status": "curated"
+}

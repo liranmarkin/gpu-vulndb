@@ -1,0 +1,25 @@
+{
+  "id": "NCVD-2026-013-community-open-source-sonic-soni",
+  "cve": null,
+  "aliases": [
+    "community SONiC",
+    "sonic-net",
+    "open-source network OS blind spot"
+  ],
+  "title": "Community / open-source SONiC (sonic-net): Community SONiC — the open-source NOS that a growing share of cost-optimised GPU-cluster fabrics run on — has…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Community / open-source SONiC (sonic-net)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Community SONiC — the open-source NOS that a growing share of cost-optimised GPU-cluster fabrics run on — has essentially no published CVE history. A CPE-based NVD query returns zero records, and the project's own process routes reports privately to its security committee. This is not evidence that SONiC is secure; it is evidence that you have no vulnerability feed for the operating system running your leaf/spine. Every downstream commercial distribution that has been examined (Dell Enterprise SONiC) has produced multiple 9.x-severity findings including authentication bypass, command injection, hard-coded and default credentials — which is what you would expect the shared upstream to look like too. Operators running community SONiC are patching blind.",
+  "attack_vector": "Not a specific vulnerability. The exposure is process-level: an operator cannot subscribe to a feed that tells them when their switch OS needs patching, so known-vulnerable images stay in production indefinitely.",
+  "remediation": "No patch to apply. Practical controls: pin to a distribution that issues advisories (Dell, Edgecore or a vendor-supported build) rather than self-built community images; track the sonic-buildimage git history for security-relevant commits since there is no advisory feed; scan the SONiC container images for known-vulnerable component versions, because most of the real risk is the Debian base and the bundled daemons (lldpd, FRR, redis, the SDK) rather than SONiC-specific code; and keep switch management interfaces on an isolated OOB network on the assumption that you will not learn about the next flaw in time.",
+  "references": [
+    "https://github.com/sonic-net/SONiC/security",
+    "https://www.dell.com/support/kbdoc/en-us/000245655/dsa-2024-449-security-update-for-dell-enterprise-sonic-distribution-vulnerabilities"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "NCVD-2024-006-intel-processors-indirect-branch",
+  "cve": null,
+  "aliases": [
+    "Indirector"
+  ],
+  "title": "Intel processors (Indirect Branch Predictor structure): MULTI-TENANT ISOLATION: Indirector: reverse-engineering the Indirect Branch Predictor and Branch Target…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Intel processors (Indirect Branch Predictor structure)",
+  "year": "2024",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION: Indirector: reverse-engineering the Indirect Branch Predictor and Branch Target Buffer on recent Intel parts yielded high-precision branch target injection that works despite existing eIBRS/IBPB deployment, and showed that IBPB does not clear as much predictor state as assumed. The operator takeaway is that the barrier primitive hypervisors use for tenant separation is weaker than the documentation implies.",
+  "attack_vector": "Local code on an affected processor; the work targets cross-process and cross-privilege leakage.",
+  "remediation": "No single CVE or microcode fix maps cleanly to this research. Mitigation is the existing toolkit applied more aggressively: keep microcode current, enable IBPB on context switch where your workload can absorb the cost, and treat co-tenancy of untrusted workloads on the same physical core as unsupported. Both cost throughput.",
+  "references": [
+    "https://indirector.cpusec.org/"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,29 @@
+{
+  "id": "NCVD-2021-006-infiniband-subnet-management-sub",
+  "cve": null,
+  "aliases": [
+    "InfiniBand P_Key enforcement gap",
+    "Q_Key weakness",
+    "SM MAD trust",
+    "subnet manager spoofing",
+    "GUID spoofing",
+    "M_Key optional"
+  ],
+  "title": "InfiniBand subnet management - Subnet Management Packets (SMPs), P_Key/Q_Key partition enforcement, port/node GUIDs: TENANT ISOLATION: InfiniBand's tenant boundary is the partition key, and its…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "InfiniBand subnet management - Subnet Management Packets (SMPs), P_Key/Q_Key partition enforcement, port/node GUIDs",
+  "year": "2021",
+  "cvss_score": 8.8,
+  "severity": "high",
+  "kev": false,
+  "impact": "TENANT ISOLATION: InfiniBand's tenant boundary is the partition key, and its fabric control plane is the subnet manager speaking unauthenticated management datagrams. Three weaknesses compound. First, P_Key enforcement is a per-port switch capability that must be explicitly turned on; where it is left off - a common default on smaller fabrics - partition membership is advisory and any node can talk to any other. Second, Q_Keys guarding unreliable-datagram traffic are frequently left at well-known or predictable values, so UD traffic including management traffic is forgeable. Third, subnet management packets are protected only by the optional M_Key, and if M_Key is unset or set to zero any node on the subnet can issue SMPs - reprogramming LIDs and routing tables, or standing up a rogue subnet manager that takes over the fabric. A node with a spoofed GUID can inherit another node's partition membership outright.",
+  "attack_vector": "From any host attached to the IB subnet, the attacker sends SMPs on QP0 (unauthenticated when M_Key is unset) to read and rewrite switch forwarding tables and port configuration, or announces a higher-priority subnet manager and wins the SM election. Partition membership is then whatever the attacker says it is, and traffic can be mirrored, redirected, or blackholed. GUID spoofing is a driver/firmware-level parameter on many adapters. None of this requires exploiting a software defect - the specification permits all of it when the optional protections are not configured.",
+  "remediation": "Config change, and it is cheap relative to the exposure - do it this quarter. Set a non-zero M_Key with lease protection on every port so SMPs from unauthorised nodes are rejected; enable P_Key enforcement on all switch ports facing tenant hosts; assign a distinct, non-default Q_Key per tenant; and pin the subnet manager by priority with SM handover disabled, ideally running OpenSM or NVIDIA UFM on a management node tenants cannot reach. Applying M_Key and P_Key enforcement is pushed through the SM configuration and takes effect on the next sweep - no switch reload and no host reboot, though a botched M_Key rollout can lock you out of your own fabric, so stage it. Audit with ibnetdiscover/saquery that enforcement is actually on, since it silently defaults off.",
+  "references": [
+    "https://www.usenix.org/conference/usenixsecurity21/presentation/rothenberger",
+    "https://netsec.ethz.ch/publications/papers/sec21summer-redmark.pdf",
+    "https://arxiv.org/abs/2202.08080"
+  ],
+  "status": "curated"
+}

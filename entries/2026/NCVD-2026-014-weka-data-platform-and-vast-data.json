@@ -1,0 +1,25 @@
+{
+  "id": "NCVD-2026-014-weka-data-platform-and-vast-data",
+  "cve": null,
+  "aliases": [
+    "WEKA",
+    "VAST Data",
+    "AI-storage advisory blind spot"
+  ],
+  "title": "WEKA Data Platform and VAST Data (published-advisory coverage): Neither WEKA nor VAST Data — two of the most commonly deployed storage platforms under large AI training…",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "WEKA Data Platform and VAST Data (published-advisory coverage)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Neither WEKA nor VAST Data — two of the most commonly deployed storage platforms under large AI training clusters — has a meaningful public CVE record. NVD keyword searches return nothing attributable to either product. As with community SONiC, this is an absence of disclosure rather than an absence of vulnerabilities: both are complex distributed systems with kernel-level clients, RDMA data paths and multi-tenant namespace separation, and comparable platforms (Lustre, Spectrum Scale, Ceph, BeeGFS) all have significant published histories including cross-tenant access-control failures. An operator running WEKA or VAST has no external feed telling them when to patch the layer that holds every tenant's training data.",
+  "attack_vector": "Not a specific vulnerability. The exposure is that these platforms' security posture is visible only to the vendor, so an operator's patch decisions depend entirely on vendor-issued release notes and on asking directly.",
+  "remediation": "No patch. Make it contractual and operational: require the vendor to notify you of security-relevant fixes in release notes and to state a disclosure policy; ask for their most recent third-party penetration-test summary at renewal; keep the storage cluster's management plane on an isolated network; and verify multi-tenant namespace separation yourself with an actual cross-tenant read test rather than trusting the product claim. Track the kernel-client packages these platforms install, since those inherit Linux CVEs on your normal patch cycle even when the platform itself publishes nothing.",
+  "references": [
+    "https://nvd.nist.gov/vuln/search/results?query=weka",
+    "https://nvd.nist.gov/vuln/search/results?query=vast+data"
+  ],
+  "status": "curated"
+}
