@@ -1,0 +1,28 @@
+{
+  "id": "NCVD-2019-007-hpe-sas-ssds-20-models-incl-vo04",
+  "cve": null,
+  "aliases": [
+    "HPE 32,768-hour SSD bug",
+    "HPE bulletin a00092491en_us",
+    "HPD8"
+  ],
+  "title": "HPE SAS SSDs (20 models incl. VO0480JFDGT, VO0960JFDGU, VO1920JFDGV, VO3840JFDHA, MO0400JFFCF-MO3200JFFCL) with firmware prior to HPD8 - 16-bit power-on-hours counter overflow: PHYSICAL /…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "HPE SAS SSDs (20 models incl. VO0480JFDGT, VO0960JFDGU, VO1920JFDGV, VO3840JFDHA, MO0400JFFCF-MO3200JFFCL) with…",
+  "year": "2019",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "PHYSICAL / FLEET-WIDE AVAILABILITY EVENT. At exactly 32,768 power-on hours - about 3 years, 270 days - the drive fails permanently. HPE states that neither the drive nor the data on it can be recovered. The killer property is SYNCHRONY: drives bought and racked together cross the threshold together, so RAID redundancy provides no protection because you lose several members at once. One administrator reported eight drives failing within MINUTES of each other. For a GPU operator this is the whole-cluster failure mode nothing in your HA design accounts for: your redundancy assumes independent failures, and a firmware counter overflow makes them perfectly correlated. Not an attack - a latent time bomb sitting in the fleet with a known detonation date, which is exactly why it belongs in an operator vulnerability database.",
+  "attack_vector": "No attacker. The trigger is elapsed powered-on time, and every affected drive with a similar install date reaches it simultaneously. The exposure is determined entirely by your procurement and racking history - a bulk purchase deployed in one window is the worst case.",
+  "remediation": "Flash to firmware HPD8 or later BEFORE the threshold; after the drive fails there is no recovery and you restore from backup. HPE shipped HPD8 for the first eight models from 22 November 2019 and the remaining twelve in mid-December 2019. The urgent operational step is inventory, not patching: pull power-on hours for every SAS SSD in the fleet (HPE Smart Storage Administrator, or smartctl attribute 9) and sort by hours remaining, because your window is defined by the oldest drives. Across a large estate this is a rolling drain-and-flash campaign of weeks, and it must be sequenced by remaining hours rather than by rack - and critically you must STAGGER it, because flashing a whole batch on one day recreates the correlated-failure problem for the next latent bug. Standing control: alert on power-on-hours thresholds fleet-wide, and deliberately mix drive batches and vendors across redundancy groups so a single firmware defect cannot take out every member of a RAID set at once.",
+  "references": [
+    "https://www.bleepingcomputer.com/news/hardware/hp-warns-that-some-ssd-drives-will-fail-at-32-768-hours-of-use/",
+    "https://support.hpe.com/hpesc/public/docDisplay?docId=emr_na-a00092491en_us"
+  ],
+  "status": "curated",
+  "fleet": {
+    "pain_class": "node-drain"
+  }
+}
