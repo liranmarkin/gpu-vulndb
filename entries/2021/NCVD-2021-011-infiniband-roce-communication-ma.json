@@ -24,5 +24,8 @@
   "status": "curated",
   "tags": [
     "fabric-dos"
-  ]
+  ],
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

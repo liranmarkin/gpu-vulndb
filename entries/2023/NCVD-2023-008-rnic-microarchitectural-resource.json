@@ -25,5 +25,8 @@
   "status": "curated",
   "tags": [
     "tenant-isolation"
-  ]
+  ],
+  "fleet": {
+    "pain_class": "unpatchable / mitigate-only"
+  }
 }

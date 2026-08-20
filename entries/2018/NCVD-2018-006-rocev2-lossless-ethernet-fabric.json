@@ -26,5 +26,8 @@
   "status": "curated",
   "tags": [
     "fabric-dos"
-  ]
+  ],
+  "fleet": {
+    "pain_class": "firmware-flash"
+  }
 }

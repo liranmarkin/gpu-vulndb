@@ -26,5 +26,8 @@
   "status": "curated",
   "tags": [
     "tenant-isolation"
-  ]
+  ],
+  "fleet": {
+    "pain_class": "node-reboot"
+  }
 }
