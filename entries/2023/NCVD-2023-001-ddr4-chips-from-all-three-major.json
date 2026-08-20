@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2023-001-ddr4-chips-from-all-three-major",
+  "cve": null,
+  "aliases": [
+    "RowPress"
+  ],
+  "title": "DDR4 chips from all three major DRAM manufacturers; worsens as process nodes shrink: A different read-disturbance mechanism from Rowhammer: instead of repeatedly opening and closing a row, hold…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "DDR4 chips from all three major DRAM manufacturers; worsens as process nodes shrink",
+  "year": "2023",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "A different read-disturbance mechanism from Rowhammer: instead of repeatedly opening and closing a row, hold it open. That cuts the activation count needed for a flip by one to two orders of magnitude, and in the extreme a single activation of an adjacent row suffices. The operator consequence is that activation-counting mitigations - which is what essentially every deployed Rowhammer defence is - can be under threshold and still let flips through. Anything you were told about 'activations per refresh window' as a safety argument needs re-deriving.",
+  "attack_vector": "Unprivileged local code on a shared host, demonstrated on a real DDR4 system that already had Rowhammer protection enabled. Sharing a memory controller with the victim is the only requirement.",
+  "remediation": "Not patchable. Mitigations have to be redesigned to bound how long a row stays open, not just how often it is activated; the authors show existing Rowhammer defences can be adapted at low additional cost, but that lands in future memory controllers and DRAM, not in your installed base. For now the honest answer to a customer asking 'is our memory isolated from the tenant next door' is no, and the only lever you control is not putting them there.",
+  "references": [
+    "https://arxiv.org/abs/2306.17061",
+    "https://github.com/CMU-SAFARI/RowPress"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "NCVD-2026-024-nvme-of-fabric-authentication-as",
+  "cve": null,
+  "aliases": [],
+  "title": "NVMe-oF fabric authentication as deployed - host NQN allowlisting on Linux nvmet, SPDK and most storage appliances: There is no CVE for this because it is the specification working as designed…",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "NVMe-oF fabric authentication as deployed - host NQN allowlisting on Linux nvmet, SPDK and most storage appliances",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "There is no CVE for this because it is the specification working as designed, and it is the single largest tenant-isolation gap in NVMe-oF as it is actually deployed. Outside of in-band DH-HMAC-CHAP (NVMe TP-8006, Linux 6.0+) and NVMe/TCP TLS (Linux 6.7+), the only thing binding a namespace to a tenant is the host NQN the initiator asserts in its Connect command. The NQN is a self-declared string. Any host that can reach the target's transport port can claim another tenant's NQN and be granted that tenant's namespaces - full read and write of another customer's dataset or checkpoint volume, with no exploit, no memory corruption and nothing anomalous in the target logs. Most neocloud NVMe-oF deployments run exactly this way because auth and TLS are off by default and cost throughput.",
+  "attack_vector": "Any host with IP or RDMA reachability to the target's transport port (TCP 4420 or the RDMA CM port) - a tenant bare-metal node, a compromised BMC bridged onto the storage VLAN, or anything that lands on the storage network. The attacker needs to learn or guess the victim's host NQN, which is usually derived from a predictable pattern or readable from orchestration metadata.",
+  "remediation": "Not patchable - this is a configuration and architecture decision. Enable DH-HMAC-CHAP in-band authentication on every subsystem with per-host keys, provisioned by the same system that provisions the namespace, and enable NVMe/TCP TLS where the kernel and target support it. Both cost CPU and some latency, which is why they are skipped; measure it rather than assuming. Independently: put the storage fabric on its own VLAN/VRF with per-initiator ACLs so an unknown host cannot open a connection at all, and treat host NQNs as secrets rather than as inventory labels. Note that turning on DH-HMAC-CHAP exposes you to the nvmet-auth parsing bugs elsewhere in this database, so patch the target kernel in the same change.",
+  "references": [
+    "https://nvmexpress.org/specifications/",
+    "https://docs.kernel.org/admin-guide/nvme-multipath.html"
+  ],
+  "status": "curated"
+}

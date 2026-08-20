@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2021-002-ddr4-dram-with-in-dram-trr-a-cou",
+  "cve": null,
+  "aliases": [
+    "Half-Double"
+  ],
+  "title": "DDR4 DRAM with in-DRAM TRR; a coupling effect that reaches rows at distance two rather than immediate neighbours: Google showed Rowhammer coupling is not confined to adjacent rows - hammering a…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "DDR4 DRAM with in-DRAM TRR; a coupling effect that reaches rows at distance two rather than immediate neighbours",
+  "year": "2021",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Google showed Rowhammer coupling is not confined to adjacent rows - hammering a row disturbs rows two away, and the mitigation logic that only watches immediate neighbours refreshes exactly the wrong rows. Operationally this means the TRR generation your DIMM vendor sold as a fix has a structural blind spot rather than a tuning problem, and mitigations designed around distance-one coupling need redesign. Same downstream consequences as any Rowhammer primitive: page-table corruption to host escape, or silent corruption of a co-tenant's data with no error signalled.",
+  "attack_vector": "Unprivileged local code sharing a memory controller with the victim. No CVE was assigned because this is a property of the DRAM, not a defect in a shippable product.",
+  "remediation": "Nothing you can install. The industry answer is Refresh Management (RFM) in the DDR5 spec plus revised in-DRAM tracking, which means new DIMMs and a memory-controller generation that drives RFM - capex on a refresh cycle, not a patch window. In the meantime: raise the refresh rate where BIOS allows it, and treat memory-controller sharing between untrusted tenants as a policy you have chosen to accept rather than a boundary you have.",
+  "references": [
+    "https://security.googleblog.com/2021/05/introducing-half-double-new-hammering.html",
+    "https://github.com/google/hammer-kit"
+  ],
+  "status": "curated"
+}

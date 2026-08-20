@@ -1,0 +1,25 @@
+{
+  "id": "NCVD-2021-001-amd-platform-secure-boot-psb-oem",
+  "cve": null,
+  "aliases": [
+    "PSB left unfused",
+    "AMD Platform Secure Boot not enabled"
+  ],
+  "title": "AMD Platform Secure Boot (PSB) OEM key fusing on EPYC server boards: PSB is the fuse-backed root of trust that makes the PSP verify the OEM's BIOS signature before the x86 cores…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "AMD Platform Secure Boot (PSB) OEM key fusing on EPYC server boards",
+  "year": "2021",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "PSB is the fuse-backed root of trust that makes the PSP verify the OEM's BIOS signature before the x86 cores ever start. It is not enabled by default - the OEM has to burn their key hash into one-time-programmable fuses at manufacture, and a large fraction of shipped EPYC boards, including whitebox and ODM boards common in neocloud builds, arrive unfused. On an unfused board every firmware persistence flaw in this database becomes trivially exploitable: modified BIOS or PSP firmware boots without complaint, and a bare-metal tenant can leave something behind that owns every customer who follows. There is no CVE because it is a configuration state, not a bug, which is exactly why nobody checks it.",
+  "attack_vector": "Anyone who can write the SPI flash - a bare-metal tenant with ring 0, a supply-chain touch point between the factory and your rack, or an attacker chaining one of the SPI protection bypasses in this set. On an unfused board no signature check stands in the way.",
+  "remediation": "Verify PSB status at hardware intake, before the node ever enters the fleet - it is readable through the PSP mailbox and via open tooling (psb_status in the fwupd/amd-psb tooling family). Fusing is IRREVERSIBLE and is the OEM's action, not yours: you cannot fuse it yourself after the fact in most designs, and a wrong fuse bricks the board. So this is a procurement requirement - make 'PSB fused with the OEM key' a line item in your server RFP and reject boards that ship unfused. For hardware already deployed unfused, compensate with flash write protection, verified-boot measurement of the SPI image between tenancies, and not selling bare metal on those SKUs.",
+  "references": [
+    "https://www.amd.com/system/files/documents/amd-security-white-paper.pdf",
+    "https://github.com/fwupd/fwupd",
+    "https://www.amd.com/en/corporate/product-security"
+  ],
+  "status": "curated"
+}

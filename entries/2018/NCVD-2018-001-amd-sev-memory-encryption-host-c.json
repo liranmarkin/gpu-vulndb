@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2018-001-amd-sev-memory-encryption-host-c",
+  "cve": null,
+  "aliases": [
+    "SEVered"
+  ],
+  "title": "AMD SEV memory encryption - host-controlled guest physical to host physical mapping: The original demonstration that SEV does not protect against the host: the hypervisor remaps a guest's…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "AMD SEV memory encryption - host-controlled guest physical to host physical mapping",
+  "year": "2018",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "The original demonstration that SEV does not protect against the host: the hypervisor remaps a guest's physical pages while the guest is servicing a network request, and reads the plaintext of the entire guest memory out of the responses the guest itself sends back. No CVE was ever assigned - AMD's position was that SEV was not designed to resist this - which is why it is easy to miss when auditing. It matters historically and commercially: it is the reason SEV-ES and then SEV-SNP exist, and it means any 'confidential computing' claim made on plain SEV hardware was never true against the operator.",
+  "attack_vector": "Malicious or compromised hypervisor against a SEV guest, using ordinary VMM control over second-level page tables plus any network service running in the guest. No exploit primitive needed beyond normal host capabilities.",
+  "remediation": "UNPATCHABLE on SEV. The architectural fix is SEV-SNP with the Reverse Map Table (Milan and later) and it is a hardware generation, not a firmware update. Practical guidance for an operator: do not market plain SEV or SEV-ES as protection from yourself, check that SNP is actually enabled rather than merely supported on the SKU, and make sure your attestation flow proves SNP is on rather than proving only that the CPU could do it.",
+  "references": [
+    "https://www.amd.com/en/developer/sev.html",
+    "https://arxiv.org/abs/1805.09604"
+  ],
+  "status": "curated"
+}

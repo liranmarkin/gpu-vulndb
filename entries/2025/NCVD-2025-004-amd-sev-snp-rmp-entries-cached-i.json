@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2025-004-amd-sev-snp-rmp-entries-cached-i",
+  "cve": null,
+  "aliases": [
+    "AMD-SB-3036"
+  ],
+  "title": "AMD SEV-SNP - RMP entries cached in L1D/L2 leaking physical address bits: MULTI-TENANT ISOLATION: Reverse-map table entries cached in L1D and L2 leak up to six physical address bits…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "AMD SEV-SNP - RMP entries cached in L1D/L2 leaking physical address bits",
+  "year": "2025",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION: Reverse-map table entries cached in L1D and L2 leak up to six physical address bits to an **unprivileged** process. AMD and the researchers agree there is no immediate impact, and six bits is not a compromise on its own - but physical address bits are exactly the primitive that makes Rowhammer, cache-eviction-set construction and DMA targeting practical, so it is a building block for other people's attacks rather than an attack itself.",
+  "attack_vector": "Local, unprivileged - notably lower than the rest of the RMP family, which mostly needs hypervisor privilege.",
+  "remediation": "**No fix planned.** Nothing to install and nothing to reboot for. Treat it as a standing reminder that side-channel primitives accumulate: it lowers the cost of the next attack against your SNP hosts without ever appearing in a patch queue. Track AMD-SB-3036 in case AMD's assessment changes.",
+  "references": [
+    "https://www.amd.com/en/resources/product-security/bulletin/amd-sb-3036.html",
+    "https://www.amd.com/en/resources/product-security.html"
+  ],
+  "status": "curated"
+}

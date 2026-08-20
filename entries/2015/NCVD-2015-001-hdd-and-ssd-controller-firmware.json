@@ -1,0 +1,26 @@
+{
+  "id": "NCVD-2015-001-hdd-and-ssd-controller-firmware",
+  "cve": null,
+  "aliases": [
+    "Equation Group",
+    "nls_933w.dll",
+    "GrayFish",
+    "drive firmware implant"
+  ],
+  "title": "HDD and SSD controller firmware as a persistence surface - demonstrated against Seagate, Western Digital, Toshiba, Maxtor and IBM drives: CLASS ENTRY. Kaspersky documented a module that reprograms…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "HDD and SSD controller firmware as a persistence surface - demonstrated against Seagate, Western Digital, Toshiba…",
+  "year": "2015",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "CLASS ENTRY. Kaspersky documented a module that reprograms the microcontroller firmware of drives from at least five major vendors - described as the most powerful tool in that actor's arsenal. Once the implant is in controller firmware it runs below the operating system, survives reformatting and reimaging because those operations only rewrite the data area and never touch the microcontroller, and even reflashing does not reliably remove it: some firmware regions are not covered by an update, and the drive may report it is already on the latest version and refuse. TOP TENANT-HANDOFF RISK IN THIS CATEGORY. A bare-metal tenant with root has, by definition, the host-side access needed to attempt a firmware write over the standard command set. If it lands, your entire reclaim process - wipe, reimage, revalidate, re-rent - is theatre, because the malicious code is in a place none of those steps inspect. The implant sees every block the next tenant writes, and can lie about sanitize, lock state and firmware version to every tool you own.",
+  "attack_vector": "A tenant with root on the bare-metal host issuing firmware-write commands over the standard storage admin command set - no physical access needed. Also reachable by anyone in the supply chain or the RMA/decommission path who has the drive in hand. Detection is the hard part: a compromised controller is the thing reporting its own firmware version to you, so host-side attestation of drive firmware is self-referential and unreliable.",
+  "remediation": "Assume UNPATCHABLE and UNVERIFIABLE once suspected - you cannot trust a controller's self-report of its own integrity. Controls are preventative and procedural. (1) Deny tenants the ability to write drive firmware at all: block firmware-download/commit and vendor-specific pass-through commands at the hypervisor, IOMMU/VFIO policy or storage-controller layer, and do not hand tenants unfiltered raw block devices where the workload does not require it. (2) Prefer drives that enforce signed firmware, and confirm the vendor's signing story in procurement rather than assuming it. (3) Record expected firmware version per drive serial in a system the host cannot edit, and alert on any change - especially a version that goes backwards. (4) For high-sensitivity tenancies, retire local media at end of tenancy rather than recycling it into the pool - physical destruction is the only remediation with a guarantee attached, and it costs one drive versus an undetectable persistent foothold across every future customer on that node. (5) Push the risk off the local drive entirely: keep tenant data on network storage with operator-held encryption so that a compromised local controller sees only ciphertext and transient scratch.",
+  "references": [
+    "https://securelist.com/equation-the-death-star-of-malware-galaxy/68750/",
+    "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-88r1.pdf"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "NCVD-2018-004-microsoft-bitlocker-windows-edri",
+  "cve": null,
+  "aliases": [
+    "ADV180028",
+    "BitLocker hardware encryption trusted by default",
+    "eDrive offload"
+  ],
+  "title": "Microsoft BitLocker / Windows eDrive hardware-encryption offload on any TCG Opal or IEEE-1667 self-encrypting drive: BitLocker's default was to hand encryption to the drive whenever the drive…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Microsoft BitLocker / Windows eDrive hardware-encryption offload on any TCG Opal or IEEE-1667 self-encrypting drive",
+  "year": "2018",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "BitLocker's default was to hand encryption to the drive whenever the drive claimed to support it, and to then skip software encryption entirely. Every SED firmware weakness therefore became a full BitLocker bypass, silently, on machines whose operators believed they were encrypted. For a GPU operator this is the general lesson in its sharpest form: a self-attested hardware security claim was accepted with no verification, so the whole encryption posture of the fleet inherited the weakest drive firmware in it. BREAKS TENANT HANDOFF wherever Windows bare-metal nodes are re-let, and it fails silently - the management console reports the volume as encrypted and compliant the entire time.",
+  "attack_vector": "Anyone who obtains the physical drive from a Windows node that used hardware offload - next tenant, RMA path, decommission channel. The attacker exploits whatever SED firmware flaw the drive has; BitLocker simply removed the software layer that would have stopped them.",
+  "remediation": "Policy change, no firmware needed, but a full re-encrypt: set Group Policy 'Configure use of hardware-based encryption for fixed/operating system data drives' to Disabled, then fully decrypt and re-encrypt each volume - toggling the policy alone does NOT re-encrypt already-provisioned disks, which is the step operators most often miss and which leaves the fleet reporting compliant while still using drive crypto. Verify per host with 'manage-bde -status' and confirm the encryption method is a software AES-XTS value, not 'Hardware Encryption'. Budget a full re-encrypt window per node; on a large Windows bare-metal estate this is a rolling multi-week drain-and-re-image campaign, and there is no way to sample it - a node you did not re-encrypt is a node still relying on the drive.",
+  "references": [
+    "https://msrc.microsoft.com/update-guide/vulnerability/ADV180028",
+    "https://kb.cert.org/vuls/id/395981",
+    "https://www.ru.nl/en/research/research-news/radboud-university-researchers-discover-security-flaw-in-ssd-hard-drives"
+  ],
+  "status": "curated"
+}

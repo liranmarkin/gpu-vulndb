@@ -1,0 +1,25 @@
+{
+  "id": "NCVD-2020-004-hpe-sas-ssds-ek0800jvypn-eo1600j",
+  "cve": null,
+  "aliases": [
+    "HPE 40,000-hour SSD bug",
+    "HPE bulletin a00097382en_us",
+    "HPD7"
+  ],
+  "title": "HPE SAS SSDs EK0800JVYPN, EO1600JVYPP, MK0800JVYPQ, MO1600JVYPR (800GB/1.6TB 12G SAS) with firmware prior to HPD7: PHYSICAL / FLEET-WIDE AVAILABILITY EVENT, and the second one in four months…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "HPE SAS SSDs EK0800JVYPN, EO1600JVYPP, MK0800JVYPQ, MO1600JVYPR (800GB/1.6TB 12G SAS) with firmware prior to HPD7",
+  "year": "2020",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "PHYSICAL / FLEET-WIDE AVAILABILITY EVENT, and the second one in four months - which is the real finding. At exactly 40,000 power-on hours, roughly 4.6 years, these drives fail permanently and HPE states that neither the data nor the drive can be recovered. Same correlated-failure property as the 32,768-hour bug: co-installed drives die together, so RAID fault tolerance is exceeded and the array goes with them. Affects HPE ProLiant, Synergy, Apollo 4200 and StoreEasy platforms - general-purpose server and storage hardware of exactly the kind that gets repurposed into GPU and AI build-outs. That two independent counter-overflow bombs surfaced in one vendor's SAS SSD line within months tells you this is a recurring firmware-engineering failure mode, not a freak event.",
+  "attack_vector": "No attacker. Elapsed powered-on hours, hitting every drive from the same deployment batch at the same moment. HPE projected the first failures would begin around October 2020.",
+  "remediation": "Flash to HPD7 or later before the threshold; HPE released it on 20 March 2020 with VMware ESXi, Windows and Linux packages. Post-failure there is no recovery - restore from backup. As with the 32,768-hour bug the first action is a fleet-wide power-on-hours audit (HPE Smart Storage Administrator or smartctl attribute 9) to find which drives are closest to the line, then a staggered rolling drain-and-flash sequenced by hours remaining rather than by rack. Make the standing controls permanent rather than treating this as a one-off: monitor power-on hours as a first-class fleet metric with alerting well ahead of any known threshold, subscribe to drive-vendor firmware bulletins as an operational feed, and deliberately mix procurement batches and vendors across redundancy groups so no single firmware defect can reach every member of an array simultaneously.",
+  "references": [
+    "https://www.bleepingcomputer.com/news/hardware/hpe-warns-of-new-bug-that-kills-ssd-drives-after-40-000-hours/",
+    "https://support.hpe.com/hpesc/public/docDisplay?docId=emr_na-a00097382en_us"
+  ],
+  "status": "curated"
+}

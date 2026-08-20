@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2024-002-amd-zen-2-zen-3-and-zen-4-platfo",
+  "cve": null,
+  "aliases": [
+    "ZenHammer"
+  ],
+  "title": "AMD Zen 2, Zen 3 and Zen 4 platforms with DDR4 (7/10 Zen 2 and 6/10 Zen 3 devices flipped) and DDR5 (1/10 devices): Removes the 'we run EPYC, Rowhammer research is all Intel' excuse. ETH Zurich…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "AMD Zen 2, Zen 3 and Zen 4 platforms with DDR4 (7/10 Zen 2 and 6/10 Zen 3 devices flipped) and DDR5 (1/10 devices)",
+  "year": "2024",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Removes the 'we run EPYC, Rowhammer research is all Intel' excuse. ETH Zurich reverse-engineered AMD's DRAM address mapping and got bit flips on Zen 2/3/4, then demonstrated the standard exploit chain - page-table manipulation, RSA key corruption and sudo privilege escalation. It is also the first public DDR5 bit flip on a commodity system. For a GPU cloud this matters because EPYC is the host CPU under most HGX and 8-way GPU nodes: the box holding your control plane, your tenant credentials and every tenant's data on its way to the GPUs is hammerable from a guest.",
+  "attack_vector": "Unprivileged local code on an AMD Zen 2/3/4 host sharing DRAM with the victim. A container tenant or VM on the CPU side of a GPU node is sufficient; no GPU access needed.",
+  "remediation": "No vendor patch. The DDR4 case is the same non-answer as TRRespass and Blacksmith: refresh-rate increase where BIOS exposes it, or do not co-tenant behind one memory controller. The DDR5 result is a single device out of ten, so DDR5 EPYC platforms are better but not clear. Before you argue you are safe, run the published ZenHammer fuzzer against a sample of your own DIMM SKUs - vendor and date code determine your exposure far more than the CPU does, and this is the cheapest ground truth available.",
+  "references": [
+    "https://comsec.ethz.ch/research/dram/zenhammer/",
+    "https://github.com/comsec-group/zenhammer"
+  ],
+  "status": "curated"
+}

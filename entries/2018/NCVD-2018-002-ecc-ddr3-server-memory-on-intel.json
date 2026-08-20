@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2018-002-ecc-ddr3-server-memory-on-intel",
+  "cve": null,
+  "aliases": [
+    "ECCploit"
+  ],
+  "title": "ECC DDR3 server memory on Intel Xeon (Haswell, Sandy Bridge) and AMD Opteron platforms; the technique generalises to later ECC DRAM: ECC is the answer most operators give when asked about…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "ECC DDR3 server memory on Intel Xeon (Haswell, Sandy Bridge) and AMD Opteron platforms; the technique generalises to…",
+  "year": "2018",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "ECC is the answer most operators give when asked about Rowhammer, and ECCploit is why that answer is wrong. Correcting a flip takes measurably longer than a clean read, so the attacker gets a timing side channel that tells them exactly which bits they flipped - turning ECC from a defence into a feedback oracle for template building. With that feedback they place three flips in one word, which ECC neither corrects nor detects, producing silent corruption. For an AI datacenter this is the nastiest variant: the corruption is by construction invisible to the machine-check path, so your fleet health dashboard shows green while a tenant's memory is being rewritten.",
+  "attack_vector": "Unprivileged local code on an ECC server sharing DRAM with the victim. Attack time was about 32 minutes when corrections were directly observable and up to a week in noisy production-like conditions - slow, but a long-running batch tenant has that time.",
+  "remediation": "Do not treat ECC as a Rowhammer mitigation; treat it as error reporting. Make sure the reporting is actually wired up - EDAC or the equivalent collecting correctable-error counts per DIMM, exported to your monitoring, with alerting on rate rather than absolute count, since a burst of corrections on one rank is the strongest hammering signal you will get. Confirm firmware and OS handle uncorrectable errors by isolating rather than silently continuing. Retire DIMM SKUs that show elevated correctable-error rates. The structural fix is the same as every other entry here: do not share a memory controller between untrusted tenants.",
+  "references": [
+    "https://www.vusec.net/projects/eccploit/",
+    "https://download.vusec.net/papers/eccploit_sp19.pdf"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2026-018-rack-pdu-and-ups-management-esta",
+  "cve": null,
+  "aliases": [
+    "shared PDU/UPS credentials",
+    "commissioning credential reuse"
+  ],
+  "title": "Rack PDU and UPS management estates as a class (all vendors): PHYSICAL, and the most common real-world finding in this whole layer. PDU and UPS management interfaces are…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Rack PDU and UPS management estates as a class (all vendors)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "PHYSICAL, and the most common real-world finding in this whole layer. PDU and UPS management interfaces are almost universally commissioned with a single shared credential set, applied by whoever racked the gear, never rotated, and documented in a spreadsheet or a runbook. There is no per-device identity, no rotation, and no logging that would show misuse. Anyone who obtains that one credential - a departing contractor, a leaked runbook, one of the many device-side credential-disclosure CVEs listed above - can switch outlets across the entire hall. No CVE will ever be assigned to this, and it is more likely to be used against you than any of the memory-corruption bugs in this file.",
+  "attack_vector": "Anyone who reaches the PDU/UPS management network with the shared credential. On many builds that network is the same one the BMCs sit on, which is the same one a tenant with host root can sometimes see.",
+  "remediation": "Not a patch. Per-device credentials issued from a secret manager, PDU management interfaces on a VLAN unreachable from any tenant-facing network or from the BMC network, outlet switching disabled on PDUs that do not need it, and authentication logs from power devices shipped somewhere you actually read. Doing this across an existing hall is a few engineer-weeks and touches every rack, which is why it does not get done.",
+  "references": [
+    "https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-060a"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "NCVD-2019-001-pcie-address-translation-service",
+  "cve": null,
+  "aliases": [
+    "Thunderclap",
+    "PCIe ATS translated-request trust",
+    "IOMMU bypass via Address Translation Services"
+  ],
+  "title": "PCIe Address Translation Services on hosts using an IOMMU/SMMU for device isolation - affects any DMA-capable endpoint the host trusts, including GPUs, NICs and DPUs: The IOMMU/SMMU is the entire…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "PCIe Address Translation Services on hosts using an IOMMU/SMMU for device isolation - affects any DMA-capable…",
+  "year": "2019",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "The IOMMU/SMMU is the entire basis for saying a passed-through GPU or NIC cannot read host or other-tenant memory. ATS undermines it by design: a device marked ATS-capable is trusted to have already translated an address, and the root complex forwards those requests without re-checking them. A malicious or compromised endpoint simply sets the translated bit and issues DMA at any physical address it likes. Thunderclap showed the broader problem too - even without ATS, real OS IOMMU policies map far more than the buffer in question, leaving windows onto adjacent kernel memory. In a GPU-passthrough fleet the consequence is a tenant with device control reading host memory and other tenants' data, which defeats the isolation model the whole product rests on.",
+  "attack_vector": "An attacker who controls a DMA-capable PCIe device: a tenant with GPU or NIC passthrough who can flash or exploit device firmware, an attacker with physical access to a slot or an external PCIe/Thunderbolt port, or a supply-chain-modified card. Not reachable from software alone on a well-configured host - the entry point is device control.",
+  "remediation": "There is no single patch; this is configuration you must actively verify, and most fleets have never checked. Concretely: disable ATS unless a workload genuinely needs it (`pci=noats` on Linux, or the equivalent BIOS switch), and never leave ATS enabled for a device assigned to a tenant. Confirm PCIe ACS is enabled on every upstream port and switch so peer-to-peer traffic between passed-through devices is forced up through the IOMMU rather than routed directly - many server BIOSes ship ACS off, and several 'GPU peer-to-peer performance' tuning guides tell you to turn it off, which silently deletes the isolation boundary between two tenants' GPUs on the same switch. Verify per-device IOMMU groups are not lumping unrelated functions together. Then decide deliberately whether the peer-to-peer bandwidth you gain by disabling ACS is worth the tenant-isolation guarantee you lose, and write that decision down.",
+  "references": [
+    "http://thunderclap.io/",
+    "http://thunderclap.io/thunderclap-paper-ndss2019.pdf",
+    "https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html"
+  ],
+  "status": "curated"
+}

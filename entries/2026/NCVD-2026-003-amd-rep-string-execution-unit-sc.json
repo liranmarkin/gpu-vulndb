@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2026-003-amd-rep-string-execution-unit-sc",
+  "cve": null,
+  "aliases": [
+    "AMD-SB-7069"
+  ],
+  "title": "AMD - REP-string execution unit scheduler contention side channel: MULTI-TENANT ISOLATION: A newer variant of the SQUIP scheduler-contention channel, this time reached through…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "AMD - REP-string execution unit scheduler contention side channel",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION: A newer variant of the SQUIP scheduler-contention channel, this time reached through REP-string instructions. Same shape as SQUIP - contention on execution-unit scheduler queues observable from a co-resident thread - and the same operator consequence: cross-tenant leakage that no software isolation boundary sees.",
+  "attack_vector": "Local, requires co-residency with the victim on the same physical core.",
+  "remediation": "**No fix.** AMD points at existing best practices - constant-time, secret-independent code - which you cannot impose on a tenant's workload. The controls that actually work are yours: do not co-schedule distinct trust domains on sibling SMT threads, or disable SMT on mixed-tenancy nodes. Both are scheduling decisions; disabling SMT needs a reboot, whole-core allocation policy needs a kubelet restart and a drain. On a GPU fleet where the CPU is rarely the bottleneck, the throughput cost is smaller than it looks.",
+  "references": [
+    "https://www.amd.com/en/resources/product-security/bulletin/amd-sb-7069.html",
+    "https://www.amd.com/en/resources/product-security.html"
+  ],
+  "status": "curated"
+}

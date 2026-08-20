@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2026-019-leased-colocation-facility-infra",
+  "cve": null,
+  "aliases": [
+    "facility VLAN ownership gap",
+    "colo landlord equipment"
+  ],
+  "title": "Leased colocation facility infrastructure (power, cooling, access control) as a class: PHYSICAL. Most GPU operators lease space rather than own buildings, which means the UPS, switchgear, PDU…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Leased colocation facility infrastructure (power, cooling, access control) as a class",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "PHYSICAL. Most GPU operators lease space rather than own buildings, which means the UPS, switchgear, PDU upstream feeds, CRAH units and access control that determine whether their GPUs stay powered and cooled are the landlord's equipment, on the landlord's network, patched on the landlord's schedule - which is frequently never, because facility gear is treated as a fixed asset rather than as software. Every CVE in this file is therefore, for many operators, a vulnerability they carry the consequences of and have no authority to fix. An availability event here takes out a hall regardless of how well the compute plane is run.",
+  "attack_vector": "Whoever can reach the landlord's facility network - which typically includes the landlord's own vendors, remote-monitoring contractors, and any building-management remote access path the operator has never seen.",
+  "remediation": "Contractual, not technical. Require in the colocation agreement: a current inventory of facility control equipment with firmware versions, evidence of a patch cadence, segmentation of the facility network from any operator-reachable network, notification of remote-access paths granted to third parties, and the right to audit. Then verify rather than trust. Where a landlord will not commit, price the risk into the site decision - this belongs in site selection, not in the security backlog.",
+  "references": [
+    "https://www.cisa.gov/topics/critical-infrastructure-security-and-resilience"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "NCVD-2021-005-intel-cpus-with-sgx-attacked-ove",
+  "cve": null,
+  "aliases": [
+    "VoltPillager",
+    "hardware undervolting attack on SGX"
+  ],
+  "title": "Intel CPUs with SGX, attacked over the SVID serial bus between the voltage regulator and the CPU package: Re-runs the Plundervolt fault injection using a cheap external microcontroller wired to…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Intel CPUs with SGX, attacked over the SVID serial bus between the voltage regulator and the CPU package",
+  "year": "2021",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Re-runs the Plundervolt fault injection using a cheap external microcontroller wired to the motherboard's voltage-regulator bus, so it works on hosts that have already applied the Plundervolt microcode fix - that fix only disabled the software MSR, it did not stop voltage manipulation reaching the package. Recovers keys from enclaves and corrupts enclave computation. Intel's position is that physical attacks are outside the SGX threat model, so there is no patch and there will not be one. The operator consequence is concrete: if an attacker can put hands on the chassis, SGX and by extension the confidential-computing guarantee on that machine are void.",
+  "attack_vector": "Physical access to the motherboard, roughly 30 dollars of hardware, and a few minutes to attach to the SVID bus. Relevant threat models: colocation facilities where you do not control the cage, hardware in transit, decommissioned or RMA'd nodes, hosting partners, and anyone with datacenter floor access. Not reachable remotely.",
+  "remediation": "UNPATCHABLE by design - Intel classifies it as out of scope, so there is no microcode, BIOS or kernel fix to deploy. Mitigation is entirely physical and procedural: chassis intrusion detection wired into the BMC and actually alarmed, tamper-evident seals, controlled cage access with audited entry logs, and refusing to run confidential workloads on hardware whose physical custody you cannot vouch for. If you sell confidential compute, this is a contractual and facility-security question, not an engineering one - and it should shape which sites you are willing to place attested workloads in.",
+  "references": [
+    "https://www.usenix.org/conference/usenixsecurity21/presentation/chen-zitai",
+    "https://github.com/zt-chen/voltpillager"
+  ],
+  "status": "curated"
+}

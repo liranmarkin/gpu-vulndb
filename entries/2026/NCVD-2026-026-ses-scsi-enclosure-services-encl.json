@@ -1,0 +1,22 @@
+{
+  "id": "NCVD-2026-026-ses-scsi-enclosure-services-encl",
+  "cve": null,
+  "aliases": [],
+  "title": "SES (SCSI Enclosure Services) enclosure management on shared SAS JBODs and expanders: SES is how a host controls a drive enclosure - slot power, locate LEDs, fan and power-supply state - and it…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "SES (SCSI Enclosure Services) enclosure management on shared SAS JBODs and expanders",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "SES is how a host controls a drive enclosure - slot power, locate LEDs, fan and power-supply state - and it has no authentication or authorization of any kind. In a shared JBOD or a multi-initiator SAS topology, every attached host can issue SES commands to the enclosure, including commands affecting slots that belong to another host's drives. An operator running a dense shared-enclosure build therefore has a path where one tenant's node can power-cycle or spin down drives serving a different tenant, or induce enough enclosure-level disruption to fail arrays, with nothing more exotic than a standard SCSI command through /dev/sg. The kernel-side ses driver has also had its own out-of-bounds bugs (CVE-2023-53675, CVE-2023-53431) that make malformed enclosure descriptors a host-crash primitive, which matters when the enclosure firmware is the thing supplying those descriptors.",
+  "attack_vector": "Local root on any host attached to the shared SAS fabric, issuing SES commands through the generic SCSI interface. Requires no privileged position beyond being one of the initiators the enclosure already trusts - which is the design.",
+  "remediation": "Not patchable at the protocol level; SES has no notion of an authenticated initiator. Mitigations are topological: use SAS zoning on the expander so each host only sees its own drive groups and the enclosure services it needs, avoid multi-tenant shared JBODs entirely for bare-metal rentals, and keep enclosure firmware current for the expander-side parsing bugs. Patch the host kernel for the ses driver out-of-bounds issues so a misbehaving or malicious enclosure cannot crash the initiator. Treat SAS zoning configuration as tenant-isolation configuration and audit it the way you would audit FC zoning.",
+  "references": [
+    "https://nvd.nist.gov/vuln/detail/CVE-2023-53675",
+    "https://nvd.nist.gov/vuln/detail/CVE-2023-53431",
+    "https://www.t10.org/"
+  ],
+  "status": "curated"
+}
