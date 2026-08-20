@@ -103,16 +103,21 @@ def bucket(score):
     return "unscored"
 
 
-def truncate_words(text, limit):
-    if len(text) <= limit:
-        return text
-    return text[:limit].rsplit(" ", 1)[0].rstrip(" ,;:-") + "…"
+TITLE_MAX = 120
 
 
 def make_title(component, impact):
-    head = re.split(r"\s*(?:→|->|;)\s*", (impact or "").strip())[0].strip().rstrip(".")
-    head = truncate_words(head, 110)
-    return f"{component}: {head}" if head else component
+    """One line, at most TITLE_MAX chars, no trailing ellipsis - the schema enforces both.
+
+    An ellipsis would promise detail the title cannot deliver; the full text is in `impact`
+    either way, so the title is cut at a word boundary and simply ends there.
+    """
+    head = re.split(r"\s*(?:→|->|;)\s*", (impact or "").strip())[0].strip().rstrip(". ")
+    title = f"{component}: {head}" if head else component
+
+    if len(title) > TITLE_MAX:
+        title = title[:TITLE_MAX].rsplit(" ", 1)[0]
+    return title.rstrip(" ,;:-…") or component[:TITLE_MAX]
 
 
 def slugify(text, maxlen=32):

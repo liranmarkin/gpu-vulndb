@@ -47,10 +47,10 @@ It is built for the people who operate this stack: GPU clouds, colocation datace
 | --- | --- | ---: |
 | `ai-serving` | Inference servers, training frameworks, model formats | 254 |
 | `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 380 |
-| `control-plane` | Cluster management, storage, CI/CD, observability | 193 |
-| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 317 |
-| `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,170 |
-| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,136 |
+| `control-plane` | Cluster management, storage, CI/CD, observability | 253 |
+| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 324 |
+| `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,176 |
+| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,179 |
 
 **Design-level weaknesses that will never get a CVE are in scope too.** Unauthenticated IPMI over LAN, RDMA fabrics with no cryptographic binding between a packet and its connection, physical DRAM interposers that both Intel and AMD classify as out of scope - these carry an `NCVD-` id. There are 106 of them, and they are frequently a bigger problem than anything with a CVSS score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which is a large part of why this one exists.
 
@@ -58,16 +58,16 @@ Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undi
 
 ## 💸 Cost to remediate
 
-The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,090 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
+The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,138 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
 
 | Class | Entries | What it means |
 | --- | ---: | --- |
-| `hot-patch` | 50 | Fixable without interrupting workloads |
-| `daemon-restart` | 54 | Service restart on affected nodes |
+| `hot-patch` | 52 | Fixable without interrupting workloads |
+| `daemon-restart` | 61 | Service restart on affected nodes |
 | `node-drain` | 160 | Tenant workloads evicted from each node |
-| `node-reboot` | 1,163 | Full reboot of each affected node |
+| `node-reboot` | 1,187 | Full reboot of each affected node |
 | `microcode + reboot` | 54 | Microcode update and a reboot |
-| `firmware-flash` | 510 | Firmware flash, usually with the node out of service |
+| `firmware-flash` | 525 | Firmware flash, usually with the node out of service |
 | `physical access` | 2 | Someone has to be at the machine |
 | `unpatchable / mitigate-only` | 93 | **No vendor fix exists** |
 

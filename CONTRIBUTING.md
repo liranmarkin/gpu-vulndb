@@ -61,6 +61,7 @@ The schema at [`schema/entry.schema.json`](schema/entry.schema.json) is the auth
 
 | Field | Notes |
 | --- | --- |
+| `title` | One line, at most 120 characters: `Component (qualifier): what goes wrong`. No trailing ellipsis and no second sentence - detail belongs in `impact`. CI enforces this. |
 | `impact` | What the attacker gets. Not a restatement of the CWE. |
 | `attack_vector` | Who has to reach what. "Any tenant with a GPU pod" is the useful register. |
 | `remediation` | What the operator does, including the rollout cost. |
