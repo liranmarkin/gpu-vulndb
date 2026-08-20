@@ -5,7 +5,7 @@
     "GPU.zip",
     "graphics data compression side channel"
   ],
-  "title": "Integrated GPU graphics data compression (Intel, AMD, Apple, Arm, Qualcomm, NVIDIA): MULTI-TENANT ISOLATION: GPUs apply data-dependent lossless compression to framebuffer traffic even when…",
+  "title": "Integrated GPU graphics data compression (Intel, AMD, Apple, Arm, Qualcomm, NVIDIA): MULTI-TENANT ISOLATION: GPUs apply",
   "layer": "gpu-stack",
   "layer_name": "NVIDIA / GPU stack",
   "component": "Integrated GPU graphics data compression (Intel, AMD, Apple, Arm, Qualcomm, NVIDIA)",

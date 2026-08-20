@@ -2,7 +2,7 @@
   "id": "NCVD-2026-024-bacnet-bacnet-ip-as-a-protocol-f",
   "cve": null,
   "aliases": [],
-  "title": "BACnet / BACnet IP as a protocol (facility control plane): BACnet has no authentication, no integrity protection and no encryption at the network layer. Any device that…",
+  "title": "BACnet / BACnet IP as a protocol (facility control plane): BACnet has no authentication, no integrity protection and no",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "BACnet / BACnet IP as a protocol (facility control plane)",

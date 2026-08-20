@@ -4,7 +4,7 @@
   "aliases": [
     "MIG side-channel caveat"
   ],
-  "title": "NVIDIA Multi-Instance GPU (MIG) partitioning: MULTI-TENANT ISOLATION: MIG gives each instance its own SM slice, L2 slice, memory slice and memory-bandwidth…",
+  "title": "NVIDIA Multi-Instance GPU (MIG) partitioning: MULTI-TENANT ISOLATION: MIG gives each instance its own SM slice, L2",
   "layer": "gpu-stack",
   "layer_name": "NVIDIA / GPU stack",
   "component": "NVIDIA Multi-Instance GPU (MIG) partitioning",

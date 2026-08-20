@@ -2,7 +2,7 @@
   "id": "NCVD-2026-033-wiegand-reader-to-controller-wir",
   "cve": null,
   "aliases": [],
-  "title": "Wiegand reader-to-controller wiring and legacy 125 kHz proximity / MIFARE Classic credentials: Two structural weaknesses in nearly every badge system installed before roughly the last decade, and…",
+  "title": "Wiegand reader-to-controller wiring and legacy 125 kHz proximity / MIFARE Classic credentials: Two structural",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Wiegand reader-to-controller wiring and legacy 125 kHz proximity / MIFARE Classic credentials",

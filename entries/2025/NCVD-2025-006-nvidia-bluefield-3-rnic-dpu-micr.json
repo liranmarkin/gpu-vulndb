@@ -8,7 +8,7 @@
     "BlueField-3 resource exhaustion",
     "arXiv:2510.12629"
   ],
-  "title": "NVIDIA BlueField-3 RNIC/DPU - microarchitectural state and pipeline resources under containerized multi-tenancy: TENANT ISOLATION: Measured on current NVIDIA BlueField-3 hardware, two families of…",
+  "title": "NVIDIA BlueField-3 RNIC/DPU - microarchitectural state and pipeline resources under containerized multi-tenancy: TENANT",
   "layer": "gpu-stack",
   "layer_name": "NVIDIA / GPU stack",
   "component": "NVIDIA BlueField-3 RNIC/DPU - microarchitectural state and pipeline resources under containerized multi-tenancy",

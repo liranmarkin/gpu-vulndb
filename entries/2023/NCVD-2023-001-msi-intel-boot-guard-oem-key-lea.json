@@ -4,7 +4,7 @@
   "aliases": [
     "no CVE"
   ],
-  "title": "MSI / Intel Boot Guard OEM key leak: The Money Message ransomware dump exposed MSI's firmware image-signing private keys for 57 products and Intel…",
+  "title": "MSI / Intel Boot Guard OEM key leak: The Money Message ransomware dump exposed MSI's firmware image-signing private",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "MSI / Intel Boot Guard OEM key leak",

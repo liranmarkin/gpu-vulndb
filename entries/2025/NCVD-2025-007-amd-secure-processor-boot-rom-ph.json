@@ -4,7 +4,7 @@
   "aliases": [
     "AMD-SB-7044"
   ],
-  "title": "AMD Secure Processor boot ROM - physical attacks bypassing secure boot: MULTI-TENANT ISOLATION: Physical attacks that bypass secure boot in the ASP boot ROM. Boot ROM is…",
+  "title": "AMD Secure Processor boot ROM - physical attacks bypassing secure boot: MULTI-TENANT ISOLATION: Physical attacks",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD Secure Processor boot ROM - physical attacks bypassing secure boot",

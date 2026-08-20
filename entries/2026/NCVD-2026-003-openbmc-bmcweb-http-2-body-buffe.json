@@ -4,7 +4,7 @@
   "aliases": [
     "H2-F1"
   ],
-  "title": "OpenBMC bmcweb HTTP/2 body buffering (HttpBody::reader, nghttp2 flow control): The HTTP/2 code path in bmcweb appends incoming DATA frames with no size check at all, and nghttp2's default…",
+  "title": "OpenBMC bmcweb HTTP/2 body buffering (HttpBody::reader, nghttp2 flow control): The HTTP/2 code path in bmcweb appends",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "OpenBMC bmcweb HTTP/2 body buffering (HttpBody::reader, nghttp2 flow control)",

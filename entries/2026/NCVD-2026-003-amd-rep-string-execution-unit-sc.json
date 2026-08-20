@@ -4,7 +4,7 @@
   "aliases": [
     "AMD-SB-7069"
   ],
-  "title": "AMD - REP-string execution unit scheduler contention side channel: MULTI-TENANT ISOLATION: A newer variant of the SQUIP scheduler-contention channel, this time reached through…",
+  "title": "AMD - REP-string execution unit scheduler contention side channel: MULTI-TENANT ISOLATION: A newer variant of the SQUIP",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD - REP-string execution unit scheduler contention side channel",

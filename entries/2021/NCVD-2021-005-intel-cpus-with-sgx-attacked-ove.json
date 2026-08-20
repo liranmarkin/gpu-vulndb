@@ -5,7 +5,7 @@
     "VoltPillager",
     "hardware undervolting attack on SGX"
   ],
-  "title": "Intel CPUs with SGX, attacked over the SVID serial bus between the voltage regulator and the CPU package: Re-runs the Plundervolt fault injection using a cheap external microcontroller wired to…",
+  "title": "Intel CPUs with SGX, attacked over the SVID serial bus between the voltage regulator and the CPU package: Re-runs",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Intel CPUs with SGX, attacked over the SVID serial bus between the voltage regulator and the CPU package",

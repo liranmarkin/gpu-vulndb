@@ -6,7 +6,7 @@
     "HPE bulletin a00097382en_us",
     "HPD7"
   ],
-  "title": "HPE SAS SSDs EK0800JVYPN, EO1600JVYPP, MK0800JVYPQ, MO1600JVYPR (800GB/1.6TB 12G SAS) with firmware prior to HPD7: PHYSICAL / FLEET-WIDE AVAILABILITY EVENT, and the second one in four months…",
+  "title": "HPE SAS SSDs EK0800JVYPN, EO1600JVYPP, MK0800JVYPQ, MO1600JVYPR (800GB/1.6TB 12G SAS) with firmware prior to HPD7",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "HPE SAS SSDs EK0800JVYPN, EO1600JVYPP, MK0800JVYPQ, MO1600JVYPR (800GB/1.6TB 12G SAS) with firmware prior to HPD7",

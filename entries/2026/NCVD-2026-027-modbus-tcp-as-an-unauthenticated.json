@@ -2,7 +2,7 @@
   "id": "NCVD-2026-027-modbus-tcp-as-an-unauthenticated",
   "cve": null,
   "aliases": [],
-  "title": "Modbus TCP as an unauthenticated control channel on facility gear: Modbus TCP has no authentication, no authorization and no integrity checking. A write-single-register from…",
+  "title": "Modbus TCP as an unauthenticated control channel on facility gear: Modbus TCP has no authentication, no authorization",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Modbus TCP as an unauthenticated control channel on facility gear",

@@ -4,7 +4,7 @@
   "aliases": [
     "GPUHammer"
   ],
-  "title": "NVIDIA GDDR6 GPU memory (A6000-class and similar discrete GPUs): MULTI-TENANT ISOLATION: the first demonstrated Rowhammer bit flips in GPU memory. Researchers flipped bits in…",
+  "title": "NVIDIA GDDR6 GPU memory (A6000-class and similar discrete GPUs): MULTI-TENANT ISOLATION: the first demonstrated",
   "layer": "gpu-stack",
   "layer_name": "NVIDIA / GPU stack",
   "component": "NVIDIA GDDR6 GPU memory (A6000-class and similar discrete GPUs)",

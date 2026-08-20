@@ -4,7 +4,7 @@
   "aliases": [
     "Indirector"
   ],
-  "title": "Intel processors (Indirect Branch Predictor structure): MULTI-TENANT ISOLATION: Indirector: reverse-engineering the Indirect Branch Predictor and Branch Target…",
+  "title": "Intel processors (Indirect Branch Predictor structure): MULTI-TENANT ISOLATION: Indirector: reverse-engineering",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Intel processors (Indirect Branch Predictor structure)",

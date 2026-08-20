@@ -4,7 +4,7 @@
   "aliases": [
     "AMD-SB-3036"
   ],
-  "title": "AMD SEV-SNP - RMP entries cached in L1D/L2 leaking physical address bits: MULTI-TENANT ISOLATION: Reverse-map table entries cached in L1D and L2 leak up to six physical address bits…",
+  "title": "AMD SEV-SNP - RMP entries cached in L1D/L2 leaking physical address bits: MULTI-TENANT ISOLATION: Reverse-map table",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD SEV-SNP - RMP entries cached in L1D/L2 leaking physical address bits",

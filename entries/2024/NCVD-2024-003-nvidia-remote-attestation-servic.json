@@ -5,7 +5,7 @@
     "NRAS dependency",
     "GPU attestation availability"
   ],
-  "title": "NVIDIA Remote Attestation Service (NRAS) / NVIDIA attestation SDK: Verifying an NVIDIA GPU attestation report by the default path means calling NVIDIA's hosted Remote…",
+  "title": "NVIDIA Remote Attestation Service (NRAS) / NVIDIA attestation SDK: Verifying an NVIDIA GPU attestation report",
   "layer": "gpu-stack",
   "layer_name": "NVIDIA / GPU stack",
   "component": "NVIDIA Remote Attestation Service (NRAS) / NVIDIA attestation SDK",

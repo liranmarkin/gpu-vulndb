@@ -7,7 +7,7 @@
     "firmware downgrade attack",
     "unsigned drive firmware"
   ],
-  "title": "NVMe admin command set - Firmware Image Download (opcode 11h) and Firmware Commit (opcode 10h) reachable from the host OS on bare-metal nodes: CLASS ENTRY, and the single highest-leverage…",
+  "title": "NVMe admin command set - Firmware Image Download (opcode 11h) and Firmware Commit (opcode 10h) reachable from the host",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "NVMe admin command set - Firmware Image Download (opcode 11h) and Firmware Commit (opcode 10h) reachable from the…",

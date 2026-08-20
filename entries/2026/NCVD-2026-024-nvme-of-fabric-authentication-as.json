@@ -2,7 +2,7 @@
   "id": "NCVD-2026-024-nvme-of-fabric-authentication-as",
   "cve": null,
   "aliases": [],
-  "title": "NVMe-oF fabric authentication as deployed - host NQN allowlisting on Linux nvmet, SPDK and most storage appliances: There is no CVE for this because it is the specification working as designed…",
+  "title": "NVMe-oF fabric authentication as deployed - host NQN allowlisting on Linux nvmet, SPDK and most storage appliances",
   "layer": "control-plane",
   "layer_name": "Control plane, storage & DevOps",
   "component": "NVMe-oF fabric authentication as deployed - host NQN allowlisting on Linux nvmet, SPDK and most storage appliances",

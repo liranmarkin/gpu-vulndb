@@ -6,7 +6,7 @@
     "BitLocker hardware encryption trusted by default",
     "eDrive offload"
   ],
-  "title": "Microsoft BitLocker / Windows eDrive hardware-encryption offload on any TCG Opal or IEEE-1667 self-encrypting drive: BitLocker's default was to hand encryption to the drive whenever the drive…",
+  "title": "Microsoft BitLocker / Windows eDrive hardware-encryption offload on any TCG Opal or IEEE-1667 self-encrypting drive",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Microsoft BitLocker / Windows eDrive hardware-encryption offload on any TCG Opal or IEEE-1667 self-encrypting drive",

@@ -4,7 +4,7 @@
   "aliases": [
     "AUTH-F6"
   ],
-  "title": "OpenBMC bmcweb mTLS client-certificate UPN validation: Where mTLS is configured, bmcweb matches the certificate's UPN by walking dot-separated labels with no bound.…",
+  "title": "OpenBMC bmcweb mTLS client-certificate UPN validation: Where mTLS is configured, bmcweb matches the certificate's UPN",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "OpenBMC bmcweb mTLS client-certificate UPN validation",

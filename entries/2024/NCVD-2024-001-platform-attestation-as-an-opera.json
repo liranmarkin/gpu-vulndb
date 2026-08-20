@@ -2,7 +2,7 @@
   "id": "NCVD-2024-001-platform-attestation-as-an-opera",
   "cve": null,
   "aliases": [],
-  "title": "Platform attestation as an operational control (fTPM vs discrete TPM trust): Design-level: on most GPU servers the TPM that backs measured boot is a firmware TPM inside the CPU package…",
+  "title": "Platform attestation as an operational control (fTPM vs discrete TPM trust): Design-level: on most GPU servers the TPM",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Platform attestation as an operational control (fTPM vs discrete TPM trust)",

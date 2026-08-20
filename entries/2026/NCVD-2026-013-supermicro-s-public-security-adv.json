@@ -2,7 +2,7 @@
   "id": "NCVD-2026-013-supermicro-s-public-security-adv",
   "cve": null,
   "aliases": [],
-  "title": "Supermicro's public security advisory portal itself: An operator cannot programmatically track Supermicro firmware advisories. Supermicro publishes real, detailed…",
+  "title": "Supermicro's public security advisory portal itself: An operator cannot programmatically track Supermicro firmware",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Supermicro's public security advisory portal itself",

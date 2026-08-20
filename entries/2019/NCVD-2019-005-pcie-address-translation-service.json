@@ -6,7 +6,7 @@
     "PCIe ATS translated-request trust",
     "IOMMU bypass via Address Translation Services"
   ],
-  "title": "PCIe Address Translation Services on hosts using an IOMMU/SMMU for device isolation - affects any DMA-capable endpoint the host trusts, including GPUs, NICs and DPUs: The IOMMU/SMMU is the entire…",
+  "title": "PCIe Address Translation Services on hosts using an IOMMU/SMMU for device isolation",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "PCIe Address Translation Services on hosts using an IOMMU/SMMU for device isolation - affects any DMA-capable…",

@@ -6,7 +6,7 @@
     "Reliably Erasing Data From Flash-Based Solid State Drives",
     "sanitize verification gap"
   ],
-  "title": "ATA Secure Erase / NVMe Sanitize / Format NVM across SSD vendors - drives that report sanitization success while data remains: CLASS ENTRY and the empirical foundation under every specific CVE in…",
+  "title": "ATA Secure Erase / NVMe Sanitize / Format NVM across SSD vendors",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "ATA Secure Erase / NVMe Sanitize / Format NVM across SSD vendors - drives that report sanitization success while…",

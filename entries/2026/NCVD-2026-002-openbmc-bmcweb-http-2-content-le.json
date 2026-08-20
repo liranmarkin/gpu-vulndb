@@ -4,7 +4,7 @@
   "aliases": [
     "H2-F2"
   ],
-  "title": "OpenBMC bmcweb HTTP/2 Content-Length handling: bmcweb passes the client-supplied Content-Length straight into a reserve() call. One HEADERS frame declaring…",
+  "title": "OpenBMC bmcweb HTTP/2 Content-Length handling: bmcweb passes the client-supplied Content-Length straight",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "OpenBMC bmcweb HTTP/2 Content-Length handling",

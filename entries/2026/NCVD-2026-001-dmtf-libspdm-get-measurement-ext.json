@@ -4,7 +4,7 @@
   "aliases": [
     "DMTF-2026-0002"
   ],
-  "title": "DMTF libspdm (GET_MEASUREMENT_EXTENSION_LOG offset/length wrap): Wrapping addition of the Offset and Length fields in GET_MEASUREMENT_EXTENSION_LOG lets a requester read…",
+  "title": "DMTF libspdm (GET_MEASUREMENT_EXTENSION_LOG offset/length wrap): Wrapping addition of the Offset and Length fields",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "DMTF libspdm (GET_MEASUREMENT_EXTENSION_LOG offset/length wrap)",

@@ -5,7 +5,7 @@
     "TPM bus sniffing",
     "LPC/SPI interposer"
   ],
-  "title": "Discrete TPM (LPC / SPI bus, unencrypted sessions): A discrete TPM talks to the CPU over LPC or SPI in the clear unless the software explicitly uses…",
+  "title": "Discrete TPM (LPC / SPI bus, unencrypted sessions): A discrete TPM talks to the CPU over LPC or SPI in the clear unless",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Discrete TPM (LPC / SPI bus, unencrypted sessions)",

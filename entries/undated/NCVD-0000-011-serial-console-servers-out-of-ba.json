@@ -2,7 +2,7 @@
   "id": "NCVD-0000-011-serial-console-servers-out-of-ba",
   "cve": null,
   "aliases": [],
-  "title": "Serial console servers / out-of-band access appliances: Console servers (Opengear, Lantronix, Digi and similar) hold plaintext-equivalent access to every device's…",
+  "title": "Serial console servers / out-of-band access appliances: Console servers (Opengear, Lantronix, Digi and similar) hold",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Serial console servers / out-of-band access appliances",

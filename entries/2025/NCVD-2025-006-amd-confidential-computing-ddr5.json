@@ -4,7 +4,7 @@
   "aliases": [
     "AMD-SB-3040"
   ],
-  "title": "AMD confidential computing - DDR5 memory bus interposition against TEEs: MULTI-TENANT ISOLATION: Compromising trusted execution environments by interposing on the DDR5 memory bus.…",
+  "title": "AMD confidential computing - DDR5 memory bus interposition against TEEs: MULTI-TENANT ISOLATION: Compromising trusted",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD confidential computing - DDR5 memory bus interposition against TEEs",

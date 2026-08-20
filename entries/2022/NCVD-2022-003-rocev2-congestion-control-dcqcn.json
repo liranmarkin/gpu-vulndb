@@ -7,7 +7,7 @@
     "CNP spoofing",
     "arXiv:2207.10898"
   ],
-  "title": "RoCEv2 congestion control - DCQCN, ECN marking and Congestion Notification Packets: FABRIC DOS: DCQCN reacts to ECN marks by having the receiver send Congestion Notification Packets that make…",
+  "title": "RoCEv2 congestion control - DCQCN, ECN marking and Congestion Notification Packets: FABRIC DOS: DCQCN reacts to ECN",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RoCEv2 congestion control - DCQCN, ECN marking and Congestion Notification Packets",

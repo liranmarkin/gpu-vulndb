@@ -5,7 +5,7 @@
     "GHSA-p3gc-68x5-g9w3",
     "CONN-F2"
   ],
-  "title": "OpenBMC bmcweb HTTP/1.1 Expect: 100-continue handling: bmcweb applies a 4 KB body limit to unauthenticated requests, and the Expect: 100-continue path returns…",
+  "title": "OpenBMC bmcweb HTTP/1.1 Expect: 100-continue handling: bmcweb applies a 4 KB body limit to unauthenticated requests",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "OpenBMC bmcweb HTTP/1.1 Expect: 100-continue handling",

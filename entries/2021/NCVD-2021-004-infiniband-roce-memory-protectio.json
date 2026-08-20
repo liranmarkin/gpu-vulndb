@@ -7,7 +7,7 @@
     "unauthorized RDMA memory access",
     "memory window abuse"
   ],
-  "title": "InfiniBand / RoCE memory protection - memory region rkey/lkey namespace and protection domains: TENANT ISOLATION: The only thing standing between a remote peer and a registered memory region is…",
+  "title": "InfiniBand / RoCE memory protection - memory region rkey/lkey namespace and protection domains: TENANT ISOLATION",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "InfiniBand / RoCE memory protection - memory region rkey/lkey namespace and protection domains",

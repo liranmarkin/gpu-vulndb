@@ -9,7 +9,7 @@
     "GUID spoofing",
     "M_Key optional"
   ],
-  "title": "InfiniBand subnet management - Subnet Management Packets (SMPs), P_Key/Q_Key partition enforcement, port/node GUIDs: TENANT ISOLATION: InfiniBand's tenant boundary is the partition key, and its…",
+  "title": "InfiniBand subnet management - Subnet Management Packets (SMPs), P_Key/Q_Key partition enforcement, port/node GUIDs",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "InfiniBand subnet management - Subnet Management Packets (SMPs), P_Key/Q_Key partition enforcement, port/node GUIDs",

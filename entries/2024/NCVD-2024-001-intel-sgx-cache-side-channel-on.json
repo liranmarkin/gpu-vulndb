@@ -4,7 +4,7 @@
   "aliases": [
     "TeeJam"
   ],
-  "title": "Intel SGX (cache side channel on sub-cacheline access): MULTI-TENANT ISOLATION: TeeJam: shows that SGX's cache-based side-channel resistance is weaker than assumed…",
+  "title": "Intel SGX (cache side channel on sub-cacheline access): MULTI-TENANT ISOLATION: TeeJam: shows that SGX's cache-based",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Intel SGX (cache side channel on sub-cacheline access)",

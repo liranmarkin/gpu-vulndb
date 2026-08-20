@@ -1,148 +1,143 @@
-# GPU Vulnerability Database
+<div align="center">
 
-An open, community-maintained database of vulnerabilities in the stack that GPU infrastructure
-runs on — from BMC and GPU firmware up through drivers, containers, orchestration, and model
-serving.
+<img src=".github/assets/logo.png" width="110" alt="GPU VulnDB logo" />
 
-**Website: [gpuvulndb.org](https://gpuvulndb.org) · Data: [`entries/`](entries) · Schema: [`schema/entry.schema.json`](schema/entry.schema.json)**
+# The Open GPU Vulnerability Database
 
-It is built for the people who have to operate this stack: GPU clouds, colocation datacenters,
-HPC centers, and enterprises running their own accelerator fleets.
+**Every known vulnerability in the stack GPU datacenters run on - firmware to model serving.**
 
-## Why this exists
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fgpuvulndb.org&label=gpuvulndb.org&up_color=5a31d8)](https://gpuvulndb.org)
+![Entries](https://img.shields.io/badge/entries-3%2C450-5a31d8)
+[![Validation](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml/badge.svg)](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml)
+[![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-2b1663)](LICENSE-DATA)
+[![Code: MIT](https://img.shields.io/badge/code-MIT-2b1663)](LICENSE)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff4d3d)](CONTRIBUTING.md)
 
-There is no shortage of vulnerability databases. There is a specific and checkable gap in them.
+[**Browse the database**](https://gpuvulndb.org) · [JSON](https://gpuvulndb.org/data.json) · [RSS](https://gpuvulndb.org/feed.xml) · [Contribute](CONTRIBUTING.md)
 
-**The package-centric databases cannot represent this hardware.** The [OSV schema](https://ossf.github.io/osv-schema/)
-keys every record to a package name inside a registry or distro, its ecosystem list is closed and
-curated in a single file, and its top level is `additionalProperties: false`. There is no ecosystem
-for firmware, BMC images, BIOS, or a vendor GPU driver shipped as a `.run` installer, and no way to
-add one without changing the spec. The GitHub Advisory Database inherits this: its bulk unreviewed
-entries carry an empty `affected` array, so they are CVE text with no machine-matchable target at
-all.
+<a href="https://gpuvulndb.org">
+  <img src=".github/assets/screenshot-home.png" alt="gpuvulndb.org - browse the database" width="850" />
+</a>
 
-**NVD tells you a score, not what to do.** A CVSS vector does not tell an operator whether
-remediation means a config change, a daemon restart, draining every GPU node, or flashing firmware
-across a fleet — and for this stack, that difference is the entire cost of the fix.
+</div>
 
-**The cloud vulnerability databases cover the provider's services, not the substrate.**
-[cloudvulndb.org](https://www.cloudvulndb.org/) catalogues cross-tenant issues in hyperscaler
-*services*, where remediation is usually the provider's job and already done. Here, you are the
-provider. Nobody patches it for you.
+## 🎯 Why this exists
 
-So every entry in this database carries three fields that a CVE record does not: what an attacker
-actually gets, who has to be able to reach it, and what the operator has to do about it.
+There is no shortage of vulnerability databases. There is a specific and checkable gap in them:
 
-## What's in scope
+- **Package-centric databases cannot represent this hardware.** The [OSV schema](https://ossf.github.io/osv-schema/) keys every record to a package in a registry or distro. There is no ecosystem for firmware, BMC images, BIOS, or a GPU driver shipped as a `.run` installer, and no way to add one without changing the spec.
+- **NVD tells you a score, not what to do.** A CVSS vector does not tell an operator whether the fix is a config change, a daemon restart, draining every GPU node, or flashing firmware across a fleet. For this stack, that difference is the entire cost of the fix.
+- **Cloud vulnerability databases cover the provider's services, not the substrate.** [cloudvulndb.org](https://www.cloudvulndb.org/) catalogues issues in hyperscaler services, where remediation is the provider's job and usually already done. Here, *you are the provider*. Nobody patches it for you.
 
-3,566 entries covering 3,460 distinct CVEs, spanning 2011 to 2026.
+So every entry here carries three fields a CVE record does not: **what an attacker actually gets**, **who has to be able to reach it**, and **what the operator has to do about it**.
+
+<div align="center">
+  <a href="https://gpuvulndb.org/vuln/CVE-2025-23266">
+    <img src=".github/assets/screenshot-entry.png" alt="An entry page: impact, attack vector, remediation, fleet impact" width="850" />
+  </a>
+</div>
+
+It is built for the people who operate this stack: GPU clouds, colocation datacenters, HPC centers, and enterprises running their own accelerator fleets.
+
+## 🧱 What's in scope
+
+**3,450 entries covering 3,344 distinct CVEs, spanning 2011 to 2026** - organized by the six layers of the stack, top to bottom:
 
 | Layer | What it covers | Entries |
 | --- | --- | ---: |
-| `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,176 |
-| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,179 |
-| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 380 |
-| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 324 |
 | `ai-serving` | Inference servers, training frameworks, model formats | 254 |
-| `control-plane` | Cluster management, storage, CI/CD, observability | 253 |
+| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 380 |
+| `control-plane` | Cluster management, storage, CI/CD, observability | 193 |
+| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 317 |
+| `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,170 |
+| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,136 |
 
-Design-level weaknesses that will never receive a CVE — unauthenticated IPMI over LAN, RDMA
-fabrics with no cryptographic binding between a packet and its connection, physical DRAM
-interposers that both Intel and AMD classify as out of scope — are in scope and carry an `NCVD-`
-id. There are 106 of them, and they are frequently a bigger problem than anything with a CVSS
-score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which
-is a large part of why this one exists.
+**Design-level weaknesses that will never get a CVE are in scope too.** Unauthenticated IPMI over LAN, RDMA fabrics with no cryptographic binding between a packet and its connection, physical DRAM interposers that both Intel and AMD classify as out of scope - these carry an `NCVD-` id. There are 106 of them, and they are frequently a bigger problem than anything with a CVSS score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which is a large part of why this one exists.
 
-## Cost to remediate
+Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undisclosed issues (this is not a disclosure venue), and anything you cannot back with a public reference.
 
-The field that makes this more than an advisory mirror. A CVSS score tells you how bad a
-vulnerability is; it does not tell you whether fixing it costs a config change or a firmware
-flash across every node you own. 2,138 entries carry a `fleet.pain_class`, ordered here from
-cheapest to most disruptive:
+## 💸 Cost to remediate
+
+The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,090 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
 
 | Class | Entries | What it means |
 | --- | ---: | --- |
-| `hot-patch` | 52 | Fixable without interrupting workloads |
-| `daemon-restart` | 61 | Service restart on affected nodes |
+| `hot-patch` | 50 | Fixable without interrupting workloads |
+| `daemon-restart` | 54 | Service restart on affected nodes |
 | `node-drain` | 160 | Tenant workloads evicted from each node |
-| `node-reboot` | 1,187 | Full reboot of each affected node |
+| `node-reboot` | 1,163 | Full reboot of each affected node |
 | `microcode + reboot` | 54 | Microcode update and a reboot |
-| `firmware-flash` | 525 | Firmware flash, usually with the node out of service |
+| `firmware-flash` | 510 | Firmware flash, usually with the node out of service |
 | `physical access` | 2 | Someone has to be at the machine |
 | `unpatchable / mitigate-only` | 93 | **No vendor fix exists** |
 
-These are extracted from remediation prose that names the action, never guessed. Where a
-remediation does not state a cost, the field is left unset rather than inferred — 1,428 entries
-are in that state.
+These are extracted from remediation prose that names the action, never guessed. Where a remediation does not state a cost, the field is left unset rather than inferred.
 
-Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undisclosed issues
-(this is not a disclosure venue), and anything you cannot back with a public reference.
+## 🏷️ Entry status
 
-## Entry status
+Every entry declares how much human verification it has had, so the database can ship broad coverage without pretending all of it is hand-checked:
 
-Every entry declares how much human verification it has had. This is deliberate: it lets the
-database ship broad coverage without pretending all of it is hand-checked.
-
-- **`curated`** — imported from vendor advisories, NVD, and CISA KEV with machine assistance, then
-  annotated for operators. Not individually verified against primary sources. **The seed corpus is
-  all at this tier.**
-- **`reviewed`** — a maintainer confirmed every field against primary sources and signed it with
-  their GitHub handle.
-- **`stub`** — references only, no analysis yet. A good first contribution.
+- 🤖 **`curated`** - imported from vendor advisories, NVD, and CISA KEV with machine assistance, then annotated for operators. Not individually verified against primary sources. The seed corpus is all at this tier.
+- ✅ **`reviewed`** - a maintainer confirmed every field against primary sources and signed it with their GitHub handle.
+- 🌱 **`stub`** - references only, no analysis yet. A good first contribution.
 
 Always confirm against your vendor's advisory before acting on an entry.
 
-## Using the data
+## ⚡ Using the data
 
-Entries are one JSON file each, at `entries/<year>/<id>.json`. The filename is always the id.
-There is no build artifact to trust and no API to depend on — clone the repo.
+Entries are one JSON file each, at `entries/<year>/<id>.json`. The filename is always the id. There is no build artifact to trust and no API to depend on - clone the repo:
 
 ```bash
 git clone https://github.com/liranmarkin/gpu-vulndb
 jq -r 'select(.kev and .layer=="gpu-stack") | .id + "  " + .title' entries/*/*.json
 ```
 
-The website also serves the whole corpus as a single file at
-[gpuvulndb.org/data.json](https://gpuvulndb.org/data.json), CORS-open so you can fetch it from
-anywhere. There is an RSS feed at [/feed.xml](https://gpuvulndb.org/feed.xml).
+Or take it from the website:
 
-## Repository layout
+| Endpoint | What you get |
+| --- | --- |
+| [`gpuvulndb.org/data.json`](https://gpuvulndb.org/data.json) | The whole corpus in one file, CORS-open |
+| [`gpuvulndb.org/feed.xml`](https://gpuvulndb.org/feed.xml) | RSS feed of the newest entries |
+
+## 🗺️ Repository layout
 
 ```
-entries/<year>/<id>.json   the database — one file per entry, the source of truth
+entries/<year>/<id>.json   the database - one file per entry, the source of truth
 schema/entry.schema.json   the schema, enforced in CI
 scripts/validate.py        what CI runs; run it before opening a pull request
 scripts/ingest.py          merges researched batches into entries/, idempotent
 scripts/derive_pain.py     extracts remediation cost from prose that states it
-scripts/build.py           one-off importer from the original source CSVs, not part of contributing
+scripts/fetch_nvd_dates.py joins NVD published dates into web/data/nvd-dates.json
+scripts/fetch_vendor_icons.mjs downloads vendor favicons for the site
 web/                       the website (Next.js 16, React 19, Tailwind 4)
 ```
 
-The site reads `entries/` straight off disk at build time, so nothing generated is ever committed
-and the data has no toolchain of its own. Contributing an entry needs a text editor and Python;
-only working on the site itself needs Node.
+The site reads `entries/` straight off disk at build time, so nothing generated is ever committed and the data has no toolchain of its own. Contributing an entry needs a text editor and Python; only working on the site itself needs Node:
 
 ```bash
 cd web && npm install && npm run dev
 ```
 
-## Contributing
+## 🤝 Contributing
 
-Corrections, additions, and promotions from `curated` to `reviewed` are all welcome. Reviewing an
-existing entry against its primary sources is the single most useful thing you can do here.
+**Every contribution matters, and most don't require writing anything new.** The single most useful thing you can do is review an existing entry against its primary sources:
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Every pull request is validated in CI against the schema —
-if `scripts/validate.py` passes locally, it will pass in CI.
+| I want to... | Where to start | Effort |
+| --- | --- | --- |
+| ✏️ Report a wrong entry | [Open a correction](https://github.com/liranmarkin/gpu-vulndb/issues/new?template=correction.yml) | 2 minutes |
+| ✅ Verify a `curated` entry | Pick one in an area you know, check every field, set it `reviewed` | 30 minutes |
+| ➕ Add a missing vulnerability | [Suggest it](https://github.com/liranmarkin/gpu-vulndb/issues/new?template=new-entry.yml) or send a PR | 1 hour |
+| 🔧 Improve remediation guidance | You rolled the fix across a real fleet? Tell us what it actually took | 15 minutes |
+
+The full guide, including the entry format and the rules, is in [CONTRIBUTING.md](CONTRIBUTING.md). Every pull request is validated in CI; if this passes locally, it passes in CI:
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install jsonschema
 .venv/bin/python scripts/validate.py
 ```
 
-## License
+## 📜 License
 
-Data in `entries/` and `schema/` is [CC BY 4.0](LICENSE-DATA). Tooling in `scripts/` and the site
-in `web/` is [MIT](LICENSE). Attribution to the GPU Vulnerability Database is required when you
-redistribute the data.
+Data in `entries/` and `schema/` is [CC BY 4.0](LICENSE-DATA). Tooling in `scripts/` and the site in `web/` is [MIT](LICENSE). Attribution to the GPU Vulnerability Database is required when you redistribute the data.
 
 This database is informational and carries no warranty of completeness or accuracy.

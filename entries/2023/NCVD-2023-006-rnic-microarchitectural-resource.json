@@ -7,7 +7,7 @@
     "RNIC microarchitecture resource contention",
     "Kong et al., NSDI 2023"
   ],
-  "title": "RNIC microarchitectural resources (NIC cache, processing units) under multi-tenant RDMA: TENANT ISOLATION: This is the paper that established RDMA performance isolation in the cloud is not solved.…",
+  "title": "RNIC microarchitectural resources (NIC cache, processing units) under multi-tenant RDMA: TENANT ISOLATION",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RNIC microarchitectural resources (NIC cache, processing units) under multi-tenant RDMA",

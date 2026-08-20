@@ -2,7 +2,7 @@
   "id": "NCVD-2026-026-ses-scsi-enclosure-services-encl",
   "cve": null,
   "aliases": [],
-  "title": "SES (SCSI Enclosure Services) enclosure management on shared SAS JBODs and expanders: SES is how a host controls a drive enclosure - slot power, locate LEDs, fan and power-supply state - and it…",
+  "title": "SES (SCSI Enclosure Services) enclosure management on shared SAS JBODs and expanders: SES is how a host controls",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "SES (SCSI Enclosure Services) enclosure management on shared SAS JBODs and expanders",

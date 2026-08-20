@@ -2,7 +2,7 @@
   "id": "NCVD-2026-012-qct-quanta-cloud-technology-serv",
   "cve": null,
   "aliases": [],
-  "title": "QCT (Quanta Cloud Technology) server security centre: QCT firmware is unmeasurable from public data despite the appearance of a PSIRT. This is worse than having no…",
+  "title": "QCT (Quanta Cloud Technology) server security centre: QCT firmware is unmeasurable from public data despite",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "QCT (Quanta Cloud Technology) server security centre",

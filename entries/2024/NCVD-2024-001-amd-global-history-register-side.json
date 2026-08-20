@@ -5,7 +5,7 @@
     "Branch History Leak",
     "AMD-SB-7026"
   ],
-  "title": "AMD - Global History Register side channel: MULTI-TENANT ISOLATION: A side channel through the branch predictor's Global History Register, disclosed by…",
+  "title": "AMD - Global History Register side channel: MULTI-TENANT ISOLATION: A side channel through the branch predictor's",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD - Global History Register side channel",

@@ -4,7 +4,7 @@
   "aliases": [
     "AMD-SB-3033"
   ],
-  "title": "AMD SEV firmware - arbitrary code execution on the AMD Security Processor (physical): MULTI-TENANT ISOLATION: An academic disclosure achieving arbitrary code execution on the AMD Security…",
+  "title": "AMD SEV firmware - arbitrary code execution on the AMD Security Processor (physical): MULTI-TENANT ISOLATION",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD SEV firmware - arbitrary code execution on the AMD Security Processor (physical)",

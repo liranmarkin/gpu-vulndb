@@ -6,7 +6,7 @@
     "RDMA memory-bank covert channel",
     "Ustiugov et al., arXiv:2006.03854"
   ],
-  "title": "RDMA fabric + remote DRAM bank contention (cross-node covert channel): TENANT ISOLATION: Bankrupt establishes a 74 Kb/s covert channel between two processes on different machines…",
+  "title": "RDMA fabric + remote DRAM bank contention (cross-node covert channel): TENANT ISOLATION: Bankrupt establishes a 74 Kb/s",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RDMA fabric + remote DRAM bank contention (cross-node covert channel)",

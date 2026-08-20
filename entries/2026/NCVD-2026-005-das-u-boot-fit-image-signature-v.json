@@ -5,7 +5,7 @@
     "BRLY-2026-038",
     "BRLY-2026-041"
   ],
-  "title": "Das U-Boot (FIT image signature verification): Binarly disclosed a cluster of flaws in U-Boot's FIT image handling - stack buffer underflow and NULL…",
+  "title": "Das U-Boot (FIT image signature verification): Binarly disclosed a cluster of flaws in U-Boot's FIT image handling",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Das U-Boot (FIT image signature verification)",

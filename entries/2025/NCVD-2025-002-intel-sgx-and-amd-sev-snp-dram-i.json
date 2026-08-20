@@ -4,7 +4,7 @@
   "aliases": [
     "Battering RAM"
   ],
-  "title": "Intel SGX and AMD SEV-SNP / DRAM interposer (memory aliasing): MULTI-TENANT ISOLATION: Battering RAM: a cheap DRAM interposer that aliases physical addresses so the same…",
+  "title": "Intel SGX and AMD SEV-SNP / DRAM interposer (memory aliasing): MULTI-TENANT ISOLATION: Battering RAM: a cheap DRAM",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Intel SGX and AMD SEV-SNP / DRAM interposer (memory aliasing)",

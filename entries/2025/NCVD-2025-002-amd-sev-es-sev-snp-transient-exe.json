@@ -5,7 +5,7 @@
     "PowerHooK",
     "AMD-SB-3032"
   ],
-  "title": "AMD SEV-ES / SEV-SNP - transient-execution-amplified power side channel: MULTI-TENANT ISOLATION: Graz researchers amplified the power side channel with transient execution to extract…",
+  "title": "AMD SEV-ES / SEV-SNP - transient-execution-amplified power side channel: MULTI-TENANT ISOLATION: Graz researchers",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD SEV-ES / SEV-SNP - transient-execution-amplified power side channel",

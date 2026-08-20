@@ -2,7 +2,7 @@
   "id": "NCVD-0000-007-facility-power-dcim-as-a-class",
   "cve": null,
   "aliases": [],
-  "title": "Facility power / DCIM as a class: PDUs, CRAC controllers, BMS and DCIM platforms run long-lived embedded firmware, sit on flat facility…",
+  "title": "Facility power / DCIM as a class: PDUs, CRAC controllers, BMS and DCIM platforms run long-lived embedded firmware, sit",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Facility power / DCIM as a class",

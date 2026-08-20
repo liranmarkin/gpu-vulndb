@@ -2,7 +2,7 @@
   "id": "NCVD-0000-009-redfish-implementations-all-vend",
   "cve": null,
   "aliases": [],
-  "title": "Redfish implementations (all vendors): Redfish replaced IPMI but reintroduced the same class of flaws at the HTTP layer — CVE-2024-54085…",
+  "title": "Redfish implementations (all vendors): Redfish replaced IPMI but reintroduced the same class of flaws at the HTTP layer",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Redfish implementations (all vendors)",

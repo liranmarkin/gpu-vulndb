@@ -5,7 +5,7 @@
     "facility VLAN ownership gap",
     "colo landlord equipment"
   ],
-  "title": "Leased colocation facility infrastructure (power, cooling, access control) as a class: PHYSICAL. Most GPU operators lease space rather than own buildings, which means the UPS, switchgear, PDU…",
+  "title": "Leased colocation facility infrastructure (power, cooling, access control) as a class: PHYSICAL. Most GPU operators",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Leased colocation facility infrastructure (power, cooling, access control) as a class",

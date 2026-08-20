@@ -2,7 +2,7 @@
   "id": "NCVD-2026-025-landlord-owned-facility-control",
   "cve": null,
   "aliases": [],
-  "title": "Landlord-owned facility control network in a leased colo or wholesale hall (governance gap): Almost every neocloud and bare-metal GPU provider runs in space it does not own, which means the entire…",
+  "title": "Landlord-owned facility control network in a leased colo or wholesale hall (governance gap): Almost every neocloud",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Landlord-owned facility control network in a leased colo or wholesale hall (governance gap)",

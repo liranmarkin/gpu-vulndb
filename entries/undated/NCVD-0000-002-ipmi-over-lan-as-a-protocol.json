@@ -2,7 +2,7 @@
   "id": "NCVD-0000-002-ipmi-over-lan-as-a-protocol",
   "cve": null,
   "aliases": [],
-  "title": "IPMI over LAN as a protocol: IPMI has no transport confidentiality guarantees worth relying on, weak session handling, and per-vendor…",
+  "title": "IPMI over LAN as a protocol: IPMI has no transport confidentiality guarantees worth relying on, weak session handling",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "IPMI over LAN as a protocol",

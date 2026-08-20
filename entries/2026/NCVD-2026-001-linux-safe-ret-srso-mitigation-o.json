@@ -5,7 +5,7 @@
     "Safe RET Interrupt Vulnerability",
     "AMD-SB-7061"
   ],
-  "title": "Linux Safe RET SRSO mitigation on AMD Zen 1-Zen 4 - interrupt-induced weakening: MULTI-TENANT ISOLATION: An attacker executing code on the machine injects an interrupt at a precise moment to…",
+  "title": "Linux Safe RET SRSO mitigation on AMD Zen 1-Zen 4 - interrupt-induced weakening: MULTI-TENANT ISOLATION: An attacker",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Linux Safe RET SRSO mitigation on AMD Zen 1-Zen 4 - interrupt-induced weakening",

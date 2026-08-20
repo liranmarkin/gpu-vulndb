@@ -6,7 +6,7 @@
     "HPE bulletin a00092491en_us",
     "HPD8"
   ],
-  "title": "HPE SAS SSDs (20 models incl. VO0480JFDGT, VO0960JFDGU, VO1920JFDGV, VO3840JFDHA, MO0400JFFCF-MO3200JFFCL) with firmware prior to HPD8 - 16-bit power-on-hours counter overflow: PHYSICAL /…",
+  "title": "HPE SAS SSDs (20 models incl. VO0480JFDGT, VO0960JFDGU, VO1920JFDGV, VO3840JFDHA, MO0400JFFCF-MO3200JFFCL)",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "HPE SAS SSDs (20 models incl. VO0480JFDGT, VO0960JFDGU, VO1920JFDGV, VO3840JFDHA, MO0400JFFCF-MO3200JFFCL) with…",

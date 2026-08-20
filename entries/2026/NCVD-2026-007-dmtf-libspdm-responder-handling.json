@@ -5,7 +5,7 @@
     "GHSA-m4wc-xmvg-369f",
     "DMTF-2026-0001"
   ],
-  "title": "DMTF libspdm responder handling of GET_MEASUREMENT_EXTENSION_LOG: A requester reads memory it was never authorised to read, out of the responder - which in a datacenter is…",
+  "title": "DMTF libspdm responder handling of GET_MEASUREMENT_EXTENSION_LOG: A requester reads memory it was never authorised",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "DMTF libspdm responder handling of GET_MEASUREMENT_EXTENSION_LOG",

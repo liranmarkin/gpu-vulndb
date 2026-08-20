@@ -4,7 +4,7 @@
   "aliases": [
     "Gigabyte App Center backdoor"
   ],
-  "title": "Gigabyte UEFI firmware (OEM update-dropper in firmware): Gigabyte firmware shipped a UEFI module that writes a Windows executable to disk at every boot and has it…",
+  "title": "Gigabyte UEFI firmware (OEM update-dropper in firmware): Gigabyte firmware shipped a UEFI module that writes a Windows",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Gigabyte UEFI firmware (OEM update-dropper in firmware)",

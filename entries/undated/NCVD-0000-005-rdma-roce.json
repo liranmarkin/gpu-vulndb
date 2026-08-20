@@ -4,7 +4,7 @@
   "aliases": [
     "ReDMArk"
   ],
-  "title": "RDMA / RoCE: RoCE and IB RDMA have no cryptographic authentication of the QP connection setup or of subsequent RDMA…",
+  "title": "RDMA / RoCE: RoCE and IB RDMA have no cryptographic authentication of the QP connection setup or of subsequent",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RDMA / RoCE",

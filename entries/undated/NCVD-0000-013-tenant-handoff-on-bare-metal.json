@@ -2,7 +2,7 @@
   "id": "NCVD-0000-013-tenant-handoff-on-bare-metal",
   "cve": null,
   "aliases": [],
-  "title": "Tenant handoff on bare metal: Reimaging the host disk clears nothing in the BMC, UEFI/SPI flash, NIC/DPU firmware, GPU VBIOS or the ESP.…",
+  "title": "Tenant handoff on bare metal: Reimaging the host disk clears nothing in the BMC, UEFI/SPI flash, NIC/DPU firmware, GPU",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Tenant handoff on bare metal",

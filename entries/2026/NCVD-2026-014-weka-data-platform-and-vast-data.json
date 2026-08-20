@@ -6,7 +6,7 @@
     "VAST Data",
     "AI-storage advisory blind spot"
   ],
-  "title": "WEKA Data Platform and VAST Data (published-advisory coverage): Neither WEKA nor VAST Data — two of the most commonly deployed storage platforms under large AI training…",
+  "title": "WEKA Data Platform and VAST Data (published-advisory coverage): Neither WEKA nor VAST Data",
   "layer": "control-plane",
   "layer_name": "Control plane, storage & DevOps",
   "component": "WEKA Data Platform and VAST Data (published-advisory coverage)",

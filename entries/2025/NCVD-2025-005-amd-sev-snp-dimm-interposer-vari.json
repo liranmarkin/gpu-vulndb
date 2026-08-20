@@ -4,7 +4,7 @@
   "aliases": [
     "AMD-SB-3024"
   ],
-  "title": "AMD SEV-SNP - DIMM interposer variant of BadRAM (KU Leuven): MULTI-TENANT ISOLATION: A memory-bus interposer variant of the BadRAM aliasing attack against SEV-SNP. AMD's…",
+  "title": "AMD SEV-SNP - DIMM interposer variant of BadRAM (KU Leuven): MULTI-TENANT ISOLATION: A memory-bus interposer variant",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD SEV-SNP - DIMM interposer variant of BadRAM (KU Leuven)",

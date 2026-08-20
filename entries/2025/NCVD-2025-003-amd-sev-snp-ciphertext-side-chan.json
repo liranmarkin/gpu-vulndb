@@ -6,7 +6,7 @@
     "Chosen Plaintext Oracle against SEV-SNP",
     "AMD-SB-3021"
   ],
-  "title": "AMD SEV-SNP - ciphertext side channels amplified by hypervisor page movement: MULTI-TENANT ISOLATION: Two 2025 follow-ups to CipherLeaks - Toronto's Relocate+Vote and ETH Zurich's…",
+  "title": "AMD SEV-SNP - ciphertext side channels amplified by hypervisor page movement: MULTI-TENANT ISOLATION: Two 2025",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD SEV-SNP - ciphertext side channels amplified by hypervisor page movement",

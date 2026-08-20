@@ -2,7 +2,7 @@
   "id": "NCVD-0000-004-infiniband-subnet-manager-opensm",
   "cve": null,
   "aliases": [],
-  "title": "InfiniBand subnet manager (OpenSM / UFM): The IB subnet manager has unilateral authority over LID assignment, routing and partitioning for the entire…",
+  "title": "InfiniBand subnet manager (OpenSM / UFM): The IB subnet manager has unilateral authority over LID assignment, routing",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "InfiniBand subnet manager (OpenSM / UFM)",

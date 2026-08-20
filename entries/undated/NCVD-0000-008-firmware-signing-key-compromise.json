@@ -2,7 +2,7 @@
   "id": "NCVD-0000-008-firmware-signing-key-compromise",
   "cve": null,
   "aliases": [],
-  "title": "Firmware signing-key compromise as a class: Firmware trust anchors (Boot Guard KM/BPM, UEFI PK/KEK, BMC image-signing keys) are held by ODMs with weaker…",
+  "title": "Firmware signing-key compromise as a class: Firmware trust anchors (Boot Guard KM/BPM, UEFI PK/KEK, BMC image-signing",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Firmware signing-key compromise as a class",

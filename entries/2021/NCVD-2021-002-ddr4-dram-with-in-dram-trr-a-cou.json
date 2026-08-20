@@ -4,7 +4,7 @@
   "aliases": [
     "Half-Double"
   ],
-  "title": "DDR4 DRAM with in-DRAM TRR; a coupling effect that reaches rows at distance two rather than immediate neighbours: Google showed Rowhammer coupling is not confined to adjacent rows - hammering a…",
+  "title": "DDR4 DRAM with in-DRAM TRR; a coupling effect that reaches rows at distance two rather than immediate neighbours",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "DDR4 DRAM with in-DRAM TRR; a coupling effect that reaches rows at distance two rather than immediate neighbours",

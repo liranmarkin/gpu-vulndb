@@ -5,7 +5,7 @@
     "shared PDU/UPS credentials",
     "commissioning credential reuse"
   ],
-  "title": "Rack PDU and UPS management estates as a class (all vendors): PHYSICAL, and the most common real-world finding in this whole layer. PDU and UPS management interfaces are…",
+  "title": "Rack PDU and UPS management estates as a class (all vendors): PHYSICAL, and the most common real-world finding",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Rack PDU and UPS management estates as a class (all vendors)",

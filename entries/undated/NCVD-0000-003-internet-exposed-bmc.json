@@ -2,7 +2,7 @@
   "id": "NCVD-0000-003-internet-exposed-bmc",
   "cve": null,
   "aliases": [],
-  "title": "Internet-exposed BMC: Shodan-visible BMCs are a recurring finding at colo/neocloud buildouts — a management interface reachable…",
+  "title": "Internet-exposed BMC: Shodan-visible BMCs are a recurring finding at colo/neocloud buildouts",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Internet-exposed BMC",

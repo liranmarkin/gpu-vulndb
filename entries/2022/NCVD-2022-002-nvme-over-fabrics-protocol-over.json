@@ -6,7 +6,7 @@
     "NQN spoofing",
     "NVMe-oF controller hijack over RDMA"
   ],
-  "title": "NVMe-over-Fabrics protocol over RDMA - SPDK NVMe-oF target and Linux kernel nvmet: TENANT ISOLATION: NeVerMore implemented seven attacks against the NVMe-oF protocol itself and confirmed them…",
+  "title": "NVMe-over-Fabrics protocol over RDMA - SPDK NVMe-oF target and Linux kernel nvmet: TENANT ISOLATION: NeVerMore",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "NVMe-over-Fabrics protocol over RDMA - SPDK NVMe-oF target and Linux kernel nvmet",

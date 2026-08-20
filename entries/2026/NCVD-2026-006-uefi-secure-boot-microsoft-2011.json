@@ -4,7 +4,7 @@
   "aliases": [
     "Secure Boot 2026 certificate expiry"
   ],
-  "title": "UEFI Secure Boot (Microsoft 2011 CA/KEK expiry): Not an exploitable flaw but a fleet-wide trust-anchor deadline. The 2011-era Microsoft UEFI CA and KEK…",
+  "title": "UEFI Secure Boot (Microsoft 2011 CA/KEK expiry): Not an exploitable flaw but a fleet-wide trust-anchor deadline",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "UEFI Secure Boot (Microsoft 2011 CA/KEK expiry)",

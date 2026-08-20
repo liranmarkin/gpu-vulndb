@@ -4,7 +4,7 @@
   "aliases": [
     "WireTap"
   ],
-  "title": "Intel SGX / DDR4 memory bus (physical interposer): MULTI-TENANT ISOLATION: WireTap: a low-cost passive DDR4 interposer reads the memory bus of an SGX machine…",
+  "title": "Intel SGX / DDR4 memory bus (physical interposer): MULTI-TENANT ISOLATION: WireTap: a low-cost passive DDR4 interposer",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Intel SGX / DDR4 memory bus (physical interposer)",

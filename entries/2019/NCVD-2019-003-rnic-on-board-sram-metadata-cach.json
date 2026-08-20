@@ -7,7 +7,7 @@
     "RNIC SRAM/PTE cache timing attack",
     "Tsai, Payer, Zhang - USENIX Security 2019"
   ],
-  "title": "RNIC on-board SRAM metadata cache (page table entries, QP context) - most widely deployed RDMA NIC: TENANT ISOLATION: RNICs cache page-table entries and connection context in a small on-board SRAM…",
+  "title": "RNIC on-board SRAM metadata cache (page table entries, QP context) - most widely deployed RDMA NIC: TENANT ISOLATION",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RNIC on-board SRAM metadata cache (page table entries, QP context) - most widely deployed RDMA NIC",

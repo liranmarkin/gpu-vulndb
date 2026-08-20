@@ -2,7 +2,7 @@
   "id": "NCVD-0000-010-kvm-over-ip-virtual-media",
   "cve": null,
   "aliases": [],
-  "title": "KVM-over-IP / virtual media: The BMC's virtual-media function can mount an arbitrary ISO as the host's boot device. Any BMC compromise…",
+  "title": "KVM-over-IP / virtual media: The BMC's virtual-media function can mount an arbitrary ISO as the host's boot device",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "KVM-over-IP / virtual media",

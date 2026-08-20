@@ -2,7 +2,7 @@
   "id": "NCVD-2026-015-wiwynn-celestica-ingrasys-foxcon",
   "cve": null,
   "aliases": [],
-  "title": "Wiwynn / Celestica / Ingrasys (Foxconn) / AIC BMC firmware: This vendor's firmware is unmeasurable from public data, and that is the finding. An operator running Wiwynn…",
+  "title": "Wiwynn / Celestica / Ingrasys (Foxconn) / AIC BMC firmware: This vendor's firmware is unmeasurable from public data",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Wiwynn / Celestica / Ingrasys (Foxconn) / AIC BMC firmware",

@@ -4,7 +4,7 @@
   "aliases": [
     "RowPress"
   ],
-  "title": "DDR4 chips from all three major DRAM manufacturers; worsens as process nodes shrink: A different read-disturbance mechanism from Rowhammer: instead of repeatedly opening and closing a row, hold…",
+  "title": "DDR4 chips from all three major DRAM manufacturers; worsens as process nodes shrink: A different read-disturbance",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "DDR4 chips from all three major DRAM manufacturers; worsens as process nodes shrink",

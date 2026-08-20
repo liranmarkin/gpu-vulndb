@@ -7,7 +7,7 @@
     "GrayFish",
     "drive firmware implant"
   ],
-  "title": "HDD and SSD controller firmware as a persistence surface - demonstrated against Seagate, Western Digital, Toshiba, Maxtor and IBM drives: CLASS ENTRY. Kaspersky documented a module that reprograms…",
+  "title": "HDD and SSD controller firmware as a persistence surface",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "HDD and SSD controller firmware as a persistence surface - demonstrated against Seagate, Western Digital, Toshiba…",

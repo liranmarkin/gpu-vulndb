@@ -5,7 +5,7 @@
     "ASPEED secure boot disabled by default",
     "OpenBMC RoT not enabled"
   ],
-  "title": "ASPEED AST2600 / AST2700 hardware root of trust in OpenBMC builds: AST2600 has a fuse-backed secure boot that verifies the BMC firmware image against an RSA key, and AST2700…",
+  "title": "ASPEED AST2600 / AST2700 hardware root of trust in OpenBMC builds: AST2600 has a fuse-backed secure boot that verifies",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "ASPEED AST2600 / AST2700 hardware root of trust in OpenBMC builds",

@@ -5,7 +5,7 @@
     "GHSA-j54w-759w-xj3m",
     "DMTF-2026-0002"
   ],
-  "title": "DMTF libspdm CSR generation under the mbedTLS crypto backend (cryptlib_mbedtls): Stack corruption inside the firmware component that generates certificate signing requests - meaning the code…",
+  "title": "DMTF libspdm CSR generation under the mbedTLS crypto backend (cryptlib_mbedtls): Stack corruption inside the firmware",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "DMTF libspdm CSR generation under the mbedTLS crypto backend (cryptlib_mbedtls)",

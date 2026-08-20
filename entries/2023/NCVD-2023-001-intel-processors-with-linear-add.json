@@ -5,7 +5,7 @@
     "SLAM",
     "Spectre based on Linear Address Masking"
   ],
-  "title": "Intel processors with Linear Address Masking (LAM): SLAM: Linear Address Masking, a feature intended to let software store metadata in unused address bits, makes…",
+  "title": "Intel processors with Linear Address Masking (LAM): SLAM: Linear Address Masking, a feature intended to let software",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Intel processors with Linear Address Masking (LAM)",

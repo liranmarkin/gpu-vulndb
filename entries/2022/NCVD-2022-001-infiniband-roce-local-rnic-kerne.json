@@ -6,7 +6,7 @@
     "RDMA local packet injection",
     "Taranov et al., arXiv:2202.08080"
   ],
-  "title": "InfiniBand/RoCE local RNIC - kernel bypass path shared by all local processes: TENANT ISOLATION: NeVerMore showed that an unprivileged local user can inject packets into any RDMA…",
+  "title": "InfiniBand/RoCE local RNIC - kernel bypass path shared by all local processes: TENANT ISOLATION: NeVerMore showed",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "InfiniBand/RoCE local RNIC - kernel bypass path shared by all local processes",

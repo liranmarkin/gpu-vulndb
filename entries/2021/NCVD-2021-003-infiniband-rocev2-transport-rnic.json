@@ -7,7 +7,7 @@
     "RDMA packet injection by impersonation",
     "Rothenberger et al., USENIX Security 2021"
   ],
-  "title": "InfiniBand / RoCEv2 transport - RNIC connection state (QP number, PSN) on Mellanox ConnectX-class and compatible RNICs: TENANT ISOLATION: RDMA has no cryptographic binding between a packet and the…",
+  "title": "InfiniBand / RoCEv2 transport - RNIC connection state (QP number, PSN) on Mellanox ConnectX-class and compatible RNICs",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "InfiniBand / RoCEv2 transport - RNIC connection state (QP number, PSN) on Mellanox ConnectX-class and compatible RNICs",

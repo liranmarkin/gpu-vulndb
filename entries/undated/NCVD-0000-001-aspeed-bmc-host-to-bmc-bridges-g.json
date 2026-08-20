@@ -2,7 +2,7 @@
   "id": "NCVD-0000-001-aspeed-bmc-host-to-bmc-bridges-g",
   "cve": null,
   "aliases": [],
-  "title": "ASPEED BMC (host-to-BMC bridges generally): The ASPEED LPC/PCIe bridge architecture exists to let the host talk to the BMC",
+  "title": "ASPEED BMC (host-to-BMC bridges generally): The ASPEED LPC/PCIe bridge architecture exists to let the host talk",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "ASPEED BMC (host-to-BMC bridges generally)",

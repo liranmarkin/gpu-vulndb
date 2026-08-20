@@ -6,7 +6,7 @@
     "RDMA connection-manager resource exhaustion",
     "RNIC queue-pair exhaustion"
   ],
-  "title": "InfiniBand/RoCE Communication Manager (CM) and RNIC connection-state resources: FABRIC DOS: RNICs hold per-connection state in a fixed, small on-chip resource pool. ReDMArk demonstrated…",
+  "title": "InfiniBand/RoCE Communication Manager (CM) and RNIC connection-state resources: FABRIC DOS: RNICs hold per-connection",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "InfiniBand/RoCE Communication Manager (CM) and RNIC connection-state resources",

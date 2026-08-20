@@ -5,7 +5,7 @@
     "PSB left unfused",
     "AMD Platform Secure Boot not enabled"
   ],
-  "title": "AMD Platform Secure Boot (PSB) OEM key fusing on EPYC server boards: PSB is the fuse-backed root of trust that makes the PSP verify the OEM's BIOS signature before the x86 cores…",
+  "title": "AMD Platform Secure Boot (PSB) OEM key fusing on EPYC server boards: PSB is the fuse-backed root of trust that makes",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD Platform Secure Boot (PSB) OEM key fusing on EPYC server boards",

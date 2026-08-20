@@ -7,7 +7,7 @@
     "nvidia_p2p_get_pages",
     "GPU memory registered as an RDMA memory region"
   ],
-  "title": "NVIDIA GPUDirect RDMA - GPU BAR1 window peer-mapped to the RNIC, nvidia-peermem / nvidia_p2p_get_pages: TENANT ISOLATION: GPUDirect RDMA works by exposing GPU memory through a PCIe BAR window…",
+  "title": "NVIDIA GPUDirect RDMA - GPU BAR1 window peer-mapped to the RNIC, nvidia-peermem / nvidia_p2p_get_pages: TENANT",
   "layer": "gpu-stack",
   "layer_name": "NVIDIA / GPU stack",
   "component": "NVIDIA GPUDirect RDMA - GPU BAR1 window peer-mapped to the RNIC, nvidia-peermem / nvidia_p2p_get_pages",

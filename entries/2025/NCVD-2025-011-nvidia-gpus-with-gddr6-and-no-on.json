@@ -4,7 +4,7 @@
   "aliases": [
     "GPUHammer"
   ],
-  "title": "NVIDIA GPUs with GDDR6 and no on-die ECC - demonstrated on RTX A6000. Not reproduced on A100 (HBM), H100 or RTX 5090, which have on-die ECC: The first working Rowhammer against GPU memory, driven…",
+  "title": "NVIDIA GPUs with GDDR6 and no on-die ECC - demonstrated on RTX A6000",
   "layer": "gpu-stack",
   "layer_name": "NVIDIA / GPU stack",
   "component": "NVIDIA GPUs with GDDR6 and no on-die ECC - demonstrated on RTX A6000. Not reproduced on A100 (HBM), H100 or RTX…",

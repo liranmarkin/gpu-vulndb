@@ -4,7 +4,7 @@
   "aliases": [
     "SEVered"
   ],
-  "title": "AMD SEV memory encryption - host-controlled guest physical to host physical mapping: The original demonstration that SEV does not protect against the host: the hypervisor remaps a guest's…",
+  "title": "AMD SEV memory encryption - host-controlled guest physical to host physical mapping: The original demonstration",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD SEV memory encryption - host-controlled guest physical to host physical mapping",

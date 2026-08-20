@@ -8,7 +8,7 @@
     "congestion spreading",
     "Revisiting Network Support for RDMA (SIGCOMM 2018)"
   ],
-  "title": "RoCEv2 lossless Ethernet fabric - IEEE 802.1Qbb Priority Flow Control: FABRIC DOS: RoCE requires a lossless network, which in practice means Priority Flow Control, and PFC brings…",
+  "title": "RoCEv2 lossless Ethernet fabric - IEEE 802.1Qbb Priority Flow Control: FABRIC DOS: RoCE requires a lossless network",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RoCEv2 lossless Ethernet fabric - IEEE 802.1Qbb Priority Flow Control",

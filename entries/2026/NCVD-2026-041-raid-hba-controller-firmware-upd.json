@@ -2,7 +2,7 @@
   "id": "NCVD-2026-041-raid-hba-controller-firmware-upd",
   "cve": null,
   "aliases": [],
-  "title": "RAID/HBA controller firmware update path as a class - Broadcom MegaRAID and LSI 9400/9500/9600 HBAs, Microchip Adaptec SmartRAID/SmartHBA, and their OEM rebadges (Dell PERC, HPE SR/Smart Array…",
+  "title": "RAID/HBA controller firmware update path as a class",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RAID/HBA controller firmware update path as a class - Broadcom MegaRAID and LSI 9400/9500/9600 HBAs, Microchip…",

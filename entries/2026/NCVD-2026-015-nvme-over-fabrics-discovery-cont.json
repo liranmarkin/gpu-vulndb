@@ -6,7 +6,7 @@
     "NVMe/TCP no auth by default",
     "nvmet_host_allowed discovery bypass"
   ],
-  "title": "NVMe-over-Fabrics discovery controller - Linux kernel nvmet (drivers/nvme/target/discovery.c), NVMe/TCP and NVMe/RDMA: TENANT ISOLATION: The NVMe-oF discovery controller answers any peer that can…",
+  "title": "NVMe-over-Fabrics discovery controller - Linux kernel nvmet (drivers/nvme/target/discovery.c), NVMe/TCP and NVMe/RDMA",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "NVMe-over-Fabrics discovery controller - Linux kernel nvmet (drivers/nvme/target/discovery.c), NVMe/TCP and NVMe/RDMA",

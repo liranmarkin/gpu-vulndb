@@ -4,7 +4,7 @@
   "aliases": [
     "ECCploit"
   ],
-  "title": "ECC DDR3 server memory on Intel Xeon (Haswell, Sandy Bridge) and AMD Opteron platforms; the technique generalises to later ECC DRAM: ECC is the answer most operators give when asked about…",
+  "title": "ECC DDR3 server memory on Intel Xeon (Haswell, Sandy Bridge) and AMD Opteron platforms",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "ECC DDR3 server memory on Intel Xeon (Haswell, Sandy Bridge) and AMD Opteron platforms; the technique generalises to…",

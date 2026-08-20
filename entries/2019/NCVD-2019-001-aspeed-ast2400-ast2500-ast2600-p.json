@@ -7,7 +7,7 @@
     "X-DMA",
     "pantsdown attack surface"
   ],
-  "title": "ASPEED AST2400 / AST2500 / AST2600 (PCIe VGA P2A bridge, iLPC2AHB, X-DMA, SoC debug UART): The design-level problem behind pantsdown, and it outlives the patch. ASPEED silicon deliberately exposes…",
+  "title": "ASPEED AST2400 / AST2500 / AST2600 (PCIe VGA P2A bridge, iLPC2AHB, X-DMA, SoC debug UART): The design-level problem",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "ASPEED AST2400 / AST2500 / AST2600 (PCIe VGA P2A bridge, iLPC2AHB, X-DMA, SoC debug UART)",

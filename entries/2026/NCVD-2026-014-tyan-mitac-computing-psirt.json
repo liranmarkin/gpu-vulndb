@@ -2,7 +2,7 @@
   "id": "NCVD-2026-014-tyan-mitac-computing-psirt",
   "cve": null,
   "aliases": [],
-  "title": "Tyan / MiTAC Computing PSIRT: For Tyan, this vendor's firmware is unmeasurable from public data - the only substantive Tyan BMC…",
+  "title": "Tyan / MiTAC Computing PSIRT: For Tyan, this vendor's firmware is unmeasurable from public data",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Tyan / MiTAC Computing PSIRT",
