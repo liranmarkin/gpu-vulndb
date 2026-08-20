@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2023-002-gigabyte-uefi-firmware-oem-updat",
+  "cve": null,
+  "aliases": [
+    "Gigabyte App Center backdoor"
+  ],
+  "title": "Gigabyte UEFI firmware (OEM update-dropper in firmware): Gigabyte firmware shipped a UEFI module that writes a Windows executable to disk at every boot and has it…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Gigabyte UEFI firmware (OEM update-dropper in firmware)",
+  "year": "2023",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Gigabyte firmware shipped a UEFI module that writes a Windows executable to disk at every boot and has it fetch and run further code from Gigabyte-controlled URLs - one of them plain HTTP, with weak certificate validation on the others. It is not malware, it is the vendor's own updater, but it behaves exactly like a firmware implant: an unremovable, boot-persistent downloader with no user consent and no way to disable it from the OS. Anyone who can MITM that fetch, or who compromises the vendor's distribution point, gets code execution on every affected machine at every boot.",
+  "attack_vector": "A network attacker in path of the update fetch, or a supply-chain compromise of the vendor endpoint. No access to the machine needed.",
+  "remediation": "Gigabyte published firmware updates that fix the transport and validation; applying them is a per-board BIOS flash plus reboot. Where the platform allows it, disable the 'APP Center Download & Install' option in BIOS setup - a config-only mitigation you can push faster than a firmware campaign. The broader operator lesson: audit what your board vendor's firmware talks to on the network before a node ever carries tenant workload, and block outbound egress from the provisioning network by default.",
+  "references": [
+    "https://eclypsium.com/blog/supply-chain-risk-from-gigabyte-app-center-backdoor/",
+    "https://kb.cert.org/vuls/id/287178"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "NCVD-2024-001-platform-attestation-as-an-opera",
+  "cve": null,
+  "aliases": [],
+  "title": "Platform attestation as an operational control (fTPM vs discrete TPM trust): Design-level: on most GPU servers the TPM that backs measured boot is a firmware TPM inside the CPU package…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Platform attestation as an operational control (fTPM vs discrete TPM trust)",
+  "year": "2024",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Design-level: on most GPU servers the TPM that backs measured boot is a firmware TPM inside the CPU package or chipset, whose own integrity depends on the same firmware the attestation is supposed to be measuring. If the platform firmware or the management engine is compromised, the fTPM reports whatever that firmware tells it to, and a verifier cannot distinguish a clean node from a compromised one. Every entry in this database that yields SMM, BMC or CSME code execution collapses the attestation guarantee alongside it. Operators selling 'verified clean bare metal' or confidential GPU compute are usually asserting something their hardware cannot independently prove.",
+  "attack_vector": "Any attacker who reaches the firmware layer beneath the TPM - SMM code execution, BMC takeover, or a management-engine flaw. The attestation does not fail loudly; it keeps passing.",
+  "remediation": "No patch. Architectural: root attestation in a device that is independent of the firmware it measures (discrete TPM on its own bus, or a separate platform root-of-trust device such as an OCP Cerberus-style controller), pin expected measurements rather than accepting any well-formed quote, verify the freshness and provenance of quotes rather than just their signature, and pair attestation with an independent firmware-integrity scan. Document to customers what attestation does and does not prove rather than over-claiming it.",
+  "references": [
+    "https://www.opencompute.org/projects/security",
+    "https://trustedcomputinggroup.org/resource/tpm-library-specification/"
+  ],
+  "status": "curated"
+}

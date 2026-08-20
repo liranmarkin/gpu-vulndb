@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2026-012-das-u-boot-fit-image-signature-v",
+  "cve": null,
+  "aliases": [
+    "BRLY-2026-038",
+    "BRLY-2026-041"
+  ],
+  "title": "Das U-Boot (FIT image signature verification): Binarly disclosed a cluster of flaws in U-Boot's FIT image handling - stack buffer underflow and NULL…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Das U-Boot (FIT image signature verification)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Binarly disclosed a cluster of flaws in U-Boot's FIT image handling - stack buffer underflow and NULL dereference during signature verification, unbounded recursion in FIT validation, and an SPL out-of-bounds write while loading a FIT image. U-Boot is the first-stage bootloader on essentially every ASPEED-based BMC, so these sit below the BMC firmware itself: an attacker who lands here owns the root of trust for the management controller and nothing running on the host can see it.",
+  "attack_vector": "Requires the ability to present a crafted FIT image to the bootloader - in BMC terms, an attacker who already achieved a firmware write, or a malicious/compromised firmware update image. It is the persistence layer of a BMC compromise rather than the initial entry.",
+  "remediation": "No CVE IDs assigned as of disclosure. Fix arrives as a U-Boot update embedded in a full BMC firmware image from your board vendor, which means an out-of-band per-node BMC flash and an ODM rebase lag measured in months. There is no config mitigation - the compensating control is signed-update enforcement plus strict isolation of the management network.",
+  "references": [
+    "https://www.binarly.io/advisories"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,24 @@
+{
+  "id": "NCVD-2021-002-discrete-tpm-lpc-spi-bus-unencry",
+  "cve": null,
+  "aliases": [
+    "TPM bus sniffing",
+    "LPC/SPI interposer"
+  ],
+  "title": "Discrete TPM (LPC / SPI bus, unencrypted sessions): A discrete TPM talks to the CPU over LPC or SPI in the clear unless the software explicitly uses…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Discrete TPM (LPC / SPI bus, unencrypted sessions)",
+  "year": "2021",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "A discrete TPM talks to the CPU over LPC or SPI in the clear unless the software explicitly uses parameter-encrypted sessions, which most does not. An attacker who clips a logic analyser onto the bus - or onto the exposed pins of a socketed TPM header - reads the sealed key as it is released. The demonstrated case is recovering a BitLocker/LUKS volume key in minutes with a cheap probe, on a machine whose owner believed the disk was hardware-protected. For an operator, this is the flaw that turns a physically accessible node into a full data disclosure, and it leaves no trace in any log.",
+  "attack_vector": "Physical access to the motherboard for the duration of one boot. In practice: a colo cage neighbour, remote-hands staff, a decommissioning or RMA handler, or hardware intercepted in shipping. No credentials, no software exploit, no persistence needed.",
+  "remediation": "No patch exists - it is a property of the bus, not a bug. Mitigations are architectural: enable TPM parameter encryption / encrypted sessions in the software that unseals (recent Linux and Windows stacks support it, older ones do not), require a PIN or second factor so the TPM value alone is not sufficient to unlock, prefer fTPM where the bus is internal to the package, and use tamper-evident chassis with a documented seal check on every physical touch. Treat any node that left your custody as untrusted until re-provisioned.",
+  "references": [
+    "https://dolosgroup.io/blog/2021/7/9/from-stolen-laptop-to-inside-the-company-network",
+    "https://pulsesecurity.co.nz/articles/TPM-sniffing"
+  ],
+  "status": "curated"
+}

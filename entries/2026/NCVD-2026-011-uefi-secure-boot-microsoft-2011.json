@@ -1,0 +1,22 @@
+{
+  "id": "NCVD-2026-011-uefi-secure-boot-microsoft-2011",
+  "cve": null,
+  "aliases": [
+    "Secure Boot 2026 certificate expiry"
+  ],
+  "title": "UEFI Secure Boot (Microsoft 2011 CA/KEK expiry): Not an exploitable flaw but a fleet-wide trust-anchor deadline. The 2011-era Microsoft UEFI CA and KEK…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "UEFI Secure Boot (Microsoft 2011 CA/KEK expiry)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Not an exploitable flaw but a fleet-wide trust-anchor deadline. The 2011-era Microsoft UEFI CA and KEK certificates baked into most server firmware reach end of validity in 2026. Nodes that never receive updated certificates stop receiving valid Secure Boot revocation updates and, depending on firmware behaviour, may refuse to boot newly signed bootloaders - meaning Secure Boot either silently stops being enforceable or turns into an outage. For a GPU operator this hits the exact control the bare-metal tenant-handoff story depends on.",
+  "attack_vector": "No attacker required. The risk is that stale certificates leave you unable to revoke a future vulnerable bootloader, so every bypass in this cluster becomes permanent on affected nodes.",
+  "remediation": "Inventory Secure Boot certificate validity per node now, before the deadline. Updated certificates arrive by OEM firmware/BIOS update or OS vendor channel and require a reboot; older boards may never get them, in which case plan hardware refresh or accept that those nodes have no working revocation path. Treat certificate expiry as a scheduled fleet program, not an incident.",
+  "references": [
+    "https://techcommunity.microsoft.com/blog/windows-itpro-blog/act-now-secure-boot-certificates-expire-in-june-2026/4426856"
+  ],
+  "status": "curated"
+}

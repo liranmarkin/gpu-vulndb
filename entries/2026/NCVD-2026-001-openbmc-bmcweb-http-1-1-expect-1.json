@@ -1,0 +1,25 @@
+{
+  "id": "NCVD-2026-001-openbmc-bmcweb-http-1-1-expect-1",
+  "cve": null,
+  "aliases": [
+    "GHSA-p3gc-68x5-g9w3",
+    "CONN-F2"
+  ],
+  "title": "OpenBMC bmcweb HTTP/1.1 Expect: 100-continue handling: bmcweb applies a 4 KB body limit to unauthenticated requests, and the Expect: 100-continue path returns…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "OpenBMC bmcweb HTTP/1.1 Expect: 100-continue handling",
+  "year": "2026",
+  "cvss_score": 7.5,
+  "severity": "high",
+  "kev": false,
+  "impact": "bmcweb applies a 4 KB body limit to unauthenticated requests, and the Expect: 100-continue path returns before that limit is applied. An unauthenticated client streams roughly 10 MB into BMC memory per connection - a 2,560x amplification over the intended cap - and drives the BMC out of memory. Redfish, the web UI, KVM and serial-over-LAN all die with the process. What makes this one worth tracking specifically: it has a published GitHub advisory but no CVE was ever assigned, so it does not appear in NVD, OSV or the vendor scanners most operators rely on. If your firmware risk process is 'match SBOM against NVD', you will not see it. Intel firmware shipped in January 2026 still contained it.",
+  "attack_vector": "Unauthenticated HTTP(S) to bmcweb on the BMC management interface, using a stock HTTP client. No credentials, no host access.",
+  "remediation": "Fixed on 2026-04-21 in bmcweb commit 0b2049b0, released in bmcweb 3.0.0; affected versions are 2.18.0 and earlier. Reaching a deployed fleet needs a BMC firmware flash - per node, out-of-band, and dependent on your ODM rebasing to bmcweb 3.0.0, which for most server vendors will lag by quarters. Config-only mitigation and the realistic near-term answer: put the BMC HTTPS port behind an ACL so only management jump hosts can reach it, and do not expose the web interface beyond the management VLAN. Because there is no CVE, add it to your firmware acceptance checklist by bmcweb version rather than expecting a scanner to flag it.",
+  "references": [
+    "https://github.com/openbmc/bmcweb/security/advisories/GHSA-p3gc-68x5-g9w3",
+    "https://seclists.org/fulldisclosure/2026/May/24",
+    "https://binreaper.pages.dev/posts/2026-05-27-bmcweb-disclosure/"
+  ],
+  "status": "curated"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2026-009-openbmc-bmcweb-http-2-content-le",
+  "cve": null,
+  "aliases": [
+    "H2-F2"
+  ],
+  "title": "OpenBMC bmcweb HTTP/2 Content-Length handling: bmcweb passes the client-supplied Content-Length straight into a reserve() call. One HEADERS frame declaring…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "OpenBMC bmcweb HTTP/2 Content-Length handling",
+  "year": "2026",
+  "cvss_score": 7.5,
+  "severity": "high",
+  "kev": false,
+  "impact": "bmcweb passes the client-supplied Content-Length straight into a reserve() call. One HEADERS frame declaring a nonsense length like 999999999999 throws bad_alloc and takes down the single-threaded event loop - the entire management interface, from one frame, with no body sent and no credentials. Notable for the disclosure hygiene as much as the bug: it was patched the same day as the Expect-header issue but received no advisory of its own and no CVE, so nothing downstream records that affected firmware is vulnerable. An operator auditing by advisory count will undercount bmcweb's exposure.",
+  "attack_vector": "Unauthenticated HTTP/2 to bmcweb on the management interface. A single frame is enough; no payload, no session.",
+  "remediation": "Fixed 2026-04-21 in bmcweb commit 62526bb0, same release train as the Expect fix (bmcweb 3.0.0). Since it shares a release with the advisory-carrying bug, one BMC firmware flash covers both - per node, out-of-band, ODM-rebase-lagged. Until then, config-only: restrict who can reach the BMC HTTPS port, and disable h2 if your tooling permits. Verify by bmcweb version, not by scanner output, since no CVE exists to match against.",
+  "references": [
+    "https://seclists.org/fulldisclosure/2026/May/24",
+    "https://binreaper.pages.dev/posts/2026-05-27-bmcweb-disclosure/"
+  ],
+  "status": "curated"
+}

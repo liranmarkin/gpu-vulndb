@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2026-008-openbmc-bmcweb-http-2-body-buffe",
+  "cve": null,
+  "aliases": [
+    "H2-F1"
+  ],
+  "title": "OpenBMC bmcweb HTTP/2 body buffering (HttpBody::reader, nghttp2 flow control): The HTTP/2 code path in bmcweb appends incoming DATA frames with no size check at all, and nghttp2's default…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "OpenBMC bmcweb HTTP/2 body buffering (HttpBody::reader, nghttp2 flow control)",
+  "year": "2026",
+  "cvss_score": 7.5,
+  "severity": "high",
+  "kev": false,
+  "impact": "The HTTP/2 code path in bmcweb appends incoming DATA frames with no size check at all, and nghttp2's default window auto-replenishment means the data flows before authentication happens. Same outcome as the Expect bug but worse, because it bypasses the body limit entirely rather than merely leaking past it, and because h2 is negotiated by default over ALPN so it is the path a modern client takes automatically. The researcher rates it the most severe of the four findings. Reported as unfixed on master at time of disclosure, with no advisory and no CVE - so this is a known, public, unpatched pre-auth DoS in the daemon that owns every out-of-band control path on your fleet.",
+  "attack_vector": "Unauthenticated HTTP/2 over TLS to bmcweb on the management interface. ALPN negotiates h2 by default, so no unusual client is needed.",
+  "remediation": "No fix as of disclosure; proposed Gerrit patches were posted to the OpenBMC mailing list. This is a config-only situation until upstream lands a fix and your ODM rebases - so ACL the BMC HTTPS port to management jump hosts only, and if your tooling can live on HTTP/1.1, disabling h2 in ALPN on the BMC removes the path. Assume no firmware you can buy today contains a fix. When one exists it arrives as a per-node out-of-band BMC firmware flash with the usual ODM lag.",
+  "references": [
+    "https://seclists.org/fulldisclosure/2026/May/24",
+    "https://binreaper.pages.dev/posts/2026-05-27-bmcweb-disclosure/"
+  ],
+  "status": "curated"
+}

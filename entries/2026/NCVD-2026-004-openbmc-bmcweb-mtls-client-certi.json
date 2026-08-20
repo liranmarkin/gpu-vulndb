@@ -1,0 +1,23 @@
+{
+  "id": "NCVD-2026-004-openbmc-bmcweb-mtls-client-certi",
+  "cve": null,
+  "aliases": [
+    "AUTH-F6"
+  ],
+  "title": "OpenBMC bmcweb mTLS client-certificate UPN validation: Where mTLS is configured, bmcweb matches the certificate's UPN by walking dot-separated labels with no bound.…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "OpenBMC bmcweb mTLS client-certificate UPN validation",
+  "year": "2026",
+  "cvss_score": 6.8,
+  "severity": "medium",
+  "kev": false,
+  "impact": "Where mTLS is configured, bmcweb matches the certificate's UPN by walking dot-separated labels with no bound. A certificate issued for user@com authenticates against any host under that TLD, and a parent-domain certificate authenticates against every child deployment. For an operator running mTLS across a fleet - which is the hardened configuration, chosen by the most security-conscious teams - this means one certificate from anywhere in the hierarchy authenticates to every BMC in it, silently, with no failed-auth log to notice. It is the rare bug that punishes you specifically for having done the harder thing.",
+  "attack_vector": "Requires mTLS to be enabled on the BMC (not the default) and possession of any certificate the BMC's trust store chains to, including one issued for a parent domain or a different deployment. Network access to the BMC's HTTPS port.",
+  "remediation": "Unpatched at disclosure. An April 2026 commit fixed only case-insensitivity in the comparison and left the suffix-walking logic intact, so do not assume a recent bmcweb clears it. If you run mTLS on BMCs, audit which CAs are in each BMC's trust store and narrow them to a per-fleet issuing CA that signs nothing else - that is a config-only change and is the effective mitigation today. Do not put a broadly-scoped corporate CA in a BMC trust store. A real fix will require a BMC firmware flash once upstream lands one.",
+  "references": [
+    "https://seclists.org/fulldisclosure/2026/May/24",
+    "https://binreaper.pages.dev/posts/2026-05-27-bmcweb-disclosure/"
+  ],
+  "status": "curated"
+}

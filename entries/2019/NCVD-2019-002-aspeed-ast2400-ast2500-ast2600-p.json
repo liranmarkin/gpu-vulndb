@@ -1,0 +1,28 @@
+{
+  "id": "NCVD-2019-002-aspeed-ast2400-ast2500-ast2600-p",
+  "cve": null,
+  "aliases": [
+    "P2A bridge default-on",
+    "iLPC2AHB",
+    "X-DMA",
+    "pantsdown attack surface"
+  ],
+  "title": "ASPEED AST2400 / AST2500 / AST2600 (PCIe VGA P2A bridge, iLPC2AHB, X-DMA, SoC debug UART): The design-level problem behind pantsdown, and it outlives the patch. ASPEED silicon deliberately exposes…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "ASPEED AST2400 / AST2500 / AST2600 (PCIe VGA P2A bridge, iLPC2AHB, X-DMA, SoC debug UART)",
+  "year": "2019",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "The design-level problem behind pantsdown, and it outlives the patch. ASPEED silicon deliberately exposes several host-side windows into the BMC's own AHB address space: a PCIe VGA peer-to-peer (P2A) aperture, the LPC-to-AHB bridge reachable from the host's SuperIO, X-DMA, and a UART debug console. On a lot of shipped firmware these are left open because ODM tooling, vendor flashing utilities and iKVM features rely on them. A tenant that gets kernel or root on a bare-metal GPU node - or anything that reaches the host PCIe config space, which includes a rogue driver in a passthrough VM on some configurations - can write the BMC's RAM and flash directly. That is a host-to-BMC escalation with no BMC credentials and no management-network access, and it yields an implant on a processor that keeps running when the node is powered off and survives OS reimage entirely.",
+  "attack_vector": "Local to the host: code with kernel privilege on the server the BMC is attached to, or PCIe config-space access from a passthrough device. No network path to the BMC needed. On a bare-metal GPU rental fleet, this is any tenant who gets root on the box they rented.",
+  "remediation": "Not a single patch - a per-platform hardening audit. The BMC firmware must explicitly lock the P2A bridge, disable the iLPC2AHB path via the SuperIO/eSPI configuration, and clear the SoC debug UART enable at boot. OpenBMC upstream added kernel-side gating but ODM builds frequently re-enable pieces for their own flashing flows, so you cannot assume your image is safe because it is 'post-2019'. Verifying requires reading the BMC's own register state per platform, then a BMC firmware flash to fix - out-of-band, per node, ODM-rebase-lagged, and bricking risk if power is lost mid-write. Config-only partial mitigation: on a bare-metal fleet, wipe and re-flash BMC firmware between tenants rather than trusting the running image, and treat any node that has hosted an untrusted tenant as having a potentially dirty BMC.",
+  "references": [
+    "https://www.flamingspork.com/blog/2019/01/23/cve-2019-6260:-gaining-control-of-bmc-from-the-host-processor/",
+    "https://security.netapp.com/advisory/ntap-20190314-0001/",
+    "https://www.theregister.com/2019/01/24/bmc_pantsdown_bug/",
+    "https://support.lenovo.com/us/en/solutions/ps500241-aspeed-ast-series-bmc-vulnerability"
+  ],
+  "status": "curated"
+}

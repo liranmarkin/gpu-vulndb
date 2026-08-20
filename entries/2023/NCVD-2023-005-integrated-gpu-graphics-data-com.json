@@ -1,0 +1,24 @@
+{
+  "id": "NCVD-2023-005-integrated-gpu-graphics-data-com",
+  "cve": null,
+  "aliases": [
+    "GPU.zip",
+    "graphics data compression side channel"
+  ],
+  "title": "Integrated GPU graphics data compression (Intel, AMD, Apple, Arm, Qualcomm, NVIDIA): MULTI-TENANT ISOLATION: GPUs apply data-dependent lossless compression to framebuffer traffic even when…",
+  "layer": "gpu-stack",
+  "layer_name": "NVIDIA / GPU stack",
+  "component": "Integrated GPU graphics data compression (Intel, AMD, Apple, Arm, Qualcomm, NVIDIA)",
+  "year": "2023",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "MULTI-TENANT ISOLATION: GPUs apply data-dependent lossless compression to framebuffer traffic even when software never asked for it, and the resulting DRAM traffic pattern is measurable from a co-resident context. The published attack recovered pixel data cross-origin from a browser. For a datacenter operator the realistic worry is remote-desktop, cloud-gaming and VDI fleets where the rendered surface is a customer's screen. No CVE was assigned and the affected vendors declined to ship fixes.",
+  "attack_vector": "A co-resident attacker able to render and time - in the original work, a web page in another browser tab. On a shared render host, another tenant's session.",
+  "remediation": "UNPATCHABLE. Vendors treated the compression as working-as-designed and the browsers mitigated the specific web attack by restricting cross-origin iframe rendering. There is no GPU driver or firmware update. If you sell shared remote-desktop or cloud-gaming capacity, the only real control is not co-residing untrusted sessions on the same GPU.",
+  "references": [
+    "https://www.hertzbleed.com/gpu.zip/",
+    "https://arxiv.org/abs/2310.01187"
+  ],
+  "status": "curated"
+}
