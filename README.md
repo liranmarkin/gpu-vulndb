@@ -7,7 +7,7 @@
 **Every known vulnerability in the stack GPU datacenters run on - firmware to model serving.**
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fgpuvulndb.org&label=gpuvulndb.org&up_color=5a31d8)](https://gpuvulndb.org)
-![Entries](https://img.shields.io/badge/entries-3%2C450-5a31d8)
+![Entries](https://img.shields.io/badge/entries-3%2C566-5a31d8)
 [![Validation](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml/badge.svg)](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml)
 [![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-2b1663)](LICENSE-DATA)
 [![Code: MIT](https://img.shields.io/badge/code-MIT-2b1663)](LICENSE)
@@ -41,7 +41,7 @@ It is built for the people who operate this stack: GPU clouds, colocation datace
 
 ## 🧱 What's in scope
 
-**3,450 entries covering 3,344 distinct CVEs, spanning 2011 to 2026** - organized by the six layers of the stack, top to bottom:
+**3,566 entries covering 3,460 distinct CVEs, spanning 2011 to 2026** - organized by the six layers of the stack, top to bottom:
 
 | Layer | What it covers | Entries |
 | --- | --- | ---: |

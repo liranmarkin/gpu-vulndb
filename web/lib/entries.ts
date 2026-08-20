@@ -13,7 +13,7 @@ let cache: Entry[] | null = null;
 export function getAllEntries(): Entry[] {
   if (cache) return cache;
 
-  // Dates are an enrichment (scripts/fetch_nvd_dates.py); the site must build without them.
+  // Dates are an enrichment, joined from the fetch_nvd_dates.py output; the site must build without them.
   let dates: Record<string, string> = {};
   try {
     dates = JSON.parse(readFileSync(DATES_FILE, "utf8"));
