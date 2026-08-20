@@ -4,7 +4,7 @@
   "aliases": [
     "AMD-SB-3024"
   ],
-  "title": "AMD SEV-SNP - DIMM interposer variant of BadRAM (KU Leuven): MULTI-TENANT ISOLATION: A memory-bus interposer variant",
+  "title": "AMD SEV-SNP - DIMM interposer variant of BadRAM (KU Leuven): A memory-bus interposer variant of the BadRAM aliasing",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD SEV-SNP - DIMM interposer variant of BadRAM (KU Leuven)",
@@ -12,7 +12,7 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: A memory-bus interposer variant of the BadRAM aliasing attack against SEV-SNP. AMD's response is **WONTFIX** - the attack is declared outside the SEV-SNP threat model because it requires physical interposition on the memory bus.",
+  "impact": "A memory-bus interposer variant of the BadRAM aliasing attack against SEV-SNP. AMD's response is **WONTFIX** - the attack is declared outside the SEV-SNP threat model because it requires physical interposition on the memory bus.",
   "attack_vector": "Physical access with a memory-bus interposer.",
   "remediation": "**No patch, and none coming** - AMD has scoped it out of the threat model. The operator control is physical: tamper-evident chassis handling, chain of custody, and not making confidential-computing claims that a tenant could reasonably read as covering an adversary with physical access to the DIMM slot. If a customer's threat model includes your own datacenter staff, this is a conversation to have explicitly rather than one to leave to the marketing page.",
   "references": [
@@ -22,5 +22,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

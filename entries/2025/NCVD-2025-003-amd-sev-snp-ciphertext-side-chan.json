@@ -6,7 +6,7 @@
     "Chosen Plaintext Oracle against SEV-SNP",
     "AMD-SB-3021"
   ],
-  "title": "AMD SEV-SNP - ciphertext side channels amplified by hypervisor page movement: MULTI-TENANT ISOLATION: Two 2025",
+  "title": "AMD SEV-SNP - ciphertext side channels amplified by hypervisor page movement: Two 2025 follow-ups to CipherLeaks",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD SEV-SNP - ciphertext side channels amplified by hypervisor page movement",
@@ -14,7 +14,7 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: Two 2025 follow-ups to CipherLeaks - Toronto's Relocate+Vote and ETH Zurich's chosen-plaintext oracle - both combine ciphertext visibility with the hypervisor's ability to move or swap guest pages. Relocating a page changes which address the deterministic encryption is keyed to, giving the attacker the equivalent of a chosen-plaintext oracle against a confidential VM. AMD publishes this as informational with **no CVE**, which is the point worth noting: your vulnerability scanner will never mention it.",
+  "impact": "Two 2025 follow-ups to CipherLeaks - Toronto's Relocate+Vote and ETH Zurich's chosen-plaintext oracle - both combine ciphertext visibility with the hypervisor's ability to move or swap guest pages. Relocating a page changes which address the deterministic encryption is keyed to, giving the attacker the equivalent of a chosen-plaintext oracle against a confidential VM. AMD publishes this as informational with **no CVE**, which is the point worth noting: your vulnerability scanner will never mention it.",
   "attack_vector": "Malicious hypervisor able to observe guest ciphertext and relocate guest pages.",
   "remediation": "**No patch.** The available control is guest policy: SEV-SNP ABI 1.58 and later let a guest forbid hypervisor page move and swap, which removes the amplification. As the operator, support and document that policy bit so tenants can set it; as a tenant-facing claim, be honest that ciphertext visibility on Zen 3 and Zen 4 is architectural. The durable fix is Ciphertext Hiding on Zen 5 (Turin) - a hardware refresh, not a maintenance window.",
   "references": [
@@ -24,5 +24,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

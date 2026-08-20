@@ -1,0 +1,28 @@
+{
+  "id": "NCVD-2021-011-infiniband-roce-communication-ma",
+  "cve": null,
+  "aliases": [
+    "ReDMArk DoS",
+    "RDMA connection-manager resource exhaustion",
+    "RNIC queue-pair exhaustion"
+  ],
+  "title": "InfiniBand/RoCE Communication Manager (CM) and RNIC connection-state resources: RNICs hold per-connection state in a",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "InfiniBand/RoCE Communication Manager (CM) and RNIC connection-state resources",
+  "year": "2021",
+  "cvss_score": 7.5,
+  "severity": "high",
+  "kev": false,
+  "impact": "RNICs hold per-connection state in a fixed, small on-chip resource pool. ReDMArk demonstrated that an unauthenticated peer can drive a victim RNIC to exhaustion simply by opening connections through the RDMA Connection Manager, or by sending malformed CM datagrams that leave half-open state behind. Once the pool is full the victim node can no longer accept new queue pairs, which on a GPU cluster means NCCL rendezvous fails, jobs hang at the allreduce, and the node effectively drops out of the scheduler while still appearing healthy to a ping-based health check.",
+  "attack_vector": "Any node that can reach the victim's CM service (UD QP1 on InfiniBand, UDP/4791 plus the CM port on RoCE) opens connections in a loop, or sends CM REQ messages and never completes the handshake. Because CM traffic is unauthenticated and is processed before any application-level identity exists, no tenant credentials are needed. In a shared cluster a single misbehaving or malicious container with RDMA device access is enough.",
+  "remediation": "No patch. Config change: rate-limit CM traffic at the switch or in the host's RDMA CM (per-source connection caps), enforce per-tenant P_Key partitions so a tenant can only reach nodes in its own job, and use SR-IOV VF resource limits so one VF cannot consume the PF's whole QP pool. Vendor firmware on newer ConnectX/BlueField parts adds per-VF resource quotas - that is a firmware flash plus a host reboot, rolling. Cheapest immediate mitigation is scheduler-side: do not co-schedule untrusted tenants onto nodes sharing an RNIC.",
+  "references": [
+    "https://www.usenix.org/conference/usenixsecurity21/presentation/rothenberger",
+    "https://netsec.ethz.ch/publications/papers/sec21summer-redmark.pdf"
+  ],
+  "status": "curated",
+  "tags": [
+    "fabric-dos"
+  ]
+}

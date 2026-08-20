@@ -1,0 +1,32 @@
+{
+  "cwe": [
+    "CWE-287"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-059-htcondor-access-point-daemons-co",
+  "cve": null,
+  "aliases": [
+    "HTCONDOR-2026-0001"
+  ],
+  "title": "HTCondor (Access Point daemons, condor identity): A user with WRITE authorization on an Access Point - i.e. anyone who",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "HTCondor (Access Point daemons, condor identity)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "A user with WRITE authorization on an Access Point - i.e. anyone who can submit a job - can impersonate the condor service account to that AP's daemons. That grants ADMINISTRATOR-level commands (hold and remove anyone's jobs, submit as other users, shut daemons down), the ability to edit any attribute of any job ClassAd, and the ability to mint an IDToken for the condor identity. Because IDToken signing keys are usually shared across a pool, that token is then usable against other machines, so a single submit-capable tenant escalates to pool-wide control.",
+  "attack_vector": "Any user with WRITE authorization to an Access Point, from any host. The HTCondor team rates the effort as medium - custom tooling is required, but no privileged position is.",
+  "remediation": "Upgrade the Access Point to HTCondor 24.0.22, 24.12.22, 25.0.12 or 25.11.1 and restart its daemons. Because a forged condor IDToken survives the patch, rotate the IDToken signing keys across every machine that shares them with the affected AP and reissue tokens. Fix date was 2026-07-21; no CVE ID had been published for this advisory as of 2026-08-20.",
+  "references": [
+    "https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001.html",
+    "https://htcondor.org/security/vulnerabilities/"
+  ],
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
+}

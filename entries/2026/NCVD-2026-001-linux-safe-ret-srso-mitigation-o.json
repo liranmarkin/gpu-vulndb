@@ -5,7 +5,7 @@
     "Safe RET Interrupt Vulnerability",
     "AMD-SB-7061"
   ],
-  "title": "Linux Safe RET SRSO mitigation on AMD Zen 1-Zen 4 - interrupt-induced weakening: MULTI-TENANT ISOLATION: An attacker",
+  "title": "Linux Safe RET SRSO mitigation on AMD Zen 1-Zen 4 - interrupt-induced weakening: An attacker executing code on the",
   "layer": "control-plane",
   "layer_name": "Control plane, storage & DevOps",
   "component": "Linux Safe RET SRSO mitigation on AMD Zen 1-Zen 4 - interrupt-induced weakening",
@@ -13,7 +13,7 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: An attacker executing code on the machine injects an interrupt at a precise moment to disrupt **Safe RET**, which is the default SRSO/Inception mitigation on Linux. Disrupting it weakens the mitigation and can leak information across privilege boundaries. The reason to care operationally is that your tooling will report SRSO as mitigated while the mitigation is being defeated - demonstrated on Zen 1 and Zen 2, suspected on Zen 3 and Zen 4.",
+  "impact": "An attacker executing code on the machine injects an interrupt at a precise moment to disrupt **Safe RET**, which is the default SRSO/Inception mitigation on Linux. Disrupting it weakens the mitigation and can leak information across privilege boundaries. The reason to care operationally is that your tooling will report SRSO as mitigated while the mitigation is being defeated - demonstrated on Zen 1 and Zen 2, suspected on Zen 3 and Zen 4.",
   "attack_vector": "Local, requires code execution on the system and precise interrupt timing - so reachable from a tenant workload, not from the network.",
   "remediation": "**No fix published as of August 2026** - this is the live, open gap in the SRSO story. AMD's assessment attributes it to the Linux Safe RET implementation rather than to silicon, so the eventual fix is expected to be a kernel change rather than microcode or BIOS. Until then, treat SRSO as partially mitigated on Zen 1 through Zen 4 rather than closed: for workloads where cross-privilege speculative leakage is genuinely in your threat model, dedicated nodes rather than shared ones is the only control that holds. Track AMD-SB-7061 for the fix.",
   "references": [
@@ -23,5 +23,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

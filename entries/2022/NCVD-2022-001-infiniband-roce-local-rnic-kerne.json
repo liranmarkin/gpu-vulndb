@@ -6,7 +6,7 @@
     "RDMA local packet injection",
     "Taranov et al., arXiv:2202.08080"
   ],
-  "title": "InfiniBand/RoCE local RNIC - kernel bypass path shared by all local processes: TENANT ISOLATION: NeVerMore showed",
+  "title": "InfiniBand/RoCE local RNIC - kernel bypass path shared by all local processes: NeVerMore showed that an unprivileged",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "InfiniBand/RoCE local RNIC - kernel bypass path shared by all local processes",
@@ -14,7 +14,7 @@
   "cvss_score": 8.8,
   "severity": "high",
   "kev": false,
-  "impact": "TENANT ISOLATION: NeVerMore showed that an unprivileged local user can inject packets into any RDMA connection created on the same local network controller, bypassing the operating system and kernel entirely. On a multi-tenant node this is a complete break of the host's process boundary at the fabric layer: a low-privilege container that has been given a /dev/infiniband device can forge traffic belonging to a co-resident tenant's queue pairs, and from there acquire unauthorized block access to NVMe-oF targets that trusted the RDMA connection as the authenticator. In a GPU cluster this converts one compromised training pod into read/write access to the whole tenant's remote datasets.",
+  "impact": "NeVerMore showed that an unprivileged local user can inject packets into any RDMA connection created on the same local network controller, bypassing the operating system and kernel entirely. On a multi-tenant node this is a complete break of the host's process boundary at the fabric layer: a low-privilege container that has been given a /dev/infiniband device can forge traffic belonging to a co-resident tenant's queue pairs, and from there acquire unauthorized block access to NVMe-oF targets that trusted the RDMA connection as the authenticator. In a GPU cluster this converts one compromised training pod into read/write access to the whole tenant's remote datasets.",
   "attack_vector": "The attacker needs only ordinary access to the local RDMA verbs device - which is how RDMA is normally exposed to containers, since kernel bypass is the whole point. They construct raw queue pairs and emit packets whose transport headers name another local process's QP, because the RNIC does not verify that the submitting context owns the source identity it stamps on the wire. The paper implements four RDMA-protocol attacks and seven NVMe-oF attacks and verifies them against both SPDK and the Linux kernel NVMe-oF implementations.",
   "remediation": "No patch closes this in general. Config change with real cost: stop sharing one RNIC/PF across trust boundaries - give each tenant a dedicated SR-IOV VF or a dedicated physical NIC, and never mount /dev/infiniband into an untrusted container. On BlueField DPUs, terminate the RDMA connection on the DPU so the host cannot forge fabric identity - that is a hardware/topology change. Layer real authentication above the transport: enable NVMe-oF in-band DH-HMAC-CHAP so block access does not rest on the RDMA connection alone (config change on target and initiator, no reboot). Treat 'RDMA device in an untrusted container' as equivalent to root on the fabric.",
   "references": [
@@ -24,5 +24,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

@@ -7,7 +7,7 @@
     "RNIC microarchitecture resource contention",
     "Kong et al., NSDI 2023"
   ],
-  "title": "RNIC microarchitectural resources (NIC cache, processing units) under multi-tenant RDMA: TENANT ISOLATION",
+  "title": "RNIC microarchitectural resources (NIC cache, processing units) under multi-tenant RDMA: This is the paper that",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RNIC microarchitectural resources (NIC cache, processing units) under multi-tenant RDMA",
@@ -15,7 +15,7 @@
   "cvss_score": 6.5,
   "severity": "medium",
   "kev": false,
-  "impact": "TENANT ISOLATION: This is the paper that established RDMA performance isolation in the cloud is not solved. The authors built a test suite (released as host-bench/husky) that models how RDMA operations consume RNIC microarchitecture resources, and report that it breaks every existing performance-isolation solution in various scenarios - a result acknowledged and reproduced by one of the largest RDMA NIC vendors. For an operator selling RDMA into guest VMs or containers, this means a neighbouring tenant can degrade your customer's collective-communication bandwidth at will, and no NIC-level QoS knob currently on the market reliably prevents it. Jobs miss their step-time SLOs with no attributable cause in host metrics.",
+  "impact": "This is the paper that established RDMA performance isolation in the cloud is not solved. The authors built a test suite (released as host-bench/husky) that models how RDMA operations consume RNIC microarchitecture resources, and report that it breaks every existing performance-isolation solution in various scenarios - a result acknowledged and reproduced by one of the largest RDMA NIC vendors. For an operator selling RDMA into guest VMs or containers, this means a neighbouring tenant can degrade your customer's collective-communication bandwidth at will, and no NIC-level QoS knob currently on the market reliably prevents it. Jobs miss their step-time SLOs with no attributable cause in host metrics.",
   "attack_vector": "A co-resident tenant issues RDMA verb patterns chosen to thrash specific RNIC resources - for example many small operations across many queue pairs and memory regions to blow out the NIC's address-translation cache, or operation mixes that monopolise particular NIC processing stages. The attacker needs nothing more than normal RDMA access on a shared NIC; the damage is done inside the NIC where host-side rate limiters and cgroups have no visibility.",
   "remediation": "No patch. Run the Husky suite against your own NIC/firmware/isolation configuration before promising RDMA SLAs - that is a test-harness exercise, not a change window. Practical controls: give each tenant a dedicated VF with vendor rate limiters plus caps on QP and MR counts (driver config change, applied at VF creation), keep per-tenant working sets small enough to stay resident in NIC cache, and where the risk is unacceptable, dedicate physical NICs. Upgrading to newer RNIC generations with larger caches and better per-VF quotas helps but does not close it - firmware flash plus driver upgrade, rolling host reboots.",
   "references": [
@@ -25,5 +25,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

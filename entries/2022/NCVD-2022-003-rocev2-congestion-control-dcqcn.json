@@ -7,7 +7,7 @@
     "CNP spoofing",
     "arXiv:2207.10898"
   ],
-  "title": "RoCEv2 congestion control - DCQCN, ECN marking and Congestion Notification Packets: FABRIC DOS: DCQCN reacts to ECN",
+  "title": "RoCEv2 congestion control - DCQCN, ECN marking and Congestion Notification Packets: DCQCN reacts to ECN marks by having",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RoCEv2 congestion control - DCQCN, ECN marking and Congestion Notification Packets",
@@ -15,7 +15,7 @@
   "cvss_score": 6.5,
   "severity": "medium",
   "kev": false,
-  "impact": "FABRIC DOS: DCQCN reacts to ECN marks by having the receiver send Congestion Notification Packets that make the sender cut its rate. CNPs are unauthenticated RoCE packets like any other, so an attacker who can spoof onto the fabric can forge CNPs at a victim's sender and drive its rate to the floor while their own traffic is unaffected - a targeted bandwidth-theft and starvation primitive. Conversely, a tenant whose NIC simply ignores CNPs takes an unfair share and pushes everyone else into PFC. Published measurement shows the native PFC-based scheme already suffers unfairness and head-of-line blocking, and that congestion-control choice materially changes distributed DNN training time, so the manipulation lands directly on job completion times in a GPU cluster.",
+  "impact": "DCQCN reacts to ECN marks by having the receiver send Congestion Notification Packets that make the sender cut its rate. CNPs are unauthenticated RoCE packets like any other, so an attacker who can spoof onto the fabric can forge CNPs at a victim's sender and drive its rate to the floor while their own traffic is unaffected - a targeted bandwidth-theft and starvation primitive. Conversely, a tenant whose NIC simply ignores CNPs takes an unfair share and pushes everyone else into PFC. Published measurement shows the native PFC-based scheme already suffers unfairness and head-of-line blocking, and that congestion-control choice materially changes distributed DNN training time, so the manipulation lands directly on job completion times in a GPU cluster.",
   "attack_vector": "Forged CNPs need only a spoofed source GID and the victim's QP number - the same predictability that makes packet injection work. Rate-ignoring is even simpler: run a NIC configuration or a custom firmware/driver that under-responds to congestion notifications, which looks like a tuning choice rather than an attack. Both are invisible to host-level monitoring; they show up only as unexplained throughput asymmetry between tenants.",
   "remediation": "Config change: enforce switch-side per-tenant rate limiting and ECN marking policy rather than trusting endpoint congestion response, apply source-address filtering so CNPs cannot be spoofed across tenants, and keep tenants in separate traffic classes so an unresponsive one cannot starve others. Standardise and lock the DCQCN parameter set through the NIC driver configuration (mlxconfig / sysfs) so tenants cannot retune their own NICs - a driver-level config change applied at provisioning, no reboot. Per-tenant switch queues are the durable fix and may require a QoS profile change plus a switch reload on constrained platforms. Monitor per-QP CNP counts as a detection signal.",
   "references": [
@@ -25,5 +25,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "hot-patch"
-  }
+  },
+  "tags": [
+    "fabric-dos"
+  ]
 }

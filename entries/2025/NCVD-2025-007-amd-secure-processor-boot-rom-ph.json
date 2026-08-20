@@ -4,7 +4,7 @@
   "aliases": [
     "AMD-SB-7044"
   ],
-  "title": "AMD Secure Processor boot ROM - physical attacks bypassing secure boot: MULTI-TENANT ISOLATION: Physical attacks",
+  "title": "AMD Secure Processor boot ROM - physical attacks bypassing secure boot: Physical attacks that bypass secure boot in the",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD Secure Processor boot ROM - physical attacks bypassing secure boot",
@@ -12,7 +12,7 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: Physical attacks that bypass secure boot in the ASP boot ROM. Boot ROM is mask-programmed silicon, so the flawed logic itself cannot be patched - only worked around by the firmware layered above it. An attacker who defeats ASP secure boot owns the platform's root of trust from power-on.",
+  "impact": "Physical attacks that bypass secure boot in the ASP boot ROM. Boot ROM is mask-programmed silicon, so the flawed logic itself cannot be patched - only worked around by the firmware layered above it. An attacker who defeats ASP secure boot owns the platform's root of trust from power-on.",
   "attack_vector": "Physical access to the platform.",
   "remediation": "**Boot ROM is unpatchable by construction** - any mitigation is compensating logic in AGESA/PI firmware above it, delivered as an OEM BIOS package. The real controls are physical: chain of custody for hardware, tamper evidence, and treating any node returned from third-party hands as untrusted until its firmware is measured and reprovisioned. This is the argument for firmware attestation between bare-metal tenants rather than trusting a reimage.",
   "references": [
@@ -22,5 +22,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

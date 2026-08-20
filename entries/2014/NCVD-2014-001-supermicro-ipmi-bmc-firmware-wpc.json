@@ -8,7 +8,7 @@
     "PSBlock",
     "Supermicro port 49152 password disclosure"
   ],
-  "title": "Supermicro IPMI BMC firmware (WPCM450 / X8-X9 generation): MULTI-TENANT ISOLATION: An unauthenticated HTTP GET for",
+  "title": "Supermicro IPMI BMC firmware (WPCM450 / X8-X9 generation): An unauthenticated HTTP GET for /PSBlock on port 49152",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Supermicro IPMI BMC firmware (WPCM450 / X8-X9 generation)",
@@ -16,12 +16,15 @@
   "cvss_score": 9.8,
   "severity": "critical",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: An unauthenticated HTTP GET for /PSBlock on port 49152 returns the BMC's user database with passwords in cleartext. No exploit and no authentication are involved - it is a file read. Those credentials are usually reused across the whole fleet and often match the IPMI accounts on every other chassis the operator bought at the same time, so one exposed node yields the management plane for all of them: power control, virtual media boot of an attacker image, and KVM to the console. No CVE was ever assigned to this, so it appears in no NVD-derived feed and no scanner keyed on CVE identifiers.",
+  "impact": "An unauthenticated HTTP GET for /PSBlock on port 49152 returns the BMC's user database with passwords in cleartext. No exploit and no authentication are involved - it is a file read. Those credentials are usually reused across the whole fleet and often match the IPMI accounts on every other chassis the operator bought at the same time, so one exposed node yields the management plane for all of them: power control, virtual media boot of an attacker image, and KVM to the console. No CVE was ever assigned to this, so it appears in no NVD-derived feed and no scanner keyed on CVE identifiers.",
   "attack_vector": "Anyone who can reach TCP/49152 on the BMC. At disclosure roughly 32,000 hosts were reachable directly from the internet; inside a datacenter, any tenant with a route to the management VLAN qualifies.",
   "remediation": "Update BMC firmware to the fixed generation from Supermicro, then rotate every IPMI credential - the old ones must be assumed public, and a firmware update does not invalidate them. Verify port 49152 is closed after the update rather than trusting the release notes. Put the management network behind its own VLAN with no tenant route, and confirm that from a tenant workload rather than from a jump host. Nodes too old to receive fixed firmware should be treated as permanently exposed and segmented accordingly.",
   "references": [
     "https://nmap.org/nsedoc/scripts/supermicro-ipmi-conf.html",
     "https://svn.nmap.org/nmap/scripts/supermicro-ipmi-conf.nse"
   ],
-  "status": "curated"
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
 }

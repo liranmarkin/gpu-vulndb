@@ -15,7 +15,7 @@
   "cvss_score": 8.6,
   "severity": "high",
   "kev": false,
-  "impact": "TENANT ISOLATION: RDMA has no cryptographic binding between a packet and the connection it claims to belong to. A Reliable Connected queue pair is identified only by destination QP number plus packet sequence number, and ReDMArk showed both are highly predictable on real RNICs - QP numbers are handed out near-sequentially by the firmware and initial PSNs are drawn from a weak generator. Anyone who can put a frame on the fabric with the victim's source GID/LID can inject a valid-looking RDMA WRITE or SEND into an established connection between two other tenants. On a shared GPU cluster that means a neighbouring tenant, or a compromised node anywhere in the same partition, can write into another tenant's registered memory - which in an AI cluster is model weights, KV cache, gradient buffers, or NCCL communication buffers - with no software on the victim host ever seeing the write.",
+  "impact": "RDMA has no cryptographic binding between a packet and the connection it claims to belong to. A Reliable Connected queue pair is identified only by destination QP number plus packet sequence number, and ReDMArk showed both are highly predictable on real RNICs - QP numbers are handed out near-sequentially by the firmware and initial PSNs are drawn from a weak generator. Anyone who can put a frame on the fabric with the victim's source GID/LID can inject a valid-looking RDMA WRITE or SEND into an established connection between two other tenants. On a shared GPU cluster that means a neighbouring tenant, or a compromised node anywhere in the same partition, can write into another tenant's registered memory - which in an AI cluster is model weights, KV cache, gradient buffers, or NCCL communication buffers - with no software on the victim host ever seeing the write.",
   "attack_vector": "Attacker needs one host with an RNIC on the same L2/L3 RoCE domain or IB subnet as the victims (a rented bare-metal node, a container with a VF or an SR-IOV VF, or a compromised storage/management node). They enumerate the QPN space by opening their own connections to the victim host to learn the allocator's current position, then brute-force or predict PSN and emit crafted BTH/RETH headers with a spoofed source. On RoCEv2 the outer frame is ordinary UDP/4791, so spoofing is as easy as a raw socket if the switch does not enforce source MAC/IP filtering. No exploit of a software bug is required - this is the protocol working as designed.",
   "remediation": "No patch exists; this is architectural. Config change first: put every tenant in its own InfiniBand partition (P_Key) or its own RoCE VLAN/VRF, and turn on switch-side source-address enforcement (port security / IP source guard / MAC learning locks) so a node cannot emit frames claiming another node's GID - that is a switch config push, no reload needed on most platforms. Where the NIC supports it, enable RoCEv2 link-layer encryption/authentication (IPsec or PSP offload on ConnectX-6 Dx and later, or NVIDIA BlueField DPU-terminated crypto) - this is a firmware flash plus driver upgrade on the NIC fleet and costs a rolling host reboot per node. Hard-partitioning tenants onto separate physical fabrics or separate IB subnets is the only complete answer and is a capacity/cost decision, not a patch.",
   "references": [
@@ -26,5 +26,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

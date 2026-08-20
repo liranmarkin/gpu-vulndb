@@ -1,0 +1,28 @@
+{
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2021-018-argo-workflows-argo-server-tls-k",
+  "cve": null,
+  "aliases": [
+    "GHSA-6c73-2v8x-qpvm"
+  ],
+  "title": "Argo Workflows (Argo Server, TLS keys baked into the container image): Argo Server's TLS private keys ship inside the",
+  "layer": "container-orchestration",
+  "layer_name": "Container, Kubernetes & orchestration",
+  "component": "Argo Workflows (Argo Server, TLS keys baked into the container image)",
+  "year": "2021",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Argo Server's TLS private keys ship inside the published container image, so anyone who can pull the image extracts them. With those keys plus network position an attacker decrypts Argo Server traffic or forges requests to it, which means impersonating the operators and tenants who drive workflow scheduling.",
+  "attack_vector": "An attacker on any network path to Argo Server. Affects Argo Server before 3.0 with --secure=true, or 3.0+ where --secure is left unspecified.",
+  "remediation": "Upgrade to 3.0.9 or 3.1.6 and restart Argo Server. Do not expose Argo Server directly - terminate TLS at a load balancer or ingress holding certificates you issued, and keep the pod reachable only from inside the cluster.",
+  "references": [
+    "https://github.com/argoproj/argo-workflows/security/advisories/GHSA-6c73-2v8x-qpvm"
+  ],
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
+}

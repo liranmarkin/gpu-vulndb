@@ -1,0 +1,30 @@
+{
+  "id": "NCVD-2021-010-infiniband-roce-memory-protectio",
+  "cve": null,
+  "aliases": [
+    "ReDMArk",
+    "RDMA rkey brute-forcing",
+    "unauthorized RDMA memory access",
+    "memory window abuse"
+  ],
+  "title": "InfiniBand / RoCE memory protection - memory region rkey/lkey namespace and protection domains: The only thing standing",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "InfiniBand / RoCE memory protection - memory region rkey/lkey namespace and protection domains",
+  "year": "2021",
+  "cvss_score": 8.1,
+  "severity": "high",
+  "kev": false,
+  "impact": "The only thing standing between a remote peer and a registered memory region is the 32-bit rkey, and ReDMArk found that real RNIC firmware generates rkeys in a small, largely sequential, and therefore guessable space. Combined with the connection-injection weakness, an attacker can issue RDMA READ or WRITE against another tenant's memory region without ever having been granted access to it. Applications make this dramatically worse in practice by registering one huge region with IBV_ACCESS_REMOTE_WRITE covering far more than the buffers actually meant to be shared - a common shortcut in RDMA key-value stores, parameter servers, and disaggregated-memory layers. On a GPU node the registered region frequently includes GPU memory reachable through GPUDirect, so a guessed rkey reads model state directly out of HBM.",
+  "attack_vector": "From any node able to establish or inject into a queue pair on the target RNIC, the attacker sweeps rkey values in RDMA READ requests and watches for a completion instead of an error. Because the RNIC services the read entirely in hardware, the victim's CPU never runs and nothing is logged on the victim host - the sweep is silent and can run at line rate. Successful reads return the contents of whatever the victim registered; successful writes corrupt it. Memory windows (type 1/2) bind more narrowly but are seldom used, and applications that reuse a single protection domain across tenant contexts collapse the boundary entirely.",
+  "remediation": "No vendor patch. Application and config work: register the smallest possible regions, never grant REMOTE_WRITE where REMOTE_READ suffices, use a separate protection domain per tenant/connection, and prefer type-2 memory windows with short lifetimes so a guessed key expires. Where the RNIC firmware supports stronger key generation, apply the vendor firmware update (firmware flash, rolling per-node, ~5-15 min per host plus a reboot on most ConnectX generations). Fabric-level containment - one P_Key or VLAN per tenant - limits who can reach the RNIC to try keys at all and is a switch config change. Budget this as an application-rearchitecture item, not a maintenance window.",
+  "references": [
+    "https://www.usenix.org/conference/usenixsecurity21/presentation/rothenberger",
+    "https://netsec.ethz.ch/publications/papers/sec21summer-redmark.pdf",
+    "https://arxiv.org/abs/1903.09355"
+  ],
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
+}

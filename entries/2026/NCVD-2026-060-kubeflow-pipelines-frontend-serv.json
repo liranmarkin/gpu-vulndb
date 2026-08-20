@@ -1,0 +1,33 @@
+{
+  "cwe": [
+    "CWE-918",
+    "CWE-444"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2026-060-kubeflow-pipelines-frontend-serv",
+  "cve": null,
+  "aliases": [
+    "GHSA-gqww-5pj5-8fq7",
+    "CVE-2026-54745 (reserved, no MITRE record as of 2026-08-20)"
+  ],
+  "title": "Kubeflow Pipelines (frontend server, /_proxy/ route in proxy-middleware.ts): The Kubeflow Pipelines frontend forwards",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "Kubeflow Pipelines (frontend server, /_proxy/ route in proxy-middleware.ts)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "The Kubeflow Pipelines frontend forwards arbitrary user-supplied URLs through /_proxy/ with no allowlist, no IP filter and no auth gate, and the route is not covered by the auth middleware - so it stays open even with ENABLE_AUTHZ=true, the posture documented as multi-user secure. Method, body and headers pass through verbatim, giving an unauthenticated caller reach into link-local metadata (169.254.0.0/16), loopback, RFC1918 and any *.svc.cluster.local service, plus an HTTP smuggling primitive against them. On a GPU cluster the first stop is node IAM credentials.",
+  "attack_vector": "Anyone who can reach the Kubeflow Pipelines frontend, including via a crafted Referer header on unrelated paths. No credentials, and multi-user mode does not help.",
+  "remediation": "Track the kubeflow/pipelines advisory and upgrade the frontend image once a fixed tag ships. Until then, block the four /_proxy/ prefixes (/apis/v1beta1/_proxy/, /apis/v2beta1/_proxy/, and their /pipeline-prefixed forms) at the ingress, and rotate node/pod cloud credentials if the frontend was reachable from untrusted networks.",
+  "references": [
+    "https://github.com/kubeflow/pipelines/security/advisories/GHSA-gqww-5pj5-8fq7"
+  ],
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
+}

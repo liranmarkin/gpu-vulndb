@@ -7,7 +7,7 @@
     "RNIC SRAM/PTE cache timing attack",
     "Tsai, Payer, Zhang - USENIX Security 2019"
   ],
-  "title": "RNIC on-board SRAM metadata cache (page table entries, QP context) - most widely deployed RDMA NIC: TENANT ISOLATION",
+  "title": "RNIC on-board SRAM metadata cache (page table entries, QP context) - most widely deployed RDMA NIC: RNICs cache",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RNIC on-board SRAM metadata cache (page table entries, QP context) - most widely deployed RDMA NIC",
@@ -15,7 +15,7 @@
   "cvss_score": 6.5,
   "severity": "medium",
   "kev": false,
-  "impact": "TENANT ISOLATION: RNICs cache page-table entries and connection context in a small on-board SRAM and spill to host memory over PCIe when it overflows. Pythia turns the resulting timing difference into a remote side channel: an attacker on one client machine learns the memory access patterns of victims on other client machines against a shared in-memory data service. No memory contents are read directly, but access patterns over a key-value store or a shared embedding table are often enough to recover which records a victim touched. In an AI cluster the same primitive applies to shared parameter servers and RDMA-backed caches, where access pattern equals query content.",
+  "impact": "RNICs cache page-table entries and connection context in a small on-board SRAM and spill to host memory over PCIe when it overflows. Pythia turns the resulting timing difference into a remote side channel: an attacker on one client machine learns the memory access patterns of victims on other client machines against a shared in-memory data service. No memory contents are read directly, but access patterns over a key-value store or a shared embedding table are often enough to recover which records a victim touched. In an AI cluster the same primitive applies to shared parameter servers and RDMA-backed caches, where access pattern equals query content.",
   "attack_vector": "The attacker is an ordinary RDMA client of the same server - no special privilege, no injection needed. They issue their own RDMA reads to addresses chosen to contend for specific RNIC SRAM cache sets, then measure completion latency to infer whether a victim's access evicted their entry. The authors reverse-engineered the memory architecture of the most widely deployed RNIC to make the eviction sets precise, raising the channel's efficiency substantially.",
   "remediation": "No patch. Mitigations are all structural: do not let mutually untrusted tenants share an RNIC or a server-side RDMA data service; partition the server's registered memory so different tenants' regions do not share cache sets; or add deliberate noise/padding to server-side access patterns (application change with a throughput cost). Where a DPU fronts the fabric, terminating tenant connections on separate DPU cores reduces sharing. Scheduling policy - not co-locating untrusted tenants on the same RDMA service - is the realistic control and costs bin-packing efficiency, not downtime.",
   "references": [
@@ -25,5 +25,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

@@ -4,7 +4,7 @@
   "aliases": [
     "AMD-SB-3040"
   ],
-  "title": "AMD confidential computing - DDR5 memory bus interposition against TEEs: MULTI-TENANT ISOLATION: Compromising trusted",
+  "title": "AMD confidential computing - DDR5 memory bus interposition against TEEs: Compromising trusted execution environments by",
   "layer": "control-plane",
   "layer_name": "Control plane, storage & DevOps",
   "component": "AMD confidential computing - DDR5 memory bus interposition against TEEs",
@@ -12,7 +12,7 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: Compromising trusted execution environments by interposing on the DDR5 memory bus. Same family as the BadRAM interposer work and the same conclusion for an operator: SEV-SNP's guarantees are software- and firmware-scoped, and an adversary with hands on the hardware sits outside them.",
+  "impact": "Compromising trusted execution environments by interposing on the DDR5 memory bus. Same family as the BadRAM interposer work and the same conclusion for an operator: SEV-SNP's guarantees are software- and firmware-scoped, and an adversary with hands on the hardware sits outside them.",
   "attack_vector": "Physical access with DDR5 bus interposition hardware.",
   "remediation": "**No patch** - physical attacks fall outside the declared SEV-SNP threat model. Mitigation is datacenter physical security, hardware chain of custody, and honest scoping of what confidential computing does and does not promise your tenants.",
   "references": [
@@ -22,5 +22,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

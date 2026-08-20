@@ -1,0 +1,30 @@
+{
+  "id": "NCVD-2024-009-nvidia-gpudirect-rdma-gpu-bar1-w",
+  "cve": null,
+  "aliases": [
+    "GPUDirect RDMA BAR1 exposure",
+    "nvidia-peermem",
+    "nvidia_p2p_get_pages",
+    "GPU memory registered as an RDMA memory region"
+  ],
+  "title": "NVIDIA GPUDirect RDMA - GPU BAR1 window peer-mapped to the RNIC, nvidia-peermem / nvidia_p2p_get_pages: GPUDirect RDMA",
+  "layer": "gpu-stack",
+  "layer_name": "NVIDIA / GPU stack",
+  "component": "NVIDIA GPUDirect RDMA - GPU BAR1 window peer-mapped to the RNIC, nvidia-peermem / nvidia_p2p_get_pages",
+  "year": "2024",
+  "cvss_score": 7.5,
+  "severity": "high",
+  "kev": false,
+  "impact": "GPUDirect RDMA works by exposing GPU memory through a PCIe BAR window (BAR1) so a third-party device - the NIC - can DMA into it directly, with nvidia_p2p_get_pages() pinning the range and handing the peer device physical addresses. The practical consequence for a cluster operator is that every weakness in RDMA memory protection now applies to HBM, not just host DRAM: an rkey guessed or injected per the ReDMArk findings resolves to a region backed by GPU memory, and a successful remote read returns model weights or KV cache straight out of the GPU with no CPU involvement and no host-side trace. The GPU's own MMU is not in this path - the RNIC's rkey check is the entire access control. NVIDIA's documentation notes the 64-bit p2pToken is randomised specifically to keep an adversary from guessing it, which is an acknowledgement that guessability is the threat model here.",
+  "attack_vector": "Requires an attacker able to reach the victim's RNIC on the fabric and to guess or inject against the memory region that covers GPU memory - the ReDMArk and NeVerMore primitives. A second, local path: any process that can obtain a peer-mapping token or that shares the RDMA device can register GPU memory it should not reach, since the peer-memory client trusts the calling context. Stale mappings are a third: the nvidia_p2p callback must free the page table on deallocation, and a mapping that outlives its buffer leaves the NIC pointed at memory that has been handed to another context.",
+  "remediation": "Driver upgrade plus config change. Keep the NVIDIA GPU driver, nvidia-peermem (or the in-tree dma-buf peer path on recent kernels), and the RDMA stack on current versions - a driver upgrade requiring a host reboot on GPU nodes, so batch it with a scheduled drain. Config: never share an RNIC or an IB device node between tenants when GPUDirect is enabled, register the narrowest possible GPU regions with the least permission, use a per-tenant protection domain, and prefer dma-buf-based registration with explicit lifetime over legacy peermem pinning. Where GPUDirect is not actually needed for a workload, disabling it removes the exposure entirely at a bandwidth cost. Combine with the fabric partitioning in the InfiniBand and RoCE entries - the RDMA-layer fixes are what actually protect the GPU memory.",
+  "references": [
+    "https://docs.nvidia.com/cuda/gpudirect-rdma/",
+    "https://www.usenix.org/conference/usenixsecurity21/presentation/rothenberger",
+    "https://arxiv.org/abs/2202.08080"
+  ],
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
+}

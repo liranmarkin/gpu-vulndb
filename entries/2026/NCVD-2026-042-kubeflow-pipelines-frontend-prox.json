@@ -13,7 +13,7 @@
     "GHSA-gqww-5pj5-8fq7",
     "CVE-2026-54745 (reserved)"
   ],
-  "title": "Kubeflow Pipelines frontend (/_proxy/ route, proxy-middleware.ts): MULTI-TENANT ISOLATION: the pipelines frontend hands",
+  "title": "Kubeflow Pipelines frontend (/_proxy/ route, proxy-middleware.ts): The pipelines frontend hands any unauthenticated",
   "layer": "control-plane",
   "layer_name": "Control plane, storage & DevOps",
   "component": "Kubeflow Pipelines frontend (/_proxy/ route, proxy-middleware.ts)",
@@ -21,11 +21,14 @@
   "cvss_score": 10.0,
   "severity": "critical",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: the pipelines frontend hands any unauthenticated caller a general-purpose HTTP client living inside the cluster network. The /_proxy/ route takes a user-supplied URL and forwards method, headers and body verbatim, with no allowlist, no IP filter and no auth gate — loopback, RFC1918, link-local 169.254.0.0/16 and *.svc.cluster.local are all in reach. Concretely an attacker pulls cloud IAM credentials from the instance metadata service, replays stolen service-account or JWT tokens at the Kubernetes API through a forwarded Authorization header, reaches internal services never meant to be exposed (ml-pipeline API on 8888, katib-db-manager on 6789, etcd, kubelet), and spoofs X-Forwarded-For past IP allowlists on internal tooling. Because arbitrary POST bodies and headers pass through, this is not read-only SSRF: it is a write primitive against internal admin endpoints. The sharpest part for an operator is that the documented hardening posture does not help — the auth middleware never gets applied to this route, so ENABLE_AUTHZ=true multi-user mode, the configuration sold as the secure one, is bypassed while every other endpoint on the same instance correctly rejects the same unauthenticated request.",
+  "impact": "The pipelines frontend hands any unauthenticated caller a general-purpose HTTP client living inside the cluster network. The /_proxy/ route takes a user-supplied URL and forwards method, headers and body verbatim, with no allowlist, no IP filter and no auth gate — loopback, RFC1918, link-local 169.254.0.0/16 and *.svc.cluster.local are all in reach. Concretely an attacker pulls cloud IAM credentials from the instance metadata service, replays stolen service-account or JWT tokens at the Kubernetes API through a forwarded Authorization header, reaches internal services never meant to be exposed (ml-pipeline API on 8888, katib-db-manager on 6789, etcd, kubelet), and spoofs X-Forwarded-For past IP allowlists on internal tooling. Because arbitrary POST bodies and headers pass through, this is not read-only SSRF: it is a write primitive against internal admin endpoints. The sharpest part for an operator is that the documented hardening posture does not help — the auth middleware never gets applied to this route, so ENABLE_AUTHZ=true multi-user mode, the configuration sold as the secure one, is bypassed while every other endpoint on the same instance correctly rejects the same unauthenticated request.",
   "attack_vector": "Network, fully unauthenticated. Anyone who can open a TCP connection to the frontend port qualifies — via Ingress in standalone Kubeflow Pipelines deployments, or any pod in the cluster in Kubeflow Platform installs. A Referer header alone (Referer: http://x/apis/v2beta1/_proxy/http://target/) triggers the rewrite on unrelated paths, so path filtering at a reverse proxy is not sufficient.",
   "remediation": "There is no fixed release as of the advisory (2.16.0 and earlier affected). Gate the route at the edge and inside the cluster: block /apis/v1beta1/_proxy/, /apis/v2beta1/_proxy/ and their /pipeline/-prefixed variants at the ingress, and drop requests carrying a Referer matching the same pattern. Enforce a NetworkPolicy that denies the frontend pod egress to 169.254.169.254 and to cluster services it does not need, and require IMDSv2 so a bare GET cannot lift credentials. Cut the frontend pod's ServiceAccount RBAC to the minimum. Treat the proxy as removable if your deployment does not depend on it.",
   "references": [
     "https://github.com/kubeflow/pipelines/security/advisories/GHSA-gqww-5pj5-8fq7"
   ],
-  "status": "curated"
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
 }

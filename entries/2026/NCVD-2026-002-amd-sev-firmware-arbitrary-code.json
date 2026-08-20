@@ -4,7 +4,7 @@
   "aliases": [
     "AMD-SB-3033"
   ],
-  "title": "AMD SEV firmware - arbitrary code execution on the AMD Security Processor (physical): MULTI-TENANT ISOLATION",
+  "title": "AMD SEV firmware - arbitrary code execution on the AMD Security Processor (physical): An academic disclosure achieving",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD SEV firmware - arbitrary code execution on the AMD Security Processor (physical)",
@@ -12,7 +12,7 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: An academic disclosure achieving arbitrary code execution on the AMD Security Processor itself. Code execution in the ASP means control of SEV key management and attestation for every confidential guest on the node. AMD scopes it out as requiring physical access, but shipped defence-in-depth firmware anyway - which is a reasonable signal about how seriously to take it.",
+  "impact": "An academic disclosure achieving arbitrary code execution on the AMD Security Processor itself. Code execution in the ASP means control of SEV key management and attestation for every confidential guest on the node. AMD scopes it out as requiring physical access, but shipped defence-in-depth firmware anyway - which is a reasonable signal about how seriously to take it.",
   "attack_vector": "Physical access to the platform.",
   "remediation": "AMD shipped **defence-in-depth** PI updates - MilanPI 1.0.0.J and GenoaPI 1.0.0.H (both December 2025) - so there is something to deploy despite the WONTFIX-adjacent framing. Delivered as an OEM SBIOS package with the usual lag and a power cycle. The mitigation state is **tenant-verifiable via Platform Info Bit 5** in the attestation report, which is worth advertising to confidential-computing customers: they can check you applied it rather than taking your word.",
   "references": [
@@ -22,5 +22,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "firmware-flash"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

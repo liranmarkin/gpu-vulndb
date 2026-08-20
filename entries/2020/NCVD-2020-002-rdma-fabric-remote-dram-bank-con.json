@@ -6,7 +6,7 @@
     "RDMA memory-bank covert channel",
     "Ustiugov et al., arXiv:2006.03854"
   ],
-  "title": "RDMA fabric + remote DRAM bank contention (cross-node covert channel): TENANT ISOLATION: Bankrupt establishes a 74 Kb/s",
+  "title": "RDMA fabric + remote DRAM bank contention (cross-node covert channel): Bankrupt establishes a 74 Kb/s covert channel",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RDMA fabric + remote DRAM bank contention (cross-node covert channel)",
@@ -14,7 +14,7 @@
   "cvss_score": 5.3,
   "severity": "medium",
   "kev": false,
-  "impact": "TENANT ISOLATION: Bankrupt establishes a 74 Kb/s covert channel between two processes on different machines in an RDMA network, by steering RDMA packets to addresses that map to a single DRAM bank on a shared intermediary node and timing the resulting queuing. It remained undetectable to existing monitoring - CPU and NIC performance counters showed nothing. For an operator, this defeats the assumption that network segmentation between tenants prevents exfiltration: a compromised process inside an isolated enclave can signal out to a colluding receiver anywhere on the same RDMA fabric, without opening a connection between them. Any data-loss-prevention story that relies on egress controls at the IP layer is bypassed.",
+  "impact": "Bankrupt establishes a 74 Kb/s covert channel between two processes on different machines in an RDMA network, by steering RDMA packets to addresses that map to a single DRAM bank on a shared intermediary node and timing the resulting queuing. It remained undetectable to existing monitoring - CPU and NIC performance counters showed nothing. For an operator, this defeats the assumption that network segmentation between tenants prevents exfiltration: a compromised process inside an isolated enclave can signal out to a colluding receiver anywhere on the same RDMA fabric, without opening a connection between them. Any data-loss-prevention story that relies on egress controls at the IP layer is bypassed.",
   "attack_vector": "Spy and receiver each allocate their own private memory region on a common intermediary machine - a normal thing for any RDMA tenant to do. The spy issues RDMA operations to a chosen set of remote addresses, causing deep queuing at one memory bank; the receiver probes addresses mapped to the same bank in its own region and reads the timing. Both sides only ever touch memory they legitimately own, which is why nothing flags it.",
   "remediation": "No patch. Mitigation is placement and monitoring: avoid a shared intermediary that both a sensitive tenant and an untrusted tenant can target (scheduler policy change), and where memory-bank interleaving is configurable, randomise the physical-address-to-bank mapping per tenant (BIOS/firmware setting, requires a host reboot). Detection needs per-QP latency-distribution telemetry rather than counters - a monitoring build-out, not a config toggle. For genuinely sensitive workloads, a dedicated fabric is the only reliable answer.",
   "references": [
@@ -23,5 +23,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

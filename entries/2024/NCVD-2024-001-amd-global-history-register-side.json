@@ -5,7 +5,7 @@
     "Branch History Leak",
     "AMD-SB-7026"
   ],
-  "title": "AMD - Global History Register side channel: MULTI-TENANT ISOLATION: A side channel through the branch predictor's",
+  "title": "AMD - Global History Register side channel: A side channel through the branch predictor's Global History Register",
   "layer": "control-plane",
   "layer_name": "Control plane, storage & DevOps",
   "component": "AMD - Global History Register side channel",
@@ -13,7 +13,7 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: A side channel through the branch predictor's Global History Register, disclosed by Harbin Institute of Technology. Branch history is shared microarchitectural state, so an attacker observes the shape of a co-resident victim's control flow - which for an inference workload can reveal what model is running and what path a request took through it.",
+  "impact": "A side channel through the branch predictor's Global History Register, disclosed by Harbin Institute of Technology. Branch history is shared microarchitectural state, so an attacker observes the shape of a co-resident victim's control flow - which for an inference workload can reveal what model is running and what path a request took through it.",
   "attack_vector": "Local, co-resident with the victim.",
   "remediation": "**No CVE and no fix** - AMD's response is software best practices. As with the other predictor-state channels, the enforceable control is not co-scheduling mutually untrusted tenants on the same physical core. No patch, no reboot; this is a scheduling and fleet-composition decision.",
   "references": [
@@ -23,5 +23,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

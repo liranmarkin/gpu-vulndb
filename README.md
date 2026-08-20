@@ -46,6 +46,27 @@ Measured against `vulns.git` at commit `dc9e43dc` (2026-08-20), scoping to kerne
 
 Even the expert search misses a quarter. Only filtering on affected source path finds all 592.
 
+The passthrough boundary is worse. Measuring the same way — does the description mention
+`NVIDIA`, `AMD`, `Intel`, `Mellanox` or `ConnectX` anywhere — across the paths that implement
+device assignment and fabric encryption:
+
+| prefix | records | mention a vendor |
+| --- | ---: | ---: |
+| `drivers/pci` | 88 | 2 (2.3%) |
+| `drivers/vfio` | 34 | 1 (2.9%) |
+| `net/tls` | 34 | 0 |
+| `net/xfrm` | 60 | 0 |
+| `virt/kvm` | 20 | 1 (5.0%) |
+| `arch/x86/kvm` | 109 | 10 (9.2%) |
+
+Those 156 records in `pci`, `vfio` and `tls` describe the exact mechanism a GPU cloud's isolation
+claim rests on — *your tenant gets the whole card and cannot touch anyone else's* — and a
+vendor-name search returns essentially nothing.
+
+One honest caveat, because it cuts the other way: `drivers/iommu` (25.4%) and `drivers/gpu/drm`
+(26.6%) look far more discoverable, but that is a naming artifact. The drivers are literally called
+`intel-iommu` and `amdgpu`. An operator searching "NVIDIA" still finds none of them.
+
 The sharpest version needs no qualifier: of the **176** kernel CVEs whose affected files live under
 `drivers/net/ethernet/mellanox`, only **19** mention "Mellanox" anywhere in their description, and
 **none** mention "ConnectX". An operator asking "what affects my Mellanox NICs?" is searching a
@@ -68,26 +89,26 @@ It is built for the people who operate this stack: GPU clouds, colocation datace
 | Layer | What it covers | Entries |
 | --- | --- | ---: |
 | `ai-serving` | Inference servers, training frameworks, model formats | 277 |
-| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 420 |
-| `control-plane` | Cluster management, storage, CI/CD, observability | 718 |
-| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 368 |
-| `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,196 |
-| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 932 |
+| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 423 |
+| `control-plane` | Cluster management, storage, CI/CD, observability | 721 |
+| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 429 |
+| `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,202 |
+| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,013 |
 
-**Design-level weaknesses that will never get a CVE are in scope too.** Unauthenticated IPMI over LAN, RDMA fabrics with no cryptographic binding between a packet and its connection, physical DRAM interposers that both Intel and AMD classify as out of scope - these carry an `NCVD-` id. There are 160 of them, and they are frequently a bigger problem than anything with a CVSS score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which is a large part of why this one exists.
+**Design-level weaknesses that will never get a CVE are in scope too.** Unauthenticated IPMI over LAN, RDMA fabrics with no cryptographic binding between a packet and its connection, physical DRAM interposers that both Intel and AMD classify as out of scope - these carry an `NCVD-` id. There are 186 of them, and they are frequently a bigger problem than anything with a CVSS score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which is a large part of why this one exists.
 
 Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undisclosed issues (this is not a disclosure venue), and anything you cannot back with a public reference.
 
 ## 💸 Cost to remediate
 
-The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,484 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
+The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 2,618 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
 
 | Class | Entries | What it means |
 | --- | ---: | --- |
 | `hot-patch` | 69 | Fixable without interrupting workloads |
-| `daemon-restart` | 221 | Service restart on affected nodes |
+| `daemon-restart` | 227 | Service restart on affected nodes |
 | `node-drain` | 181 | Tenant workloads evicted from each node |
-| `node-reboot` | 1,315 | Full reboot of each affected node |
+| `node-reboot` | 1,443 | Full reboot of each affected node |
 | `microcode + reboot` | 54 | Microcode update and a reboot |
 | `firmware-flash` | 535 | Firmware flash, usually with the node out of service |
 | `physical access` | 2 | Someone has to be at the machine |
@@ -163,3 +184,11 @@ python3 -m venv .venv && .venv/bin/pip install jsonschema
 Data in `entries/` and `schema/` is [CC BY 4.0](LICENSE-DATA). Tooling in `scripts/` and the site in `web/` is [MIT](LICENSE). Attribution to the GPU Vulnerability Database is required when you redistribute the data.
 
 This database is informational and carries no warranty of completeness or accuracy.
+
+---
+
+<div align="center">
+
+Made with ❤️ by [Liran Markin](https://liranmarkin.com) · Contact: [contact@gpuvulndb.org](mailto:contact@gpuvulndb.org)
+
+</div>

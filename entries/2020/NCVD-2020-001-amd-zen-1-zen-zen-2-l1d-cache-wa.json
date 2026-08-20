@@ -6,7 +6,7 @@
     "Collide+Probe",
     "Load+Reload"
   ],
-  "title": "AMD Zen 1 / Zen+ / Zen 2 - L1D cache way predictor: MULTI-TENANT ISOLATION: AMD's L1D way predictor hashes virtual",
+  "title": "AMD Zen 1 / Zen+ / Zen 2 - L1D cache way predictor: AMD's L1D way predictor hashes virtual addresses to predict which",
   "layer": "control-plane",
   "layer_name": "Control plane, storage & DevOps",
   "component": "AMD Zen 1 / Zen+ / Zen 2 - L1D cache way predictor",
@@ -14,7 +14,7 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: AMD's L1D way predictor hashes virtual addresses to predict which cache way holds a line. Collisions in that hash are observable, giving an attacker a channel to leak metadata about a victim's memory access pattern - the researchers used it to break KASLR, to recover an AES key from a table-based implementation, and to build a covert channel between processes. It works from JavaScript in a browser and across VMs, which is unusually broad reach for a microarchitectural channel.",
+  "impact": "AMD's L1D way predictor hashes virtual addresses to predict which cache way holds a line. Collisions in that hash are observable, giving an attacker a channel to leak metadata about a victim's memory access pattern - the researchers used it to break KASLR, to recover an AES key from a table-based implementation, and to build a covert channel between processes. It works from JavaScript in a browser and across VMs, which is unusually broad reach for a microarchitectural channel.",
   "attack_vector": "Local, unprivileged, co-resident with the victim on the same physical core. Affects Zen 1, Zen+ and Zen 2 (2017-2019 EPYC generations).",
   "remediation": "**No CVE was assigned and AMD issued no microcode fix**, taking the position that existing side-channel guidance and secret-independent software already cover it. Treat this as unpatchable on affected silicon. Operator-side controls: do not co-schedule tenants on the same physical core, disable SMT on mixed-tenancy nodes, and prefer newer EPYC generations for workloads where cross-tenant leakage is in your threat model. Nothing here requires a reboot or firmware - it is a scheduling and fleet-composition decision.",
   "references": [
@@ -24,5 +24,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "unpatchable / mitigate-only"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

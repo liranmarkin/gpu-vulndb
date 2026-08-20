@@ -10,7 +10,7 @@
   "aliases": [
     "GHSA-prqf-xr2j-xf65"
   ],
-  "title": "Argo Workflows (Argo Server, --auth-mode=client on Kubernetes 1.19+ outside a pod): MULTI-TENANT ISOLATION: In this",
+  "title": "Argo Workflows (Argo Server, --auth-mode=client on Kubernetes 1.19+ outside a pod): In this configuration the client's",
   "layer": "container-orchestration",
   "layer_name": "Container, Kubernetes & orchestration",
   "component": "Argo Workflows (Argo Server, --auth-mode=client on Kubernetes 1.19+ outside a pod)",
@@ -18,11 +18,14 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: In this configuration the client's supplied key is ignored and the server's own Kubernetes credentials are used instead. Every request silently runs at the server's privilege level, so a tenant with a narrow client identity gets whatever the Argo Server account can do across the cluster.",
+  "impact": "In this configuration the client's supplied key is ignored and the server's own Kubernetes credentials are used instead. Every request silently runs at the server's privilege level, so a tenant with a narrow client identity gets whatever the Argo Server account can do across the cluster.",
   "attack_vector": "Any client authenticating to an Argo Server that runs outside a Kubernetes pod (bare metal or VM) with --auth-mode=client on Kubernetes 1.19 or newer, where the server account is more privileged than the client.",
   "remediation": "Upgrade to 3.0.9 or 3.1.6 and restart. There is no workaround for the affected versions - if you cannot upgrade, run Argo Server inside the cluster as a pod and scope its service account down to the minimum.",
   "references": [
     "https://github.com/argoproj/argo-workflows/security/advisories/GHSA-prqf-xr2j-xf65"
   ],
-  "status": "curated"
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
 }

@@ -1,0 +1,30 @@
+{
+  "id": "NCVD-2025-015-nvidia-bluefield-3-rnic-dpu-micr",
+  "cve": null,
+  "aliases": [
+    "Noisy Neighbor",
+    "RDMA state saturation attack",
+    "RDMA pipeline saturation attack",
+    "BlueField-3 resource exhaustion",
+    "arXiv:2510.12629"
+  ],
+  "title": "NVIDIA BlueField-3 RNIC/DPU - microarchitectural state and pipeline resources under containerized multi-tenancy",
+  "layer": "gpu-stack",
+  "layer_name": "NVIDIA / GPU stack",
+  "component": "NVIDIA BlueField-3 RNIC/DPU - microarchitectural state and pipeline resources under containerized multi-tenancy",
+  "year": "2025",
+  "cvss_score": 7.5,
+  "severity": "high",
+  "kev": false,
+  "impact": "Measured on current NVIDIA BlueField-3 hardware, two families of resource-exhaustion attack from a co-resident container cost the victim container up to 93.9% of its bandwidth, a 1,117x latency increase, and a 115% rise in NIC cache misses. Pipeline saturation additionally produces severe link-level congestion with strong amplification - small verb requests translating into disproportionately large resource consumption, so the attacker spends almost nothing. For a GPU cloud this is a direct, reproducible way for one tenant to make another tenant's distributed training run at a fraction of its purchased throughput, on the exact hardware generation being deployed for AI fabrics today.",
+  "attack_vector": "A container with ordinary RDMA access issues verb patterns designed either to saturate RNIC connection/translation state (state saturation) or to congest the NIC's processing pipeline (pipeline saturation). No kernel exploit, no privilege escalation, no fabric spoofing - just legitimate verbs at an adversarial shape. Because the amplification is high, an attacker constrained by its own bandwidth quota can still consume the shared NIC.",
+  "remediation": "No patch available; NVIDIA has not published an advisory for this class. Config change: enforce per-container caps on queue pairs, memory regions, and completion queues via the RDMA cgroup controller and per-VF resource limits (applied at container/VF creation, no reboot), and monitor per-container verb rates so abuse is at least attributable. The paper proposes HT-Verbs, a telemetry-driven throttling framework that needs no hardware change but is research code, not a product. Structural fix is a dedicated VF or NIC per tenant. Treat RDMA bandwidth SLAs on shared BlueField-3 ports as unenforceable until you have measured your own configuration.",
+  "references": [
+    "https://arxiv.org/abs/2510.12629",
+    "https://www.usenix.org/conference/nsdi23/presentation/kong"
+  ],
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
+}

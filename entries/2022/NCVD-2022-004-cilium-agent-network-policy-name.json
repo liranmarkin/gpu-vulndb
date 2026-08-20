@@ -8,7 +8,7 @@
   "aliases": [
     "GHSA-pfhr-pccp-hwmh"
   ],
-  "title": "Cilium agent (network policy namespace label selectors): MULTI-TENANT ISOLATION: a tenant chooses which network policy",
+  "title": "Cilium agent (network policy namespace label selectors): A tenant chooses which network policy applies to their own",
   "layer": "container-orchestration",
   "layer_name": "Container, Kubernetes & orchestration",
   "component": "Cilium agent (network policy namespace label selectors)",
@@ -16,11 +16,14 @@
   "cvss_score": 4.3,
   "severity": "medium",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: a tenant chooses which network policy applies to their own pods. Where policies use namespace label selectors, an attacker with rights to deploy pods — directly or through a Deployment, DaemonSet or any higher-level controller — crafts extra pod labels so their pod is matched by a different, more permissive policy than the one intended for it. Pod-deploy rights are the baseline grant in any shared Kubernetes cluster, so this turns the standard tenant permission into a policy-selection primitive and undermines namespace-label-based separation, which is the usual way multi-tenant GPU clusters express 'tenant A cannot talk to tenant B'.",
+  "impact": "A tenant chooses which network policy applies to their own pods. Where policies use namespace label selectors, an attacker with rights to deploy pods — directly or through a Deployment, DaemonSet or any higher-level controller — crafts extra pod labels so their pod is matched by a different, more permissive policy than the one intended for it. Pod-deploy rights are the baseline grant in any shared Kubernetes cluster, so this turns the standard tenant permission into a policy-selection primitive and undermines namespace-label-based separation, which is the usual way multi-tenant GPU clusters express 'tenant A cannot talk to tenant B'.",
   "attack_vector": "Network / in-cluster. Requires Kubernetes pod-deploy rights in the cluster, plus policies (CiliumNetworkPolicy, CiliumClusterwideNetworkPolicy or standard NetworkPolicy) that select on namespace labels.",
   "remediation": "Upgrade the Cilium agent to 1.10.14, 1.11.8, 1.12.1 or later and roll the DaemonSet. No workaround exists for affected versions. Independently, constrain what labels tenants can set with an admission policy so label-driven selection cannot be steered from a tenant workload manifest.",
   "references": [
     "https://github.com/cilium/cilium/security/advisories/GHSA-pfhr-pccp-hwmh"
   ],
-  "status": "curated"
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
 }

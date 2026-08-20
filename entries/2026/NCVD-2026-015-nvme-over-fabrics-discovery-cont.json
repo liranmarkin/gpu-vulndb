@@ -14,7 +14,7 @@
   "cvss_score": 7.5,
   "severity": "high",
   "kev": false,
-  "impact": "TENANT ISOLATION: The NVMe-oF discovery controller answers any peer that can reach the port, by design. In Linux nvmet this is explicit in the source: nvmet_host_allowed() returns true unconditionally for the discovery subsystem, so every Get Log Page against the discovery controller is served pre-authentication over TCP, RDMA, or FC. The response enumerates every subsystem NQN, transport type, and address on that target. For a neocloud running disaggregated NVMe behind a tenant-reachable fabric, that hands an attacker the complete map of which customer's storage lives where and what NQN to spoof to reach it - the reconnaissance step that makes NQN spoofing practical. NVMe/TCP additionally ships with no authentication and no transport encryption unless in-band DH-HMAC-CHAP and TLS are explicitly configured, which is not the default in most deployments.",
+  "impact": "The NVMe-oF discovery controller answers any peer that can reach the port, by design. In Linux nvmet this is explicit in the source: nvmet_host_allowed() returns true unconditionally for the discovery subsystem, so every Get Log Page against the discovery controller is served pre-authentication over TCP, RDMA, or FC. The response enumerates every subsystem NQN, transport type, and address on that target. For a neocloud running disaggregated NVMe behind a tenant-reachable fabric, that hands an attacker the complete map of which customer's storage lives where and what NQN to spoof to reach it - the reconnaissance step that makes NQN spoofing practical. NVMe/TCP additionally ships with no authentication and no transport encryption unless in-band DH-HMAC-CHAP and TLS are explicitly configured, which is not the default in most deployments.",
   "attack_vector": "The attacker points nvme discover at any reachable target IP on port 4420 (or the RDMA equivalent) with an arbitrary Host NQN and receives the full discovery log page. No credentials, no prior connection, no exploit. From there they connect to a named subsystem asserting a permitted Host NQN. The same unauthenticated surface is what makes memory-disclosure bugs in the discovery path (see CVE-2026-64320) remotely reachable pre-auth.",
   "remediation": "Config change, no reboot, do it now: enable in-band DH-HMAC-CHAP on the target and require it for I/O subsystems; enable TLS for NVMe/TCP where the kernel version supports it; bind the discovery controller to a management interface unreachable from tenant networks rather than to the tenant storage fabric; and use per-subsystem allowed_hosts lists rather than the permissive default. All of this is nvmet configfs or SPDK RPC and applies at runtime, but initiators must be reconfigured in lockstep, so plan a rolling reattach per tenant. Firewall NVMe/TCP 4420 to known initiator addresses as an immediate stopgap.",
   "references": [
@@ -25,5 +25,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "hot-patch"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

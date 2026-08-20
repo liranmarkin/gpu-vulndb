@@ -8,7 +8,7 @@
     "congestion spreading",
     "Revisiting Network Support for RDMA (SIGCOMM 2018)"
   ],
-  "title": "RoCEv2 lossless Ethernet fabric - IEEE 802.1Qbb Priority Flow Control: FABRIC DOS: RoCE requires a lossless network",
+  "title": "RoCEv2 lossless Ethernet fabric - IEEE 802.1Qbb Priority Flow Control: RoCE requires a lossless network, which in",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "RoCEv2 lossless Ethernet fabric - IEEE 802.1Qbb Priority Flow Control",
@@ -16,7 +16,7 @@
   "cvss_score": 7.5,
   "severity": "high",
   "kev": false,
-  "impact": "FABRIC DOS: RoCE requires a lossless network, which in practice means Priority Flow Control, and PFC brings head-of-line blocking, congestion spreading, and occasional deadlocks as documented properties rather than as bugs. PFC pause frames propagate backwards hop by hop, so a single misbehaving or malicious endpoint that refuses to drain its receive queue can pause its upstream switch port, which pauses its upstream, and so on until a large fraction of an AI training fabric stops forwarding. A cyclic buffer dependency produces a deadlock that does not clear on its own. This is the highest-blast-radius item in this slice: one tenant NIC can wedge a whole rail of a GPU cluster and take every job on it down at once.",
+  "impact": "RoCE requires a lossless network, which in practice means Priority Flow Control, and PFC brings head-of-line blocking, congestion spreading, and occasional deadlocks as documented properties rather than as bugs. PFC pause frames propagate backwards hop by hop, so a single misbehaving or malicious endpoint that refuses to drain its receive queue can pause its upstream switch port, which pauses its upstream, and so on until a large fraction of an AI training fabric stops forwarding. A cyclic buffer dependency produces a deadlock that does not clear on its own. This is the highest-blast-radius item in this slice: one tenant NIC can wedge a whole rail of a GPU cluster and take every job on it down at once.",
   "attack_vector": "An endpoint on the lossless priority class stops consuming traffic - by design, or through a driver hang, or via a hardware fault - and its NIC emits sustained PFC pause frames. Congestion spreads to unrelated flows sharing the same priority queue on intermediate switches, including flows between tenants who have nothing to do with the source. Deadlock arises when routing plus link failures create a cycle of buffer dependencies, and it persists until an operator intervenes. Triggering it requires no protocol violation whatsoever, which is why it also happens accidentally.",
   "remediation": "Config change plus, on many platforms, a switch reload. Enable PFC watchdog on every switch (Cisco NX-OS, Arista EOS, NVIDIA Cumulus, SONiC all ship one) so a stuck queue is drained and the port error-disabled instead of pausing the fabric - this is a config push, but on some platforms the underlying buffer/QoS profile change needs a switch reload, so schedule per-rail. Keep the lossless class narrow (one priority, storage and RDMA separated), tune ECN/DCQCN thresholds to mark before PFC ever fires, and prefer deadlock-free routing (up-down or edge-disjoint) on Clos fabrics. Longer term, move to RoCE implementations that tolerate loss (the IRN design line, and DCQCN-plus-selective-retransmit NIC firmware) so PFC can be disabled entirely - firmware flash plus a driver upgrade fleet-wide, and a redesign of the QoS profile, so treat as a project.",
   "references": [
@@ -26,5 +26,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "firmware-flash"
-  }
+  },
+  "tags": [
+    "fabric-dos"
+  ]
 }

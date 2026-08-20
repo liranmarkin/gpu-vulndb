@@ -4,7 +4,7 @@
   "aliases": [
     "Battering RAM"
   ],
-  "title": "Intel SGX and AMD SEV-SNP / DRAM interposer (memory aliasing): MULTI-TENANT ISOLATION: Battering RAM: a cheap DRAM",
+  "title": "Intel SGX and AMD SEV-SNP / DRAM interposer (memory aliasing): Battering RAM: a cheap DRAM interposer that aliases",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "Intel SGX and AMD SEV-SNP / DRAM interposer (memory aliasing)",
@@ -12,11 +12,14 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: Battering RAM: a cheap DRAM interposer that aliases physical addresses so the same ciphertext is served for two different locations, defeating the memory-encryption protections of both Intel SGX and AMD SEV-SNP and giving the attacker plaintext access to enclave and confidential-VM memory. Same operator conclusion as WireTap and it generalises across both vendors' confidential-compute stacks, so it is not a reason to switch silicon.",
+  "impact": "Battering RAM: a cheap DRAM interposer that aliases physical addresses so the same ciphertext is served for two different locations, defeating the memory-encryption protections of both Intel SGX and AMD SEV-SNP and giving the attacker plaintext access to enclave and confidential-VM memory. Same operator conclusion as WireTap and it generalises across both vendors' confidential-compute stacks, so it is not a reason to switch silicon.",
   "attack_vector": "Physical access to install an interposer on the DIMM path. Applies to any deployment where hardware is not continuously in your physical custody.",
   "remediation": "No firmware or microcode fix on affected parts - the attack targets a design property of deterministic memory encryption. Treat confidential compute as protecting against a remote or software-privileged adversary, not a physical one, and write that into what you tell customers. Physical security, tamper-evident hardware and custody controls are the actual mitigation.",
   "references": [
     "https://batteringram.eu/"
   ],
-  "status": "curated"
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
 }

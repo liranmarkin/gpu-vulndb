@@ -5,7 +5,7 @@
     "PowerHooK",
     "AMD-SB-3032"
   ],
-  "title": "AMD SEV-ES / SEV-SNP - transient-execution-amplified power side channel: MULTI-TENANT ISOLATION: Graz researchers",
+  "title": "AMD SEV-ES / SEV-SNP - transient-execution-amplified power side channel: Graz researchers amplified the power side",
   "layer": "firmware-bmc-fabric",
   "layer_name": "Firmware, BMC & network fabric",
   "component": "AMD SEV-ES / SEV-SNP - transient-execution-amplified power side channel",
@@ -13,7 +13,7 @@
   "cvss_score": null,
   "severity": "unscored",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: Graz researchers amplified the power side channel with transient execution to extract AES key bytes from inside SEV-ES and SEV-SNP guests. The significance for an operator is the trend line: power telemetry keeps turning out to be a channel that memory encryption does not cover, and each iteration extracts more with less. If you sell confidential computing, the host's power meter is part of your attack surface.",
+  "impact": "Graz researchers amplified the power side channel with transient execution to extract AES key bytes from inside SEV-ES and SEV-SNP guests. The significance for an operator is the trend line: power telemetry keeps turning out to be a channel that memory encryption does not cover, and each iteration extracts more with less. If you sell confidential computing, the host's power meter is part of your attack surface.",
   "attack_vector": "Requires a malicious hypervisor with access to power telemetry (RAPL) on a host running confidential guests.",
   "remediation": "**No CVE and no microcode fix** - AMD's answer is to restrict or disable hypervisor RAPL access. That is a configuration change you can make today at no performance cost: ensure the host's energy interfaces are root-only and are not exposed to any process a tenant can influence, and do not pass power telemetry into guests. No reboot, no firmware. Combine with performance-determinism mode if you are also mitigating Collide+Power, accepting the throughput cost that carries.",
   "references": [
@@ -23,5 +23,8 @@
   "status": "curated",
   "fleet": {
     "pain_class": "hot-patch"
-  }
+  },
+  "tags": [
+    "tenant-isolation"
+  ]
 }

@@ -8,7 +8,7 @@
   "aliases": [
     "GHSA-33qq-jq9c-6gcc"
   ],
-  "title": "Cilium (mutual authentication, TLS certificate chain handling): MULTI-TENANT ISOLATION: mutual authentication, the",
+  "title": "Cilium (mutual authentication, TLS certificate chain handling): Mutual authentication, the control an operator turns on",
   "layer": "container-orchestration",
   "layer_name": "Container, Kubernetes & orchestration",
   "component": "Cilium (mutual authentication, TLS certificate chain handling)",
@@ -16,12 +16,15 @@
   "cvss_score": 7.6,
   "severity": "high",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: mutual authentication, the control an operator turns on precisely to get cryptographic workload identity between tenants, can be defeated by anyone holding any valid client certificate. The attacker obtains the target identity's public certificate — public by construction — appends it to their own chain during the TLS handshake, and Cilium accepts them as that identity. Every policy decision keyed on mutual auth then evaluates against the impersonated workload. In a shared GPU cluster this means a low-value pod in one tenant's namespace can present as another tenant's service and reach whatever that service is allowed to reach: model registries, feature stores, training data endpoints, control-plane APIs. The failure is total rather than partial, and the feature is beta and already slated for deprecation, so operators who adopted it for tenant separation should assume it never provided the boundary they scoped it for.",
+  "impact": "Mutual authentication, the control an operator turns on precisely to get cryptographic workload identity between tenants, can be defeated by anyone holding any valid client certificate. The attacker obtains the target identity's public certificate — public by construction — appends it to their own chain during the TLS handshake, and Cilium accepts them as that identity. Every policy decision keyed on mutual auth then evaluates against the impersonated workload. In a shared GPU cluster this means a low-value pod in one tenant's namespace can present as another tenant's service and reach whatever that service is allowed to reach: model registries, feature stores, training data endpoints, control-plane APIs. The failure is total rather than partial, and the feature is beta and already slated for deprecation, so operators who adopted it for tenant separation should assume it never provided the boundary they scoped it for.",
   "attack_vector": "Adjacent network, from inside the cluster. The attacker needs any valid client certificate issued in the mesh plus the target identity's public certificate. Only clusters with Cilium mutual authentication enabled are affected.",
   "remediation": "Upgrade to Cilium 1.19.6, 1.18.12 or 1.17.18 and roll the agent DaemonSet. There is no workaround short of upgrading. Given the feature is deprecated, plan the migration off mutual authentication onto a boundary you intend to keep, and in the meantime do not count mutual auth as the control separating tenants in your threat model or your customer-facing claims.",
   "references": [
     "https://github.com/cilium/cilium/security/advisories/GHSA-33qq-jq9c-6gcc",
     "https://github.com/cilium/cilium/commit/168d16627bfb7b96717cf8dff54e33ceac09192c"
   ],
-  "status": "curated"
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
 }

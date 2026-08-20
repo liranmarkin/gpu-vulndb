@@ -1,0 +1,35 @@
+{
+  "cwe": [
+    "CWE-306",
+    "CWE-1188"
+  ],
+  "fleet": {
+    "pain_class": "daemon-restart"
+  },
+  "id": "NCVD-2022-005-beegfs-client-to-metadata-storag",
+  "cve": null,
+  "aliases": [
+    "BeeGFS connAuthFile disabled",
+    "BeeGFS unauthenticated client trust"
+  ],
+  "title": "BeeGFS (client-to-metadata/storage service authentication, connAuthFile): Class entry, not a single CVE. Before BeeGFS",
+  "layer": "control-plane",
+  "layer_name": "Control plane, storage & DevOps",
+  "component": "BeeGFS (client-to-metadata/storage service authentication, connAuthFile)",
+  "year": "2022",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Class entry, not a single CVE. Before BeeGFS 7.2.8 / 7.3.2 (October 2022) a default install ran with no connection authentication at all, and any process on a node that mounts BeeGFS could talk to the metadata and storage services directly as a trusted peer. That is the mechanism behind CVE-2019-15897, and the same posture persists on any current install where the operator answered the new prompt by disabling authentication rather than configuring a connAuthFile. Because a parallel filesystem is commonly mounted by several clusters, this is also a lateral-movement path from one cluster into another. Two adjacent misconfigurations make it worse: a world-readable connAuthFile hands the shared secret to every local user, and mounting without nosuid lets a tenant plant a setuid binary on shared storage and pick it up as root elsewhere.",
+  "attack_vector": "Any user with a shell or a job on a node that mounts BeeGFS. No credential is required when authentication is disabled. Relying on connNetFilterFile.conf or connInterfacesFile.conf does not substitute - those restrict interfaces and networks, not identity.",
+  "remediation": "Run BeeGFS 7.2.8 / 7.3.2 or later so the install refuses to start without an explicit authentication decision, then actually configure a connAuthFile rather than disabling authentication. Set the connAuthFile mode so only the BeeGFS service account can read it, and mount every client nosuid. Applying this means restarting the BeeGFS services and remounting clients cluster-wide. Note that ThinkParQ does not publish a security-advisory index at beegfs.io - CVE-2019-15897 and this configuration guidance both come from the third-party researcher who reported it.",
+  "references": [
+    "https://www.hpcsec.com/2023/01/02/beegfs-security/",
+    "https://doc.beegfs.io/7.3.2/release_notes.html",
+    "https://www.hpcsec.com/2019/12/04/cve-2019-15897/"
+  ],
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
+}

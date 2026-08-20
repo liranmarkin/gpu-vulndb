@@ -12,7 +12,7 @@
     "GHSA-rmjq-ffrm-j6vj",
     "CVE-2026-54330 (reserved)"
   ],
-  "title": "Ceph RGW (SigV4 signature verifier): MULTI-TENANT ISOLATION: anyone handed a single presigned PUT URL gets more",
+  "title": "Ceph RGW (SigV4 signature verifier): Anyone handed a single presigned PUT URL gets more authority than whoever signed",
   "layer": "control-plane",
   "layer_name": "Control plane, storage & DevOps",
   "component": "Ceph RGW (SigV4 signature verifier)",
@@ -20,12 +20,15 @@
   "cvss_score": 8.2,
   "severity": "high",
   "kev": false,
-  "impact": "MULTI-TENANT ISOLATION: anyone handed a single presigned PUT URL gets more authority than whoever signed it. AWS requires every x-amz-* header on a SigV4 request to be signed and rejects requests carrying extras; RGW only validates the headers named in X-Amz-SignedHeaders and silently honours any additional x-amz-* header the caller bolts on. So a presigned URL that was scoped to upload one object can be replayed with attacker-chosen x-amz-* directives attached, changing ACLs, storage class, object metadata and other server-side behaviour the signer never authorised. In a GPU cloud this is the classic 'here is a presigned link to drop your dataset' workflow turning into a write primitive against the bucket namespace, and presigned URLs are routinely pasted into notebooks, CI logs and Slack, so the holder set is much wider than the tenant who generated it.",
+  "impact": "Anyone handed a single presigned PUT URL gets more authority than whoever signed it. AWS requires every x-amz-* header on a SigV4 request to be signed and rejects requests carrying extras; RGW only validates the headers named in X-Amz-SignedHeaders and silently honours any additional x-amz-* header the caller bolts on. So a presigned URL that was scoped to upload one object can be replayed with attacker-chosen x-amz-* directives attached, changing ACLs, storage class, object metadata and other server-side behaviour the signer never authorised. In a GPU cloud this is the classic 'here is a presigned link to drop your dataset' workflow turning into a write primitive against the bucket namespace, and presigned URLs are routinely pasted into notebooks, CI logs and Slack, so the holder set is much wider than the tenant who generated it.",
   "attack_vector": "Network, from the public S3 endpoint. The attacker needs one presigned PUT URL, which is a low-privilege artifact normally treated as safe to share. No RGW account of their own is required beyond possession of that URL.",
   "remediation": "Upgrade RGW to 20.2.4 or 19.2.6 and restart the radosgw daemons. Until then, shorten presigned URL lifetimes hard and stop treating a presigned URL as a capability safe to hand to a party you would not grant the underlying bucket permission to. Audit bucket ACLs and object metadata for changes made through presigned uploads.",
   "references": [
     "https://github.com/ceph/ceph/security/advisories/GHSA-rmjq-ffrm-j6vj",
     "https://docs.ceph.com/en/latest/security/CVE-2026-54330"
   ],
-  "status": "curated"
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
 }

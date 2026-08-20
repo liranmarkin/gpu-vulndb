@@ -1,0 +1,25 @@
+{
+  "id": "NCVD-2024-006-intel-sgx-cache-side-channel-on",
+  "cve": null,
+  "aliases": [
+    "TeeJam"
+  ],
+  "title": "Intel SGX (cache side channel on sub-cacheline access): TeeJam: shows that SGX's cache-based side-channel resistance is",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "Intel SGX (cache side channel on sub-cacheline access)",
+  "year": "2024",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "TeeJam: shows that SGX's cache-based side-channel resistance is weaker than assumed at sub-cacheline granularity, enabling practical key recovery against enclave implementations previously believed to be constant-time. Operationally this matters because 'we run it in an enclave' is often the entire argument for putting a key on a shared host.",
+  "attack_vector": "Local code on the same machine as the victim enclave, with the scheduling control a privileged host has.",
+  "remediation": "No single patch - mitigation lives in the enclave software (constant-time implementations hardened at sub-cacheline granularity) and in keeping the SGX SDK/PSW current. Operator action is to require enclave vendors to state which side-channel hardening they apply, and to keep microcode and PSW at current TCB so attestation reflects reality.",
+  "references": [
+    "https://www.intel.com/content/www/us/en/developer/topic-technology/software-security-guidance/overview.html"
+  ],
+  "status": "curated",
+  "tags": [
+    "tenant-isolation"
+  ]
+}
