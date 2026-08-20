@@ -15,6 +15,12 @@ ROOT = Path(__file__).resolve().parent.parent
 ENTRIES = ROOT / "entries"
 SCHEMA = ROOT / "schema" / "entry.schema.json"
 
+# Hosts that no longer serve the advisory they used to. Checked without network access so CI
+# stays fast; a full link check is a separate, slower job.
+DEAD_REFS = {
+    "nvidia.custhelp.com": "retired, use github.com/NVIDIA/product-security/tree/main/<year>/<bulletin>",
+}
+
 errors, warnings = [], []
 
 
@@ -89,6 +95,11 @@ def main():
         for ref in entry.get("references", []):
             if " " in ref:
                 err(path, f"reference contains a space: {ref!r}")
+            for host, why in DEAD_REFS.items():
+                if host in ref:
+                    err(path, f"reference points at {host} — {why}")
+            if ref.endswith(".csv"):
+                err(path, "reference is a bulk index, not the advisory for this entry")
 
     report(files, seen_cves)
 
