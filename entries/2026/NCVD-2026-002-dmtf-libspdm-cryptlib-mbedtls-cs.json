@@ -1,0 +1,22 @@
+{
+  "id": "NCVD-2026-002-dmtf-libspdm-cryptlib-mbedtls-cs",
+  "cve": null,
+  "aliases": [
+    "DMTF-2026-0001"
+  ],
+  "title": "DMTF libspdm (cryptlib_mbedtls CSR generation, stack overflow): An over-long Common Name in a GET_CSR request writes past a stack array inside the responder, corrupting…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "DMTF libspdm (cryptlib_mbedtls CSR generation, stack overflow)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "An over-long Common Name in a GET_CSR request writes past a stack array inside the responder, corrupting stack data and opening the door to code execution in the device's root-of-trust firmware. The responder here is the thing that is supposed to prove the device is trustworthy, so a compromise at this point does not just break one device - it makes that device's attestation statements attacker-authored. No CVE assigned, so scanners will not flag it.",
+  "attack_vector": "Any SPDM requester able to send GET_CSR to a responder that supports CSR_CAP and builds on the mbedTLS crypt backend. On a server that is the host, so local root on a bare-metal node reaches it.",
+  "remediation": "libspdm update, delivered as device or platform firmware - per-node flash with vendor rebase lag, no package path, no config toggle. Where a device exposes CSR generation you do not use, ask the vendor whether CSR_CAP can be disabled in their build; turning off an unused capability is the only lever an operator has short of the firmware update.",
+  "references": [
+    "https://github.com/DMTF/libspdm/security/advisories/GHSA-j54w-759w-xj3m"
+  ],
+  "status": "curated"
+}

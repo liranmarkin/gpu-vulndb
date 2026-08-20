@@ -1,0 +1,22 @@
+{
+  "id": "NCVD-2026-001-dmtf-libspdm-get-measurement-ext",
+  "cve": null,
+  "aliases": [
+    "DMTF-2026-0002"
+  ],
+  "title": "DMTF libspdm (GET_MEASUREMENT_EXTENSION_LOG offset/length wrap): Wrapping addition of the Offset and Length fields in GET_MEASUREMENT_EXTENSION_LOG lets a requester read…",
+  "layer": "firmware-bmc-fabric",
+  "layer_name": "Firmware, BMC & network fabric",
+  "component": "DMTF libspdm (GET_MEASUREMENT_EXTENSION_LOG offset/length wrap)",
+  "year": "2026",
+  "cvss_score": null,
+  "severity": "unscored",
+  "kev": false,
+  "impact": "Wrapping addition of the Offset and Length fields in GET_MEASUREMENT_EXTENSION_LOG lets a requester read memory outside the measurement log from a libspdm responder. The attacker is the host or fabric peer asking a device for its measurements, and what it gets back is device firmware memory - which is where attestation keys and secrets live. No CVE was assigned, so this will not appear in NVD, OSV or any scanner your fleet runs.",
+  "attack_vector": "Any SPDM requester that can reach an affected responder with MEL_CAP and CHUNK_CAP set - in practice the host talking to its own accelerators or NICs, so host-side root on a bare-metal node is enough.",
+  "remediation": "libspdm update embedded in device or platform firmware, plus - importantly - integrator hygiene: the bug only bites when the integrator's libspdm_copy_mem() has its assertions compiled out, which is a build-configuration decision your device vendor made and you cannot see. There is no config mitigation and no way to detect affected devices from the outside. Ask vendors directly for their libspdm version and build flags as part of hardware acceptance; that question is the only real control here.",
+  "references": [
+    "https://github.com/DMTF/libspdm/security/advisories/GHSA-m4wc-xmvg-369f"
+  ],
+  "status": "curated"
+}

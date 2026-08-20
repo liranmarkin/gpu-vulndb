@@ -112,14 +112,29 @@ def slugify(text, maxlen=32):
     return s[:maxlen].strip("-") or "entry"
 
 
-def existing_ids() -> tuple[set[str], set[str]]:
-    ids, cves = set(), set()
+def content_key(component: str, impact: str) -> tuple[str, str]:
+    """Identity for an entry with no CVE.
+
+    A CVE-less design weakness has no external identifier, so re-ingesting the same research
+    would otherwise mint a fresh sequential id every run and quietly duplicate it. Component
+    plus the head of the impact is stable enough to collapse those.
+    """
+    return (
+        re.sub(r"\W+", "", (component or "").lower()),
+        re.sub(r"\W+", "", (impact or "").lower())[:90],
+    )
+
+
+def existing_ids() -> tuple[set[str], set[str], set[tuple[str, str]]]:
+    ids, cves, keys = set(), set(), set()
     for path in ENTRIES.rglob("*.json"):
         entry = json.loads(path.read_text())
         ids.add(entry["id"])
         if entry.get("cve"):
             cves.add(entry["cve"])
-    return ids, cves
+        else:
+            keys.add(content_key(entry.get("component", ""), entry.get("impact", "")))
+    return ids, cves, keys
 
 
 def normalize(raw: dict, source: str, seq: Counter) -> tuple[dict | None, str | None]:
@@ -199,7 +214,7 @@ def main():
     if not RESEARCH.exists():
         sys.exit("no research/ directory")
 
-    have_ids, have_cves = existing_ids()
+    have_ids, have_cves, have_keys = existing_ids()
     seq: Counter = Counter()
     accepted: dict[str, dict] = {}
     rejected: list[str] = []
@@ -230,6 +245,12 @@ def main():
             if entry["id"] in accepted:
                 dupes += 1
                 continue
+            if not entry["cve"]:
+                ck = content_key(entry["component"], entry["impact"])
+                if ck in have_keys:
+                    dupes += 1
+                    continue
+                have_keys.add(ck)
             accepted[entry["id"]] = entry
             per_source[path.stem] += 1
 

@@ -1,5 +1,5 @@
 {
-  "id": "NCVD-2024-008-nvidia-gpudirect-rdma-gpu-bar1-w",
+  "id": "NCVD-2024-006-nvidia-gpudirect-rdma-gpu-bar1-w",
   "cve": null,
   "aliases": [
     "GPUDirect RDMA BAR1 exposure",
