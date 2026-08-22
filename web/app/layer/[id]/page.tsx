@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import VendorIcon from "@/app/_components/VendorIcon";
+import VendorIcon, { VendorIconDefs } from "@/app/_components/VendorIcon";
 import { getAllEntries } from "@/lib/entries";
 import type { IndexEntry } from "@/lib/schema";
 import { LAYERS, SEVERITY_LABEL, fmtDate, toIndex } from "@/lib/schema";
@@ -121,6 +121,7 @@ export default async function LayerPage({ params }: { params: Promise<{ id: stri
     <main className="mx-auto max-w-[880px] px-[22px]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <VendorIconDefs components={entries.map((e) => e.component)} />
       <p className="mb-5 pt-10 font-mono text-[12px] text-faint">
         <Link href="/" className="text-muted hover:text-ink">Database</Link>
         <span className="mx-1.5 text-line-strong">/</span>
@@ -152,7 +153,7 @@ export default async function LayerPage({ params }: { params: Promise<{ id: stri
                   href={`/vuln/${e.id}`}
                   className="group grid grid-cols-[26px_1fr_auto] items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-card"
                 >
-                  <VendorIcon component={e.component} size={26} />
+                  <VendorIcon component={e.component} size={26} sprite />
                   <span className="min-w-0">
                     <span className="block truncate text-[14px] text-ink group-hover:text-brand-ink">
                       {e.title}

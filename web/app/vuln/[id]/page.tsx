@@ -164,17 +164,21 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
               <h2 className="mb-3 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-faint">
                 Related entries
               </h2>
+              {/* Deliberately text-only: the vendor mark is 2 KB of SVG path each, and this
+                  block ships on all 4,500 entry pages. */}
               <ul className="grid gap-1">
                 {related.map((r) => (
                   <li key={r.id}>
                     <Link
                       href={`/vuln/${r.id}`}
-                      className="group grid grid-cols-[26px_1fr_auto] items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-card"
+                      className="group grid grid-cols-[1fr_auto] items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-card"
                     >
-                      <VendorIcon component={r.component} size={26} />
                       <span className="min-w-0">
                         <span className="block truncate text-[14px] text-ink group-hover:text-brand-ink">
                           {r.title}
+                        </span>
+                        <span className="block truncate font-mono text-[11.5px] text-faint">
+                          {r.cve ?? r.id} · {r.component}
                         </span>
                       </span>
                       <span className={`font-mono text-[11.5px] font-semibold capitalize sev-${r.severity}`}>
