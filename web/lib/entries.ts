@@ -69,13 +69,24 @@ export function getRelated(entry: Entry, limit = 6): Entry[] {
   const { component, layer } = getIndex();
   const picked: Entry[] = [];
   const seen = new Set([entry.id]);
-  for (const pool of [component.get(entry.component) ?? [], layer.get(entry.layer) ?? []]) {
+  const take = (pool: Entry[]) => {
     for (const e of pool) {
-      if (picked.length >= limit) return picked;
+      if (picked.length >= limit) return;
       if (seen.has(e.id)) continue;
       seen.add(e.id);
       picked.push(e);
     }
-  }
+  };
+
+  // Both pools are walked outward from this entry's own position rather than read from
+  // the top: taking the six worst CVEs every time would point 1,200 pages at the same
+  // six URLs and leave the rest linked from nowhere but the hub. Buckets are ordered by
+  // CVSS, so a neighbour is also a comparable one.
+  const around = (pool: Entry[]) => {
+    const i = pool.findIndex((e) => e.id === entry.id);
+    return i < 0 ? pool : pool.slice(i + 1).concat(pool.slice(0, i));
+  };
+  take(around(component.get(entry.component) ?? []));
+  take(around(layer.get(entry.layer) ?? []));
   return picked;
 }
