@@ -14,6 +14,8 @@ export type Entry = {
   cve: string | null;
   /** NVD published date, joined from web/data/nvd-dates.json at load. */
   published?: string;
+  /** When this entry last changed here, joined from web/data/entry-updated.json at load. */
+  updated?: string;
   aliases: string[];
   title: string;
   layer: string;

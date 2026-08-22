@@ -4,3 +4,4 @@ next-env.d.ts
 public/data.json
 public/index.json
 .vercel/
+tsconfig.tsbuildinfo

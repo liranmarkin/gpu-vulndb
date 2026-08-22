@@ -97,6 +97,9 @@ fi
 step "refreshing README counts"
 $PY scripts/refresh_readme.py
 
+step "stamping entry change dates for the sitemap"
+$PY scripts/seo_dates.py
+
 if [ "$DRY_RUN" = "1" ]; then
   step "DRY_RUN=1 - stopping before the commit. $added new entries in the working tree."
   git status --short | head -20
@@ -105,7 +108,7 @@ fi
 
 step "committing $added entries"
 message=$($PY scripts/daily_message.py --candidates "$CANDIDATES")
-git add -A entries/ web/data/nvd-dates.json README.md
+git add -A entries/ web/data/nvd-dates.json web/data/entry-updated.json README.md
 git -c user.name="gpu-vulndb daily" -c user.email="liran.markin@gmail.com" \
     commit --quiet -m "$message"
 
@@ -123,8 +126,9 @@ for attempt in 1 2 3; do
   # the entries that arrived while this run was working.
   $PY scripts/daily_dates.py --candidates "$CANDIDATES"
   $PY scripts/refresh_readme.py
-  if ! git diff --quiet web/data/nvd-dates.json README.md; then
-    git add web/data/nvd-dates.json README.md
+  $PY scripts/seo_dates.py
+  if ! git diff --quiet web/data/nvd-dates.json web/data/entry-updated.json README.md; then
+    git add web/data/nvd-dates.json web/data/entry-updated.json README.md
     git -c user.name="gpu-vulndb daily" -c user.email="liran.markin@gmail.com" \
         commit --quiet --amend --no-edit
   fi
@@ -132,5 +136,10 @@ done
 [ "$pushed" = "1" ] || fail "could not push after 3 attempts"
 
 # The batch is the only record of what a run produced, so it is archived rather than deleted.
+step "waiting for the deploy, then telling search engines"
+# IndexNow is push-side discovery for Bing and friends; Google follows the sitemap's
+# lastmod on its own schedule. Never fatal - the entries are already published.
+$PY scripts/seo_ping.py --wait "${SEO_WAIT:-900}" || step "IndexNow submission failed - the sitemap still carries the entries"
+
 mv "$BATCH_FILE" "$WORK/" 2>/dev/null || true
 step "done - $added entries added and pushed"

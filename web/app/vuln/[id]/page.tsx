@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import VendorIcon from "@/app/_components/VendorIcon";
-import { getAllEntries, getEntry } from "@/lib/entries";
+import { getAllEntries, getEntry, getRelated } from "@/lib/entries";
 import { PAIN_HINT, SEVERITY_LABEL, fmtDate } from "@/lib/schema";
 
 export const dynamicParams = false;
@@ -36,7 +36,16 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical: `/vuln/${entry.id}` },
-    openGraph: { title, description, url: `/vuln/${entry.id}`, type: "article" },
+    openGraph: {
+      title,
+      description,
+      url: `/vuln/${entry.id}`,
+      type: "article",
+      ...(entry.published && { publishedTime: entry.published }),
+      ...((entry.updated ?? entry.published) && {
+        modifiedTime: entry.updated ?? entry.published,
+      }),
+    },
   };
 }
 
@@ -56,15 +65,26 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
   const hasFleet = Boolean(fleet.ubiquity || fleet.remediation_pain || fleet.why_fleet_wide);
   const pageUrl = `https://gpuvulndb.org/vuln/${entry.id}`;
 
+  const related = getRelated(entry);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     headline: entry.title,
     url: pageUrl,
     mainEntityOfPage: pageUrl,
+    identifier: ident,
     ...(entry.published && { datePublished: entry.published }),
+    ...((entry.updated ?? entry.published) && { dateModified: entry.updated ?? entry.published }),
     description: entry.impact || entry.title,
     keywords: [ident, ...entry.aliases, entry.component, entry.layer_name].join(", "),
+    about: { "@type": "SoftwareApplication", name: entry.component },
+    ...(entry.references.length && { citation: entry.references }),
+    isPartOf: {
+      "@type": "Dataset",
+      name: "GPU Vulnerability Database",
+      url: "https://gpuvulndb.org/",
+    },
     author: { "@type": "Organization", name: "GPU Vulnerability Database", url: "https://gpuvulndb.org" },
     publisher: { "@type": "Organization", name: "GPU Vulnerability Database", url: "https://gpuvulndb.org" },
   };
@@ -139,6 +159,40 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
             </section>
           )}
 
+          {related.length > 0 && (
+            <section className="mb-9">
+              <h2 className="mb-3 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-faint">
+                Related entries
+              </h2>
+              <ul className="grid gap-1">
+                {related.map((r) => (
+                  <li key={r.id}>
+                    <Link
+                      href={`/vuln/${r.id}`}
+                      className="group grid grid-cols-[26px_1fr_auto] items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-card"
+                    >
+                      <VendorIcon component={r.component} size={26} />
+                      <span className="min-w-0">
+                        <span className="block truncate text-[14px] text-ink group-hover:text-brand-ink">
+                          {r.title}
+                        </span>
+                      </span>
+                      <span className={`font-mono text-[11.5px] font-semibold capitalize sev-${r.severity}`}>
+                        {SEVERITY_LABEL[r.severity]}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href={`/layer/${entry.layer}`}
+                className="mt-3 inline-block font-mono text-[12.5px] text-brand-ink hover:underline"
+              >
+                All {entry.layer_name} entries
+              </Link>
+            </section>
+          )}
+
           <p className="mt-12 rounded-2xl border border-line bg-card px-5 py-4 text-[13.5px] text-muted shadow-[var(--shadow-card)]">
             This entry is <strong className="font-semibold text-ink">{entry.status}</strong>
             {entry.status === "curated"
@@ -176,6 +230,11 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
             ) : entry.year ? (
               <Row label="Year"><span className="font-mono tabular-nums">{entry.year}</span></Row>
             ) : null}
+            {entry.updated && entry.updated !== entry.published && (
+              <Row label="Updated here">
+                <span className="font-mono tabular-nums">{fmtDate(entry.updated)}</span>
+              </Row>
+            )}
             {fleet.pain_class && (
               <Row label="Remediation cost">
                 <span className="font-mono">{fleet.pain_class}</span>

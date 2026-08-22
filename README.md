@@ -135,6 +135,15 @@ is committed only if `scripts/validate.py` passes. It is a coverage mechanism, n
 which is exactly why verifying a `curated` entry is the most useful thing you can contribute.
 The whole path is in `scripts/daily_update.sh`; nothing about it is private to the maintainers.
 
+Publishing does not stop at the commit. The same run stamps every entry with the date it last
+changed here (`scripts/seo_dates.py` → `web/data/entry-updated.json`), which is what the sitemap
+reports as `lastmod` and what an entry page reports as `dateModified` - the NVD publication date
+answers a different question, and a quarter of the corpus has no NVD date at all. Once Vercel has the new pages
+live, `scripts/seo_ping.py` submits the changed URLs over [IndexNow](https://www.indexnow.org/),
+so Bing, Yandex, Seznam and Naver hear about an entry the day it lands instead of whenever they
+next choose to recrawl. Google does not take pushes; for Google the honest `lastmod` and the
+[RSS feed](https://gpuvulndb.org/feed.xml) are the signal.
+
 ## ⚡ Using the data
 
 Entries are one JSON file each, at `entries/<year>/<id>.json`. The filename is always the id. There is no build artifact to trust and no API to depend on - clone the repo:
@@ -161,7 +170,9 @@ scripts/ingest.py          merges researched batches into entries/, idempotent
 scripts/derive_pain.py     extracts remediation cost from prose that states it
 scripts/fetch_nvd_dates.py joins NVD published dates into web/data/nvd-dates.json
 scripts/fetch_vendor_icons.mjs downloads vendor favicons for the site
-scripts/daily_update.sh    the daily sweep: fetch, triage, ingest, validate, commit
+scripts/seo_dates.py       stamps each entry with when it last changed, for <lastmod>
+scripts/seo_ping.py        submits changed URLs to IndexNow once the deploy is live
+scripts/daily_update.sh    the daily sweep: fetch, triage, ingest, validate, commit, announce
 web/                       the website (Next.js 16, React 19, Tailwind 4)
 ```
 

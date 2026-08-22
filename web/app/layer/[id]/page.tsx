@@ -86,8 +86,41 @@ export default async function LayerPage({ params }: { params: Promise<{ id: stri
     byYear.set(y, [...(byYear.get(y) ?? []), e]);
   }
 
+  const pageUrl = `https://gpuvulndb.org/layer/${id}`;
+  const collectionLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: hub.title,
+    description: hub.blurb,
+    url: pageUrl,
+    isPartOf: { "@type": "Dataset", name: "GPU Vulnerability Database", url: "https://gpuvulndb.org/" },
+    ...(entries[0]?.published && { dateModified: entries[0].published }),
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: entries.length,
+      // The 50 most recent, not all of them: enough to describe the page without
+      // shipping a second copy of the listing to every crawler.
+      itemListElement: entries.slice(0, 50).map((e, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: `${e.cve ?? e.id} - ${e.title}`,
+        url: `https://gpuvulndb.org/vuln/${e.id}`,
+      })),
+    },
+  };
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Database", item: "https://gpuvulndb.org/" },
+      { "@type": "ListItem", position: 2, name: layer.name, item: pageUrl },
+    ],
+  };
+
   return (
     <main className="mx-auto max-w-[880px] px-[22px]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <p className="mb-5 pt-10 font-mono text-[12px] text-faint">
         <Link href="/" className="text-muted hover:text-ink">Database</Link>
         <span className="mx-1.5 text-line-strong">/</span>
