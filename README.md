@@ -7,7 +7,7 @@
 **Every known vulnerability in the stack GPU datacenters run on - firmware to model serving.**
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fgpuvulndb.org&label=gpuvulndb.org&up_color=5a31d8)](https://gpuvulndb.org)
-![Entries](https://img.shields.io/badge/entries-4%2C615-5a31d8)
+![Entries](https://img.shields.io/badge/entries-4%2C632-5a31d8)
 [![Validation](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml/badge.svg)](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml)
 [![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-2b1663)](LICENSE-DATA)
 [![Code: MIT](https://img.shields.io/badge/code-MIT-2b1663)](LICENSE)
@@ -84,16 +84,16 @@ It is built for the people who operate this stack: GPU clouds, colocation datace
 
 ## 🧱 What's in scope
 
-**4,615 entries covering 4,428 distinct CVEs, spanning 2010 to 2026** - organized by the six layers of the stack, top to bottom:
+**4,632 entries covering 4,445 distinct CVEs, spanning 2010 to 2026** - organized by the six layers of the stack, top to bottom:
 
 | Layer | What it covers | Entries |
 | --- | --- | ---: |
-| `ai-serving` | Inference servers, training frameworks, model formats | 302 |
+| `ai-serving` | Inference servers, training frameworks, model formats | 305 |
 | `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 456 |
-| `control-plane` | Cluster management, storage, CI/CD, observability | 779 |
-| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 789 |
+| `control-plane` | Cluster management, storage, CI/CD, observability | 781 |
+| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 799 |
 | `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,215 |
-| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,074 |
+| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,076 |
 
 **Design-level weaknesses that will never get a CVE are in scope too.** Unauthenticated IPMI over LAN, RDMA fabrics with no cryptographic binding between a packet and its connection, physical DRAM interposers that both Intel and AMD classify as out of scope - these carry an `NCVD-` id. There are 187 of them, and they are frequently a bigger problem than anything with a CVSS score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which is a large part of why this one exists.
 
@@ -101,18 +101,18 @@ Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undi
 
 ## 💸 Cost to remediate
 
-The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 3,162 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
+The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 3,179 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
 
 | Class | Entries | What it means |
 | --- | ---: | --- |
 | `hot-patch` | 74 | Fixable without interrupting workloads |
-| `daemon-restart` | 332 | Service restart on affected nodes |
+| `daemon-restart` | 334 | Service restart on affected nodes |
 | `node-drain` | 192 | Tenant workloads evicted from each node |
-| `node-reboot` | 1,828 | Full reboot of each affected node |
+| `node-reboot` | 1,840 | Full reboot of each affected node |
 | `microcode + reboot` | 56 | Microcode update and a reboot |
 | `firmware-flash` | 558 | Firmware flash, usually with the node out of service |
 | `physical access` | 2 | Someone has to be at the machine |
-| `unpatchable / mitigate-only` | 116 | **No vendor fix exists** |
+| `unpatchable / mitigate-only` | 119 | **No vendor fix exists** |
 
 These are extracted from remediation prose that names the action, never guessed. Where a remediation does not state a cost, the field is left unset rather than inferred.
 
