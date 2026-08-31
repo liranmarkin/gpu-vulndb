@@ -40,6 +40,16 @@ OUT_OF_SCOPE = re.compile(
     re.I,
 )
 
+# Packages whose *name* happens to contain a word the vocabulary looks for. openssl_encrypt is
+# a hobbyist pip file-encryption tool that published ~40 CVEs in three days from 2026-08-28;
+# every one matched on the bare substring "openssl", took about 40% of the daily candidate
+# slots, and was rejected by the model at roughly $1.50 a run. Requiring whole words in the
+# vocabulary handles the general case - this catches the spellings a word boundary lets past.
+NAME_COLLISION = re.compile(
+    r"openssl[ _-]encrypt|\bjahlives\b",
+    re.I,
+)
+
 # High-signal names. Matched against description, vendor and product together - every one of
 # these is specific enough that a hit is worth a look even in prose.
 IN_SCOPE = re.compile(
@@ -79,7 +89,7 @@ IN_SCOPE = re.compile(
     r"spectrum scale|\bgpfs\b|\bs3 api\b|\bradosgw?\b|"
     # kernel / hypervisor substrate
     r"linux kernel|\bkvm\b|\bqemu\b|\bxen\b|vmware|\besxi\b|vcenter|firecracker|libvirt|"
-    r"proxmox|nutanix|\bsystemd\b|\bglibc\b|openssh|openssl|\bsudo\b|\bpolkit\b|"
+    r"proxmox|nutanix|\bsystemd\b|\bglibc\b|\bopenssh\b|\bopenssl\b|\bsudo\b|\bpolkit\b|"
     r"\bio_uring\b|\bebpf\b|\bcgroup",
     re.I,
 )
@@ -237,6 +247,9 @@ def keep(item: dict, kev: dict, fresh_kev: set[str]) -> tuple[bool, str, str]:
 
     if OUT_OF_SCOPE.search(blob):
         return False, "consumer/automotive product", ""
+
+    if NAME_COLLISION.search(blob):
+        return False, "name collision, unrelated package", ""
 
     # A CVE that was already on KEV and merely had its NVD record touched is not news; one
     # added to KEV this week is, whatever it affects, because it changes what to patch first.
