@@ -85,6 +85,19 @@ def main():
             if entry.get("year") and not cve.startswith(f"CVE-{entry['year']}"):
                 warn(path, f"cve {cve} disagrees with year {entry['year']}")
 
+        # A consolidated entry speaks for several CVEs. Those ids have to be as exclusive as
+        # the canonical one: if two entries both claimed CVE-2026-61755, a reader looking it up
+        # would get a different answer depending on which entry they found first.
+        for extra in entry.get("additional_cves", []):
+            if extra == cve:
+                err(path, f"additional_cves repeats the canonical cve {extra}")
+            elif extra in seen_cves:
+                err(path, f"CVE {extra} is claimed twice, already in {seen_cves[extra]}")
+            else:
+                seen_cves[extra] = path.relative_to(ROOT)
+        if entry.get("additional_cves") and not cve:
+            err(path, "additional_cves needs a canonical cve to be additional to")
+
         score, sev = entry.get("cvss_score"), entry.get("severity")
         if score is not None and sev != bucket(score):
             err(path, f"severity {sev!r} does not match score {score} (expected {bucket(score)!r})")

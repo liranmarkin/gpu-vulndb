@@ -30,6 +30,15 @@
       "description": "Null for design-level weaknesses that have no CVE and never will.",
       "pattern": "^CVE-\\d{4}-\\d{4,7}$"
     },
+    "additional_cves": {
+      "type": "array",
+      "description": "Other CVE ids this one entry covers. Used when a vendor assigns several CVEs to what is operationally a single issue - one advisory, one remediation - so the database carries one entry instead of thirty near-identical ones. The canonical id stays in `cve`; these are the rest, and no other entry may claim them.",
+      "items": {
+        "type": "string",
+        "pattern": "^CVE-\\d{4}-\\d{4,7}$"
+      },
+      "uniqueItems": true
+    },
     "aliases": {
       "type": "array",
       "description": "Named-vulnerability branding only, e.g. NVIDIAScape. Not component qualifiers.",
@@ -45,7 +54,7 @@
       "minLength": 8,
       "maxLength": 120,
       "not": {
-        "pattern": "(\\.\\.\\.|\u2026)\\s*$"
+        "pattern": "(\\.\\.\\.|…)\\s*$"
       },
       "description": "One line, at most 120 characters: 'Component (qualifier): what goes wrong'. No trailing ellipsis and no second sentence - detail belongs in impact."
     },

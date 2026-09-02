@@ -72,6 +72,20 @@ The schema at [`schema/entry.schema.json`](schema/entry.schema.json) is the auth
 | `cvss_vector` | The vendor's own vector where one exists. Since April 2026 NIST only fully enriches CVEs that reach KEV, so for most of this stack the vendor's is the only vector there will ever be. |
 | `cwe` | Weakness class, as `["CWE-787"]`. |
 | `fleet.pain_class` | What remediation actually costs. Set it only when you know - an unset field reads as "not established", a wrong one sends someone to schedule the wrong maintenance window. |
+| `additional_cves` | Other CVE ids this one entry answers for. See below. |
+
+### When one entry covers several CVEs
+
+Vendors often assign a CVE per affected code path. NVIDIA bulletin 2026/5868 carries thirty ids
+for the same unsafe deserialization in Megatron Bridge - same score, same advisory, same fix.
+That is one entry here, keyed to the lowest id, with the rest in `additional_cves`. Every one of
+them still has its own `/vuln/CVE-...` URL that resolves to the entry, so no lookup dead-ends.
+
+Only do this when the ids share one flaw, one advisory and one remediation, and an operator
+would take the same action for all of them. CVEs disclosed *together* are often still distinct
+bugs - eight grub2 memory-safety flaws in one mailing-list post are eight bugs, not one. **If
+you are unsure, keep them separate.** A duplicate entry is untidy; a merged entry that hides a
+distinct vulnerability means a CVE lookup returns the wrong answer.
 
 ## ✅ Before you open the pull request
 

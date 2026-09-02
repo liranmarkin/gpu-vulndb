@@ -12,6 +12,12 @@ export type Fleet = {
 export type Entry = {
   id: string;
   cve: string | null;
+  /**
+   * Other CVE ids this one entry answers for, when a vendor split a single issue across many.
+   * Each also has its own /vuln/<cve> URL that canonicalises here, so a lookup of any of them
+   * lands on the answer rather than a 404.
+   */
+  additional_cves?: string[];
   /** NVD published date, joined from web/data/nvd-dates.json at load. */
   published?: string;
   /** When this entry last changed here, joined from web/data/entry-updated.json at load. */
@@ -37,7 +43,7 @@ export type Entry = {
 /** What the browse view needs. Kept separate so the client never ships the full prose. */
 export type IndexEntry = Pick<
   Entry,
-  | "id" | "cve" | "aliases" | "title" | "layer" | "layer_name"
+  | "id" | "cve" | "additional_cves" | "aliases" | "title" | "layer" | "layer_name"
   | "component" | "year" | "cvss_score" | "severity" | "kev" | "published"
 >;
 
@@ -77,6 +83,8 @@ export function toIndex(e: Entry): IndexEntry {
   return {
     id: e.id,
     cve: e.cve,
+    // Carried into the browse index so searching a folded-in CVE still finds its entry.
+    ...(e.additional_cves?.length ? { additional_cves: e.additional_cves } : {}),
     aliases: e.aliases,
     title: e.title,
     layer: e.layer,

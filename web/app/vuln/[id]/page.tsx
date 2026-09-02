@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import VendorIcon from "@/app/_components/VendorIcon";
-import { getAllEntries, getEntry, getRelated } from "@/lib/entries";
+import { getAllEntryPaths, getRelated, resolveEntry } from "@/lib/entries";
 import { PAIN_HINT, SEVERITY_LABEL, fmtDate } from "@/lib/schema";
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return getAllEntries().map((e) => ({ id: e.id }));
+  // Includes the CVEs folded into consolidated entries, so their pre-merge URLs still build.
+  return getAllEntryPaths().map((id) => ({ id }));
 }
 
 export async function generateMetadata({
@@ -17,7 +18,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const entry = getEntry(decodeURIComponent(id));
+  const entry = resolveEntry(decodeURIComponent(id));
   if (!entry) return {};
 
   const ident = entry.cve ?? entry.id;
@@ -56,10 +57,11 @@ function clip(s: string, max: number): string {
 
 export default async function VulnPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const entry = getEntry(decodeURIComponent(id));
+  const entry = resolveEntry(decodeURIComponent(id));
   if (!entry) notFound();
 
   const ident = entry.cve ?? entry.id;
+  const covered = entry.additional_cves ?? [];
   const score = entry.cvss_score != null ? entry.cvss_score.toFixed(1) : "—";
   const fleet = entry.fleet ?? {};
   const hasFleet = Boolean(fleet.ubiquity || fleet.remediation_pain || fleet.why_fleet_wide);
@@ -73,11 +75,11 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
     headline: entry.title,
     url: pageUrl,
     mainEntityOfPage: pageUrl,
-    identifier: ident,
+    identifier: [ident, ...(entry.additional_cves ?? [])],
     ...(entry.published && { datePublished: entry.published }),
     ...((entry.updated ?? entry.published) && { dateModified: entry.updated ?? entry.published }),
     description: entry.impact || entry.title,
-    keywords: [ident, ...entry.aliases, entry.component, entry.layer_name].join(", "),
+    keywords: [ident, ...(entry.additional_cves ?? []), ...entry.aliases, entry.component, entry.layer_name].join(", "),
     about: { "@type": "SoftwareApplication", name: entry.component },
     ...(entry.references.length && { citation: entry.references }),
     isPartOf: {
@@ -126,6 +128,21 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
             {entry.aliases.map((a) => <Tag key={a} tone="alias">{a}</Tag>)}
             <Tag>{entry.status}</Tag>
           </div>
+
+          {covered.length > 0 && (
+            <section className="mb-9">
+              <h2 className="mb-3 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-faint">
+                Also covers {covered.length} CVE{covered.length > 1 ? "s" : ""}
+              </h2>
+              <p className="mb-3 text-[15px] leading-relaxed text-muted">
+                The vendor assigned a separate id to each affected code path. They share this
+                advisory, this score and this fix, so they are one entry here.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {covered.map((c) => <Tag key={c} mono>{c}</Tag>)}
+              </div>
+            </section>
+          )}
 
           <Field heading="Impact" value={entry.impact} />
           <Field heading="Who can reach it" value={entry.attack_vector} />

@@ -193,6 +193,17 @@ def normalize(raw: dict, source: str, seq: Counter) -> tuple[dict | None, str | 
     if cve and not CVE_RE.match(cve):
         return None, f"{component}: malformed cve {cve!r}"
 
+    # A batch may consolidate several CVEs into one entry when a vendor split one issue across
+    # many ids. The lowest becomes the canonical one so the choice is stable across re-runs
+    # rather than depending on what order the batch happened to list them in.
+    extra_cves = sorted({c.strip() for c in (raw.get("additional_cves") or [])
+                         if isinstance(c, str) and CVE_RE.match(c.strip())})
+    if extra_cves and not cve:
+        return None, f"{component}: additional_cves with no canonical cve"
+    if extra_cves:
+        every = sorted({cve, *extra_cves}, key=lambda c: (int(c.split("-")[1]), int(c.split("-")[2])))
+        cve, extra_cves = every[0], every[1:]
+
     score = raw.get("cvss_score")
     if isinstance(score, str):
         m = re.search(r"\d+(?:\.\d+)?", score)
@@ -244,6 +255,7 @@ def normalize(raw: dict, source: str, seq: Counter) -> tuple[dict | None, str | 
         **extra,
         "id": entry_id,
         "cve": cve,
+        **({"additional_cves": extra_cves} if extra_cves else {}),
         "aliases": [a.strip() for a in (raw.get("aliases") or []) if isinstance(a, str) and a.strip()],
         "title": make_title(component, impact, raw.get("title")),
         "layer": layer,

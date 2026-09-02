@@ -15,7 +15,11 @@ layers = collections.Counter(e["layer"] for e in rows)
 pain = collections.Counter(
     e["fleet"]["pain_class"] for e in rows if e.get("fleet", {}).get("pain_class"))
 years = sorted({e["year"] for e in rows if e["year"]})
-cves = {e["cve"] for e in rows if e["cve"]}
+# Every CVE the database answers for, not every CVE that has a file. A consolidated entry
+# speaks for its whole set, so counting files here would make merging duplicates look like
+# losing coverage.
+cves = {e["cve"] for e in rows if e["cve"]} | {
+    c for e in rows for c in e.get("additional_cves", [])}
 
 path = ROOT / "README.md"
 text = path.read_text()

@@ -39,7 +39,7 @@ PAIN_CLASSES = {"hot-patch", "daemon-restart", "node-drain", "node-reboot",
 # Fields the model may set. Anything else it invents is dropped rather than passed to ingest.
 PASSTHROUGH = ("cve", "component", "title", "layer_hint", "impact", "attack_vector",
                "remediation", "references", "cvss_score", "cvss_vector", "cwe", "kev",
-               "pain_class", "aliases")
+               "pain_class", "aliases", "additional_cves")
 
 
 def slim(c: dict) -> dict:
@@ -57,6 +57,59 @@ def slim(c: dict) -> dict:
         "references": c.get("references", [])[:6],
         "why_it_was_flagged": c.get("matched_term") or c.get("matched_on"),
     }
+
+
+ADVISORY_REF = re.compile(
+    r"nvd\.nist\.gov|cve\.org|cve\.mitre|security-tracker\.debian|"
+    r"access\.redhat\.com/security/cve/|ubuntu\.com/security/CVE",
+    re.I,
+)
+
+
+def advisory_key(c: dict) -> str | None:
+    """The vendor advisory a candidate hangs off, if it has exactly one."""
+    refs = sorted({r for r in c.get("references", []) if not ADVISORY_REF.search(r)})
+    return refs[0] if len(refs) == 1 else None
+
+
+def make_batches(candidates: list[dict], size: int) -> list[list[dict]]:
+    """Batch so that CVEs from the same advisory are decided together.
+
+    A vendor that splits one flaw across thirty ids publishes them in one bulletin, and they
+    arrive in one NVD window. Split across three batches, the model cannot see that they are
+    one issue and writes thirty entries saying the same sentence - which is exactly how this
+    database ended up with thirty Megatron Bridge entries. Keeping an advisory whole is what
+    makes consolidating at write time possible at all.
+    """
+    groups: dict[str, list[dict]] = {}
+    loose: list[dict] = []
+    for c in candidates:
+        key = advisory_key(c)
+        if key:
+            groups.setdefault(key, []).append(c)
+        else:
+            loose.append(c)
+
+    batches: list[list[dict]] = []
+    current: list[dict] = []
+    # Largest advisories first: a group over the batch size gets a batch of its own rather
+    # than being sliced, since slicing is the failure this exists to prevent.
+    for group in sorted(groups.values(), key=len, reverse=True):
+        if len(group) >= size:
+            batches += [group]
+            continue
+        if len(current) + len(group) > size:
+            batches.append(current)
+            current = []
+        current += group
+    for c in loose:
+        if len(current) >= size:
+            batches.append(current)
+            current = []
+        current.append(c)
+    if current:
+        batches.append(current)
+    return batches
 
 
 def extract_json(text: str) -> dict | None:
@@ -112,8 +165,25 @@ def run_batch(batch: list[dict], index: int, timeout: int
         else:
             problems.append(f"batch {index}: dropped {raw.get('cve')}: {why}")
 
+    # `clean` cannot see the other entries in the batch, so a folded id can still collide -
+    # with another entry's canonical id, or with a fold the model listed twice. Dropping the
+    # fold rather than the entry is the safe direction: it leaves two entries where one would
+    # have done, instead of leaving a CVE with no entry at all.
+    claimed = {e["cve"] for e in entries}
+    for entry in entries:
+        keep = [c for c in entry.get("additional_cves", []) if c not in claimed]
+        claimed.update(keep)
+        if keep:
+            entry["additional_cves"] = keep
+        else:
+            entry.pop("additional_cves", None)
+
     rejected = [r for r in payload.get("rejected", []) if isinstance(r, dict)]
-    seen = {e["cve"] for e in entries} | {r.get("cve") for r in rejected}
+    # An id folded into a consolidated entry has been decided on, even though no entry of its
+    # own carries it - otherwise every consolidation would look like a missing verdict.
+    seen = ({e["cve"] for e in entries}
+            | {c for e in entries for c in e.get("additional_cves", [])}
+            | {r.get("cve") for r in rejected})
     missing = wanted - seen
     if missing:
         problems.append(f"batch {index}: no verdict for {', '.join(sorted(missing))}")
@@ -138,6 +208,15 @@ def clean(raw: dict, wanted: set[str]) -> tuple[dict | None, str]:
         entry.pop("layer_hint", None)          # ingest infers it from the component instead
     if entry.get("pain_class") not in PAIN_CLASSES:
         entry.pop("pain_class", None)
+
+    # Consolidation may only fold in ids from this same batch. Batches are disjoint by CVE, so
+    # that restriction is also what makes it impossible for two entries to claim the same id.
+    folded = sorted({c for c in entry.get("additional_cves", [])
+                     if isinstance(c, str) and c in wanted and c != cve})
+    if folded:
+        entry["additional_cves"] = folded
+    else:
+        entry.pop("additional_cves", None)
 
     refs = [r for r in entry.get("references", [])
             if isinstance(r, str) and r.startswith("http") and " " not in r]
@@ -171,7 +250,7 @@ def main():
         print("no candidates — nothing to triage")
         return 0
 
-    batches = [candidates[i:i + args.batch] for i in range(0, len(candidates), args.batch)]
+    batches = make_batches(candidates, args.batch)
     if args.dry_run:
         batches = batches[:1]
     print(f"{len(candidates)} candidates in {len(batches)} batches "

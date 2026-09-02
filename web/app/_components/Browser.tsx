@@ -92,7 +92,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
       if (kev && !e.kev) return false;
       if (year && e.year !== year) return false;
       if (debouncedQ) {
-        const hay = `${e.id} ${e.component} ${e.title} ${e.aliases.join(" ")} ${e.layer_name}`.toLowerCase();
+        const hay = `${e.id} ${(e.additional_cves ?? []).join(" ")} ${e.component} ${e.title} ${e.aliases.join(" ")} ${e.layer_name}`.toLowerCase();
         if (!hay.includes(debouncedQ)) return false;
       }
       return true;

@@ -78,6 +78,14 @@ fi
 step "ingesting $new entries"
 $PY scripts/ingest.py --research "$STAGE" --write
 
+step "consolidating CVEs that are one issue"
+# Triage already folds same-advisory ids together within a batch. This catches the case it
+# cannot see: a vendor's ids trickling in across several days, which arrive in different runs
+# and so were never in front of the model at the same time. Scoped to buckets today's entries
+# actually landed in, so settled ones are not re-argued every morning.
+$PY scripts/consolidate.py --adjudicate --write --touching "$BATCH_FILE" \
+  || step "consolidation reported problems - continuing"
+
 step "deriving remediation cost classes"
 $PY scripts/derive_pain.py --write
 

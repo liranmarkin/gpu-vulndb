@@ -75,6 +75,33 @@ Each object in `entries`:
 | `kev` | yes | Boolean, copied from the record. |
 | `pain_class` | if you are sure | One of: `hot-patch`, `daemon-restart`, `node-drain`, `node-reboot`, `microcode + reboot`, `firmware-flash`, `physical access`, `unpatchable / mitigate-only`. **Omit it unless the remediation you wrote actually names that action.** A wrong value sends someone to schedule the wrong maintenance window; an absent one just reads as "not established". |
 | `aliases` | rarely | Branded vulnerability names only (`NVIDIAScape`, `LogoFAIL`). Not component qualifiers. |
+| `additional_cves` | when consolidating | Other CVE ids in this batch that are the same issue as this entry. See below. |
+
+## Consolidating CVEs that are one issue
+
+Vendors routinely assign a separate CVE to each affected code path. NVIDIA bulletin 2026/5868
+carries thirty ids for the same unsafe deserialization in Megatron Bridge: same score, same
+advisory, same one-line fix. Thirty entries that repeat one sentence is not thirty facts, and it
+buries everything around it.
+
+When several candidates in this batch are one issue, write **one** entry and list the other ids
+in `additional_cves`. Use the lowest-numbered id as `cve`. Do not also emit them separately, and
+do not put them in `rejected` - an id inside `additional_cves` counts as accounted for.
+
+Consolidate only when all of these hold:
+- one underlying flaw, or one indistinguishable class of flaw, in one component,
+- one advisory, and the same fix and the same remediation for every id,
+- an operator would take the same action for all of them and gain nothing from seeing them
+  listed separately.
+
+Keep them separate when the mechanism, the attack path, the affected subsystem or the fixed
+version differ - **even if they share an advisory and a score**. Eight grub2 memory-safety bugs
+in one post are eight bugs. **If you are not sure, keep them separate:** a duplicate entry is
+untidy, but a merged entry that hides a distinct vulnerability means a CVE lookup returns the
+wrong answer.
+
+When you do consolidate, say so in `impact` - that the vendor split this across N ids - and
+write the entry for the whole set rather than for the one id that happens to be canonical.
 
 ## How to write
 

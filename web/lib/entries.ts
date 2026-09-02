@@ -47,6 +47,30 @@ export function getEntry(id: string): Entry | undefined {
   return getAllEntries().find((e) => e.id === id);
 }
 
+let byCve: Map<string, Entry> | null = null;
+
+/**
+ * Every id that should resolve to an entry page, including the CVEs folded into a consolidated
+ * entry. Those ids were separate pages before they were merged, and are linked from NVD and
+ * indexed by search engines; resolving them here is what keeps a merge from turning into a
+ * few dozen 404s.
+ */
+export function resolveEntry(id: string): Entry | undefined {
+  if (!byCve) {
+    byCve = new Map();
+    for (const e of getAllEntries()) {
+      byCve.set(e.id, e);
+      for (const cve of e.additional_cves ?? []) byCve.set(cve, e);
+    }
+  }
+  return byCve.get(id);
+}
+
+/** Canonical ids plus the folded-in CVEs - what the entry route has to build pages for. */
+export function getAllEntryPaths(): string[] {
+  return getAllEntries().flatMap((e) => [e.id, ...(e.additional_cves ?? [])]);
+}
+
 let index: { component: Map<string, Entry[]>; layer: Map<string, Entry[]> } | null = null;
 
 function getIndex() {
