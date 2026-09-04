@@ -129,13 +129,13 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
   return (
     <>
       {/* ---------- the wafer hero, with the stack elevation resting on it ---------- */}
-      <section className="wafer relative mt-6 overflow-hidden rounded-[28px] px-6 pb-16 pt-10 text-white sm:mt-8 sm:px-12 sm:pb-20 sm:pt-14">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-14">
+      <section className="wafer relative mt-4 overflow-hidden rounded-[24px] px-5 pb-14 pt-8 text-white sm:mt-8 sm:rounded-[28px] sm:px-12 sm:pb-20 sm:pt-14">
+        <div className="grid items-center gap-7 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-14">
           <div>
-            <h1 className="mb-5 font-display text-[clamp(32px,3.9vw,52px)] font-extrabold leading-[1.06] tracking-[-0.02em]">
+            <h1 className="mb-4 font-display sm:mb-5 text-[clamp(28px,3.9vw,52px)] font-extrabold leading-[1.06] tracking-[-0.02em]">
               The Open GPU Vulnerability Database
             </h1>
-            <p className="mb-7 max-w-[46ch] text-[16.5px] leading-[1.6] text-white/80 sm:text-[18px]">
+            <p className="mb-6 max-w-[46ch] text-[15.5px] leading-[1.55] text-white/80 sm:mb-7 sm:text-[18px]">
               An open project to list all known vulnerabilities in the stack GPU datacenters run on.
             </p>
             <p className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[13px] text-lavender">
@@ -164,14 +164,18 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
                   onClick={() => setLayer(active ? null : l.id)}
                   aria-pressed={active}
                   style={{ animationDelay: `${i * 55}ms` }}
-                  className={`group grid w-full grid-cols-[24px_1fr_86px_44px] items-center gap-3 border-t border-line px-4 py-2.5 text-left transition-colors duration-150 first:border-t-0 motion-safe:animate-[rackIn_.5s_ease-out_backwards] sm:px-5 ${
+                  // The severity bar costs 86px, which on a phone is most of the room the layer
+                  // name has: every row read "Container,..." and the hero's primary filter was
+                  // unusable. The bar is decorative, the name is the control, so below sm the
+                  // bar goes and the name takes the width.
+                  className={`group grid w-full grid-cols-[24px_1fr_44px] items-center gap-3 border-t border-line px-4 py-3 text-left transition-colors duration-150 first:border-t-0 motion-safe:animate-[rackIn_.5s_ease-out_backwards] sm:grid-cols-[24px_1fr_86px_44px] sm:px-5 sm:py-2.5 ${
                     active ? "bg-tint/60 shadow-[inset_3px_0_0_var(--color-brand)]" : "hover:bg-paper"
                   }`}
                 >
                   <DepthGlyph index={i} active={active} />
 
                   <span className="min-w-0">
-                    <span className={`block truncate text-[13.5px] font-medium ${active ? "text-silicon-800" : "text-ink"}`}>
+                    <span className={`block text-[13.5px] font-medium leading-tight sm:truncate ${active ? "text-silicon-800" : "text-ink"}`}>
                       {l.name}
                     </span>
                     <span className="mt-px block truncate font-mono text-[9.5px] uppercase tracking-[0.08em] text-faint">
@@ -179,7 +183,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
                     </span>
                   </span>
 
-                  <span className="hidden h-1.5 overflow-hidden rounded-full bg-line/70 min-[380px]:flex" aria-hidden>
+                  <span className="hidden h-1.5 overflow-hidden rounded-full bg-line/70 sm:flex" aria-hidden>
                     <span className="flex h-full overflow-hidden rounded-full" style={{ width: `${Math.max(10, (l.total / maxLayer) * 100)}%` }}>
                       {l.segments.map((s) => (
                         <i key={s.severity} style={{ width: `${s.pct}%`, background: SEV_VAR[s.severity] }} />
@@ -237,7 +241,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
               key={s}
               onClick={() => toggleSev(s)}
               aria-pressed={sev.has(s)}
-              className={`rounded-full border px-3.5 py-1.5 text-[13px] font-medium capitalize transition ${
+              className={`min-h-11 rounded-full border px-4 py-2 text-[13px] font-medium capitalize transition sm:min-h-0 sm:px-3.5 sm:py-1.5 ${
                 sev.has(s)
                   ? `sev-tile-${s}`
                   : "border-line bg-card text-muted hover:border-line-strong hover:text-ink"
@@ -250,7 +254,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
           <button
             onClick={() => setKev((v) => !v)}
             aria-pressed={kev}
-            className={`rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition ${
+            className={`min-h-11 rounded-full border px-4 py-2 text-[13px] font-medium transition sm:min-h-0 sm:px-3.5 sm:py-1.5 ${
               kev ? "border-critical bg-critical text-white" : "border-line bg-card text-muted hover:border-line-strong hover:text-ink"
             }`}
           >
@@ -263,7 +267,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
             value={year}
             onChange={(e) => setYear(e.target.value)}
             aria-label="Filter by year"
-            className="rounded-full border border-line bg-card px-3.5 py-1.5 text-[13px] font-medium text-muted hover:border-line-strong hover:text-ink"
+            className="min-h-11 rounded-full border border-line bg-card px-4 py-2 text-[13px] font-medium text-muted hover:border-line-strong hover:text-ink sm:min-h-0 sm:px-3.5 sm:py-1.5"
           >
             <option value="">All years</option>
             {years.map((y) => <option key={y} value={y}>{y}</option>)}
@@ -273,7 +277,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
             aria-label="Sort order"
-            className="rounded-full border border-line bg-card px-3.5 py-1.5 text-[13px] font-medium text-muted hover:border-line-strong hover:text-ink"
+            className="min-h-11 rounded-full border border-line bg-card px-4 py-2 text-[13px] font-medium text-muted hover:border-line-strong hover:text-ink sm:min-h-0 sm:px-3.5 sm:py-1.5"
           >
             <option value="year">Newest first</option>
             <option value="score">Highest CVSS</option>
@@ -344,7 +348,9 @@ function Card({ entry: e }: { entry: IndexEntry }) {
   return (
     <Link
       href={`/vuln/${e.id}`}
-      className="relative grid grid-cols-[38px_minmax(0,1fr)_auto] items-start gap-3.5 overflow-hidden rounded-2xl border border-line bg-card p-4 pl-5 shadow-[var(--shadow-card)] transition duration-150 hover:-translate-y-px hover:border-line-strong hover:shadow-[var(--shadow-card-hover)] sm:gap-4 sm:p-5 sm:pl-6"
+      // On a phone the date column took ~110px off the title, wrapping six-word headlines over
+      // six lines. Below sm the date joins the tag row instead, where it costs nothing.
+      className="relative grid grid-cols-[38px_minmax(0,1fr)] items-start gap-3.5 overflow-hidden rounded-2xl border border-line bg-card p-4 pl-5 shadow-[var(--shadow-card)] transition duration-150 hover:-translate-y-px hover:border-line-strong hover:shadow-[var(--shadow-card-hover)] sm:grid-cols-[38px_minmax(0,1fr)_auto] sm:gap-4 sm:p-5 sm:pl-6"
     >
       <span
         aria-hidden
@@ -361,13 +367,19 @@ function Card({ entry: e }: { entry: IndexEntry }) {
             {e.severity}
           </span>
           <Tag mono>{e.cve ?? e.id}</Tag>
+          {e.additional_cves?.length ? <Tag mono>+{e.additional_cves.length}</Tag> : null}
           <Tag>{e.layer_name}</Tag>
           {e.kev && <Tag tone="kev">Known exploited</Tag>}
           {e.aliases.slice(0, 2).map((a) => <Tag key={a} tone="alias">{a}</Tag>)}
+          {(e.published || e.year) && (
+            <span className="font-mono text-[11.5px] tabular-nums text-faint sm:hidden">
+              {e.published ? fmtDate(e.published) : e.year}
+            </span>
+          )}
         </span>
       </span>
       {(e.published || e.year) && (
-        <span className="pt-[3px] font-mono text-[12px] tabular-nums text-faint">
+        <span className="hidden pt-[3px] font-mono text-[12px] tabular-nums text-faint sm:block">
           {e.published ? fmtDate(e.published) : e.year}
         </span>
       )}

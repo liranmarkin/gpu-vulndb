@@ -58,16 +58,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 GPU VulnDB
               </span>
             </Link>
-            <nav className="ml-auto flex items-center gap-5 text-[14px] font-medium text-muted">
-              <Link href="/#database" className="hidden hover:text-ink min-[440px]:inline">Database</Link>
+            <nav className="ml-auto flex items-center gap-3 text-[13.5px] font-medium text-muted sm:gap-5 sm:text-[14px]">
+              <Link href="/#database" className="hidden hover:text-ink min-[420px]:inline">Database</Link>
               <Link href="/data.json" className="hidden hover:text-ink sm:inline">JSON</Link>
               <Link href="/feed.xml" className="hidden hover:text-ink sm:inline">RSS</Link>
-              <a href="https://github.com/liranmarkin/gpu-vulndb" className="hidden hover:text-ink sm:inline">
+              <a href="https://github.com/liranmarkin/gpu-vulndb" className="hover:text-ink">
                 GitHub
               </a>
               <a
                 href="https://github.com/liranmarkin/gpu-vulndb/blob/main/CONTRIBUTING.md"
-                className="rounded-full bg-brand px-4 py-2 text-[13.5px] font-semibold text-white transition hover:bg-brand-deep"
+                className="rounded-full bg-brand px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-brand-deep sm:px-4 sm:text-[13.5px]"
               >
                 Contribute
               </a>

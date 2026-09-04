@@ -105,7 +105,7 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <div className="grid items-start gap-10 pt-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-14">
-        <article>
+        <article className="min-w-0">
           <p className="mb-5 font-mono text-[12px] text-faint">
             <Link href="/#database" className="text-muted hover:text-ink">Database</Link>
             <span className="mx-1.5 text-line-strong">/</span>
@@ -125,9 +125,14 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
             <Tag mono>{ident}</Tag>
             <Tag>{entry.layer_name}</Tag>
             {entry.kev && <Tag tone="kev">Known exploited</Tag>}
+            {covered.length > 0 && <Tag mono>+{covered.length} more CVEs</Tag>}
             {entry.aliases.map((a) => <Tag key={a} tone="alias">{a}</Tag>)}
             <Tag>{entry.status}</Tag>
           </div>
+
+          <Field heading="Impact" value={entry.impact} />
+          <Field heading="Who can reach it" value={entry.attack_vector} />
+          <Field heading="What to do" value={entry.remediation} />
 
           {covered.length > 0 && (
             <section className="mb-9">
@@ -144,9 +149,6 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
             </section>
           )}
 
-          <Field heading="Impact" value={entry.impact} />
-          <Field heading="Who can reach it" value={entry.attack_vector} />
-          <Field heading="What to do" value={entry.remediation} />
 
           {hasFleet && (
             <section className="mb-9">
@@ -166,9 +168,9 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
               <h2 className="mb-3 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-faint">
                 References
               </h2>
-              <div className="grid gap-2 break-words font-mono text-[13px]">
+              <div className="grid gap-2 [overflow-wrap:anywhere] font-mono text-[13px]">
                 {entry.references.map((u) => (
-                  <a key={u} href={u} rel="noopener nofollow" target="_blank" className="text-brand-ink hover:underline">
+                  <a key={u} href={u} rel="noopener nofollow" target="_blank" className="min-w-0 break-all text-brand-ink hover:underline">
                     {u}
                   </a>
                 ))}
