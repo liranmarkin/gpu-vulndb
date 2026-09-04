@@ -104,12 +104,12 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
     <main className="mx-auto max-w-[1200px] px-[22px]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <div className="grid items-start gap-10 pt-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-14">
+      <div className="grid items-start gap-8 pt-8 sm:gap-10 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-14">
         <article className="min-w-0">
-          <p className="mb-5 font-mono text-[12px] text-faint">
-            <Link href="/#database" className="text-muted hover:text-ink">Database</Link>
+          <p className="mb-5 flex flex-wrap items-center font-mono text-[12px] text-faint">
+            <Link href="/#database" className="py-2 text-muted hover:text-ink sm:py-0">Database</Link>
             <span className="mx-1.5 text-line-strong">/</span>
-            <Link href={`/layer/${entry.layer}`} className="text-muted hover:text-ink">
+            <Link href={`/layer/${entry.layer}`} className="py-2 text-muted hover:text-ink sm:py-0">
               {entry.layer_name}
             </Link>
           </p>
@@ -122,6 +122,10 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
           </div>
 
           <div className="mb-10 flex flex-wrap gap-2">
+            {/* The sidebar carries this on desktop; on a phone it is three screens away. */}
+            <span className={`rounded-full border px-2.5 py-0.5 font-mono text-[11.5px] font-semibold sev-tile-${entry.severity} lg:hidden`}>
+              {entry.cvss_score != null ? `CVSS ${score}` : SEVERITY_LABEL[entry.severity]}
+            </span>
             <Tag mono>{ident}</Tag>
             <Tag>{entry.layer_name}</Tag>
             {entry.kev && <Tag tone="kev">Known exploited</Tag>}
@@ -209,7 +213,7 @@ export default async function VulnPage({ params }: { params: Promise<{ id: strin
               </ul>
               <Link
                 href={`/layer/${entry.layer}`}
-                className="mt-3 inline-block font-mono text-[12.5px] text-brand-ink hover:underline"
+                className="mt-3 inline-block py-2 font-mono text-[12.5px] text-brand-ink hover:underline sm:py-0"
               >
                 All {entry.layer_name} entries
               </Link>

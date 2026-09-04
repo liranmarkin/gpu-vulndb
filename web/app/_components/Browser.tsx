@@ -23,6 +23,10 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
   const [year, setYear] = useState("");
   const [sort, setSort] = useState<Sort>("year");
   const [shown, setShown] = useState(PAGE);
+  // Mobile only: the rack is 519px, which on a phone is a whole screen between the
+  // search box and the first result. Collapsed by default there, always open at sm+
+  // (the class below, not a media query, so there is nothing to hydrate wrong).
+  const [rackOpen, setRackOpen] = useState(false);
   // Must be state, not a ref: the write-back effect below has to be blocked until
   // this read has actually committed a render, or it writes an empty query string
   // over the very URL the read depends on.
@@ -143,18 +147,47 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
               <span><b className="font-semibold text-white">{totalCritical}</b> critical</span>
               <span><b className="font-semibold text-white">{totalExploited}</b> known exploited</span>
             </p>
+
+            <label className="relative mt-6 flex items-center sm:hidden">
+              <svg viewBox="0 0 24 24" aria-hidden className="pointer-events-none absolute left-5 h-4.5 w-4.5 fill-none stroke-faint stroke-2">
+                <circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" />
+              </svg>
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              type="search"
+              aria-label="Search entries"
+              placeholder="Search GPU vulnerabilities..."
+              className="h-14 w-full rounded-full border border-line bg-card pl-12.5 pr-6 text-[15px] text-ink shadow-[var(--shadow-float)] placeholder:text-faint focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/12"
+            />
+            </label>
           </div>
 
           {/* the stack, top to bottom: a rack elevation that is also the primary filter */}
           <div className="overflow-hidden rounded-2xl bg-card shadow-[var(--shadow-float)]">
-            <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-3">
-              <span className="font-mono text-[10.5px] uppercase tracking-[0.15em] text-faint">
+            <button
+              type="button"
+              onClick={() => setRackOpen((v) => !v)}
+              aria-expanded={rackOpen}
+              className="flex w-full items-center justify-between gap-3 border-b border-line px-5 py-3.5 text-left sm:pointer-events-none sm:py-3"
+            >
+              {/* "The stack, top to bottom" wraps to two lines in a 390px bar; the short label
+                  says the same thing about a control you are looking straight at. */}
+              <span className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.12em] text-faint sm:hidden">
+                Browse by layer
+              </span>
+              <span className="hidden font-mono text-[10.5px] uppercase tracking-[0.15em] text-faint sm:inline">
                 The stack, top to bottom
               </span>
-              <span className="font-mono text-[10.5px] uppercase tracking-[0.15em] text-faint tabular-nums">
+              <span className="flex shrink-0 items-center gap-2 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.12em] text-faint tabular-nums sm:text-[10.5px] sm:tracking-[0.15em]">
                 6 layers
+                <svg viewBox="0 0 24 24" aria-hidden className={`h-4 w-4 fill-none stroke-current stroke-2 transition-transform sm:hidden ${rackOpen ? "rotate-180" : ""}`}>
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
               </span>
-            </div>
+            </button>
+
+            <div className={rackOpen ? "block" : "hidden sm:block"}>
 
             {counts.map((l, i) => {
               const active = layer === l.id;
@@ -178,7 +211,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
                     <span className={`block text-[13.5px] font-medium leading-tight sm:truncate ${active ? "text-silicon-800" : "text-ink"}`}>
                       {l.name}
                     </span>
-                    <span className="mt-px block truncate font-mono text-[9.5px] uppercase tracking-[0.08em] text-faint">
+                    <span className="mt-0.5 block truncate font-mono text-[10.5px] uppercase tracking-[0.08em] text-faint sm:mt-px sm:text-[9.5px]">
                       {l.depth}
                     </span>
                   </span>
@@ -209,12 +242,13 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
               </span>
               <span>{layer ? "Selected - click again to clear" : "Select a layer to filter"}</span>
             </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ---------- the search floats out of the wafer, right above what it filters ---------- */}
-      <div className="relative z-10 mx-auto -mt-7 max-w-[720px]">
+      <div className="relative z-10 mx-auto -mt-7 hidden max-w-[720px] sm:block">
         <label className="relative flex items-center">
           <svg viewBox="0 0 24 24" aria-hidden className="pointer-events-none absolute left-5 h-4.5 w-4.5 fill-none stroke-faint stroke-2">
             <circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" />
@@ -233,15 +267,15 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
       {/* ---------- controls ---------- */}
       <div
         id="database"
-        className="sticky top-16 z-40 -mx-[22px] mt-8 scroll-mt-16 border-y border-line bg-paper/92 px-[22px] py-3.5 backdrop-blur-md"
+        className="sticky top-16 z-40 -mx-[22px] mt-8 scroll-mt-16 border-y border-line bg-paper/92 py-3 backdrop-blur-md sm:px-[22px] sm:py-3.5"
       >
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex items-center gap-2.5 overflow-x-auto px-[22px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:px-0">
           {(["critical", "high", "medium"] as Severity[]).map((s) => (
             <button
               key={s}
               onClick={() => toggleSev(s)}
               aria-pressed={sev.has(s)}
-              className={`min-h-11 rounded-full border px-4 py-2 text-[13px] font-medium capitalize transition sm:min-h-0 sm:px-3.5 sm:py-1.5 ${
+              className={`min-h-11 shrink-0 rounded-full border px-4 py-2 text-[13px] font-medium capitalize transition sm:min-h-0 sm:px-3.5 sm:py-1.5 ${
                 sev.has(s)
                   ? `sev-tile-${s}`
                   : "border-line bg-card text-muted hover:border-line-strong hover:text-ink"
@@ -254,7 +288,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
           <button
             onClick={() => setKev((v) => !v)}
             aria-pressed={kev}
-            className={`min-h-11 rounded-full border px-4 py-2 text-[13px] font-medium transition sm:min-h-0 sm:px-3.5 sm:py-1.5 ${
+            className={`min-h-11 shrink-0 rounded-full border px-4 py-2 text-[13px] font-medium transition sm:min-h-0 sm:px-3.5 sm:py-1.5 ${
               kev ? "border-critical bg-critical text-white" : "border-line bg-card text-muted hover:border-line-strong hover:text-ink"
             }`}
           >
@@ -267,7 +301,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
             value={year}
             onChange={(e) => setYear(e.target.value)}
             aria-label="Filter by year"
-            className="min-h-11 rounded-full border border-line bg-card px-4 py-2 text-[13px] font-medium text-muted hover:border-line-strong hover:text-ink sm:min-h-0 sm:px-3.5 sm:py-1.5"
+            className="min-h-11 shrink-0 rounded-full border border-line bg-card px-4 py-2 text-[13px] font-medium text-muted hover:border-line-strong hover:text-ink sm:min-h-0 sm:px-3.5 sm:py-1.5"
           >
             <option value="">All years</option>
             {years.map((y) => <option key={y} value={y}>{y}</option>)}
@@ -277,7 +311,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
             aria-label="Sort order"
-            className="min-h-11 rounded-full border border-line bg-card px-4 py-2 text-[13px] font-medium text-muted hover:border-line-strong hover:text-ink sm:min-h-0 sm:px-3.5 sm:py-1.5"
+            className="min-h-11 shrink-0 rounded-full border border-line bg-card px-4 py-2 text-[13px] font-medium text-muted hover:border-line-strong hover:text-ink sm:min-h-0 sm:px-3.5 sm:py-1.5"
           >
             <option value="year">Newest first</option>
             <option value="score">Highest CVSS</option>
@@ -285,7 +319,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
           </select>
 
           {filtered && (
-            <button onClick={clearAll} className="ml-auto text-[13px] font-medium text-brand-ink hover:underline">
+            <button onClick={clearAll} className="ml-auto hidden shrink-0 whitespace-nowrap px-1 text-[13px] font-medium text-brand-ink hover:underline sm:block">
               Clear filters
             </button>
           )}
@@ -293,7 +327,7 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
       </div>
 
       {/* ---------- results ---------- */}
-      <p className="py-5 font-mono text-[12.5px] text-faint">
+      <p className="py-4 font-mono text-[12px] leading-relaxed text-faint sm:py-5 sm:text-[12.5px]">
         {view.length === 0 ? (
           ""
         ) : (
@@ -301,12 +335,20 @@ export default function Browser({ entries }: { entries: IndexEntry[] }) {
             Showing <b className="font-semibold text-ink">{Math.min(shown, view.length)}</b> of{" "}
             <b className="font-semibold text-ink">{view.length.toLocaleString()}</b> entries · {critical} critical ·{" "}
             {exploited} known exploited
+            {filtered && (
+              <button onClick={clearAll} className="ml-2 font-medium text-brand-ink hover:underline sm:hidden">
+                Clear filters
+              </button>
+            )}
           </>
         )}
       </p>
 
       {view.length === 0 ? (
-        <p className="py-16 text-muted">No entries match these filters. Clear a filter to widen the search.</p>
+        <p className="py-16 text-muted">
+          No entries match these filters.{" "}
+          <button onClick={clearAll} className="font-medium text-brand-ink hover:underline">Clear them</button> to widen the search.
+        </p>
       ) : (
         <div className="grid gap-3">
           {view.slice(0, shown).map((e) => <Card key={e.id} entry={e} />)}

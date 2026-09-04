@@ -52,22 +52,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <header className="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur-md">
           <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-6 px-[22px]">
-            <Link href="/" className="flex items-center gap-2.5 text-ink hover:opacity-85">
+            <Link href="/" className="py-2 flex items-center gap-2.5 text-ink hover:opacity-85">
               <Logo size={28} />
               <span className="font-display text-[17px] font-bold tracking-[-0.01em]">
                 GPU VulnDB
               </span>
             </Link>
             <nav className="ml-auto flex items-center gap-3 text-[13.5px] font-medium text-muted sm:gap-5 sm:text-[14px]">
-              <Link href="/#database" className="hidden hover:text-ink min-[420px]:inline">Database</Link>
-              <Link href="/data.json" className="hidden hover:text-ink sm:inline">JSON</Link>
-              <Link href="/feed.xml" className="hidden hover:text-ink sm:inline">RSS</Link>
-              <a href="https://github.com/liranmarkin/gpu-vulndb" className="hover:text-ink">
+              <Link href="/#database" className="hidden py-2.5 hover:text-ink min-[420px]:inline">Database</Link>
+              <Link href="/data.json" className="hidden py-2.5 hover:text-ink sm:inline">JSON</Link>
+              <Link href="/feed.xml" className="hidden py-2.5 hover:text-ink sm:inline">RSS</Link>
+              <a href="https://github.com/liranmarkin/gpu-vulndb" className="py-2.5 hover:text-ink">
                 GitHub
               </a>
               <a
                 href="https://github.com/liranmarkin/gpu-vulndb/blob/main/CONTRIBUTING.md"
-                className="rounded-full bg-brand px-3.5 py-2 text-[13px] font-semibold text-white transition hover:bg-brand-deep sm:px-4 sm:text-[13.5px]"
+                className="rounded-full bg-brand px-3.5 py-2.5 text-[13px] font-semibold text-white transition hover:bg-brand-deep sm:px-4 sm:py-2 sm:text-[13.5px]"
               >
                 Contribute
               </a>
@@ -84,9 +84,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Logo size={24} />
                 <span className="font-display text-[15.5px] font-bold text-ink">GPU VulnDB</span>
               </div>
-              <nav aria-label="Browse by layer" className="grid gap-1.5 text-[13px]">
+              <nav aria-label="Browse by layer" className="grid gap-0.5 text-[13px] sm:gap-1.5">
                 {LAYERS.map((l) => (
-                  <Link key={l.id} href={`/layer/${l.id}`} className="text-muted hover:text-brand-ink">
+                  <Link key={l.id} href={`/layer/${l.id}`} className="py-2.5 text-muted hover:text-brand-ink sm:py-0">
                     {l.name}
                   </Link>
                 ))}

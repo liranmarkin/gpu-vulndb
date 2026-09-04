@@ -123,7 +123,7 @@ export default async function LayerPage({ params }: { params: Promise<{ id: stri
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <VendorIconDefs components={entries.map((e) => e.component)} />
       <p className="mb-5 pt-10 font-mono text-[12px] text-faint">
-        <Link href="/" className="text-muted hover:text-ink">Database</Link>
+        <Link href="/" className="inline-block py-2 text-muted hover:text-ink sm:py-0">Database</Link>
         <span className="mx-1.5 text-line-strong">/</span>
         <span className="text-muted">{layer.name}</span>
       </p>
@@ -136,26 +136,38 @@ export default async function LayerPage({ params }: { params: Promise<{ id: stri
         <span><b className="font-semibold text-ink">{entries.length.toLocaleString()}</b> entries</span>
         <span><b className="font-semibold text-ink">{critical}</b> critical</span>
         <span><b className="font-semibold text-ink">{exploited}</b> known exploited</span>
-        <Link href={`/?layer=${id}#database`} className="text-brand-ink hover:underline">
+        <Link href={`/?layer=${id}#database`} className="py-2 text-brand-ink hover:underline sm:py-0">
           Filter and search this layer
         </Link>
       </p>
 
-      {[...byYear.entries()].map(([year, rows]) => (
-        <section key={year} className="mb-10">
-          <h2 className="mb-3 border-b border-line pb-2 font-display text-[19px] font-bold text-ink">
+      {/*
+        Every entry stays in the HTML - this is the hub page crawlers walk to reach them, and
+        paginating it would hide most of the layer from search. But rendering 1,191 rows open
+        made this page 52,000px tall on a phone. Older years collapse instead: same markup,
+        same links, a page you can actually scroll.
+      */}
+      {[...byYear.entries()].map(([year, rows], yi) => (
+        <details key={year} open={yi === 0} className="group mb-6">
+          <summary className="mb-3 flex cursor-pointer list-none items-center gap-2 border-b border-line pb-2 font-display text-[19px] font-bold text-ink marker:hidden">
+            <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4 shrink-0 fill-none stroke-faint stroke-2 transition-transform group-open:rotate-90">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
             {year}
-          </h2>
+            <span className="font-mono text-[12.5px] font-normal text-faint">
+              {rows.length.toLocaleString()}
+            </span>
+          </summary>
           <ul className="grid gap-1">
             {rows.map((e) => (
               <li key={e.id}>
                 <Link
                   href={`/vuln/${e.id}`}
-                  className="group grid grid-cols-[26px_1fr_auto] items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-card"
+                  className="group grid grid-cols-[26px_1fr_auto] items-center gap-3 rounded-lg px-2 py-2.5 hover:bg-card sm:py-1.5"
                 >
                   <VendorIcon component={e.component} size={26} sprite />
                   <span className="min-w-0">
-                    <span className="block truncate text-[14px] text-ink group-hover:text-brand-ink">
+                    <span className="block text-[14px] leading-snug text-ink [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] overflow-hidden group-hover:text-brand-ink sm:truncate">
                       {e.title}
                     </span>
                   </span>
@@ -171,7 +183,7 @@ export default async function LayerPage({ params }: { params: Promise<{ id: stri
               </li>
             ))}
           </ul>
-        </section>
+        </details>
       ))}
     </main>
   );
