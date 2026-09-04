@@ -93,8 +93,21 @@ step "joining NVD published dates"
 $PY scripts/daily_dates.py --candidates "$CANDIDATES"
 
 step "validating"
-$PY scripts/validate.py \
-  || fail "validation failed - nothing committed, entries left in the working tree to inspect"
+if ! $PY scripts/validate.py; then
+  # Quarantine rather than leave the mess in place. A failed run used to leave the tree dirty,
+  # which tripped the guard above on every following run - so one bad morning silently stopped
+  # the database for days, and the only symptom was a site that looked stale. The evidence is
+  # kept, the tree is returned to origin, and tomorrow gets to try again.
+  QUARANTINE="$WORK/failed-$TODAY-$(date -u +%H%M%S)"
+  mkdir -p "$QUARANTINE"
+  git status --porcelain entries/ | sed 's/^...//' | while read -r f; do
+    [ -f "$f" ] && install -D "$f" "$QUARANTINE/$f"
+  done
+  cp "$BATCH_FILE" "$QUARANTINE/" 2>/dev/null || true
+  git checkout -- entries/ web/data 2>/dev/null || true
+  git clean -fdq entries/
+  fail "validation failed - nothing committed. What the run produced is in $QUARANTINE; the tree is clean so tomorrow can still run."
+fi
 
 added=$(git status --porcelain entries/ | grep -c '^??' || true)
 if [ "$added" -eq 0 ]; then

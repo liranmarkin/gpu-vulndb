@@ -199,8 +199,19 @@ def fetch_kev() -> dict[str, dict]:
 
 
 def corpus_cves() -> set[str]:
-    return {e["cve"] for p in ENTRIES.rglob("*.json")
-            if (e := json.loads(p.read_text())).get("cve")}
+    """Every CVE the database already answers for, folded ones included.
+
+    A CVE merged into a consolidated entry has no file of its own, but it is answered. Missing
+    that here means NVD re-surfacing it looks new: the model is paid to write an entry that
+    already exists, and ingest writes a second file claiming ids the first one holds.
+    """
+    have = set()
+    for path in ENTRIES.rglob("*.json"):
+        entry = json.loads(path.read_text())
+        if entry.get("cve"):
+            have.add(entry["cve"])
+        have.update(entry.get("additional_cves", []))
+    return have
 
 
 def best_metric(metrics: dict) -> tuple[float | None, str | None, str | None]:

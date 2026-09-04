@@ -165,6 +165,9 @@ def existing_ids() -> tuple[set[str], set[str], set[tuple[str, str]]]:
     for path in ENTRIES.rglob("*.json"):
         entry = json.loads(path.read_text())
         ids.add(entry["id"])
+        # Folded ids count as present: they have no file, but an entry already speaks for them,
+        # and re-ingesting one writes a second entry claiming CVEs the first one holds.
+        cves.update(entry.get("additional_cves", []))
         if entry.get("cve"):
             cves.add(entry["cve"])
         else:
