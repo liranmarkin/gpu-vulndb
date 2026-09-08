@@ -7,7 +7,7 @@
 **Every known vulnerability in the stack GPU datacenters run on - firmware to model serving.**
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fgpuvulndb.org&label=gpuvulndb.org&up_color=5a31d8)](https://gpuvulndb.org)
-![Entries](https://img.shields.io/badge/entries-4%2C969-5a31d8)
+![Entries](https://img.shields.io/badge/entries-4%2C976-5a31d8)
 [![Validation](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml/badge.svg)](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml)
 [![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-2b1663)](LICENSE-DATA)
 [![Code: MIT](https://img.shields.io/badge/code-MIT-2b1663)](LICENSE)
@@ -84,14 +84,14 @@ It is built for the people who operate this stack: GPU clouds, colocation datace
 
 ## 🧱 What's in scope
 
-**4,969 entries covering 4,866 distinct CVEs, spanning 2010 to 2026** - organized by the six layers of the stack, top to bottom:
+**4,976 entries covering 4,873 distinct CVEs, spanning 2010 to 2026** - organized by the six layers of the stack, top to bottom:
 
 | Layer | What it covers | Entries |
 | --- | --- | ---: |
-| `ai-serving` | Inference servers, training frameworks, model formats | 368 |
-| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 506 |
-| `control-plane` | Cluster management, storage, CI/CD, observability | 861 |
-| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 923 |
+| `ai-serving` | Inference servers, training frameworks, model formats | 371 |
+| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 507 |
+| `control-plane` | Cluster management, storage, CI/CD, observability | 862 |
+| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 925 |
 | `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,197 |
 | `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,114 |
 
@@ -101,18 +101,18 @@ Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undi
 
 ## 💸 Cost to remediate
 
-The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 3,522 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
+The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 3,527 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
 
 | Class | Entries | What it means |
 | --- | ---: | --- |
 | `hot-patch` | 80 | Fixable without interrupting workloads |
-| `daemon-restart` | 529 | Service restart on affected nodes |
+| `daemon-restart` | 531 | Service restart on affected nodes |
 | `node-drain` | 191 | Tenant workloads evicted from each node |
-| `node-reboot` | 1,959 | Full reboot of each affected node |
+| `node-reboot` | 1,961 | Full reboot of each affected node |
 | `microcode + reboot` | 54 | Microcode update and a reboot |
 | `firmware-flash` | 575 | Firmware flash, usually with the node out of service |
 | `physical access` | 2 | Someone has to be at the machine |
-| `unpatchable / mitigate-only` | 128 | **No vendor fix exists** |
+| `unpatchable / mitigate-only` | 129 | **No vendor fix exists** |
 
 These are extracted from remediation prose that names the action, never guessed. Where a remediation does not state a cost, the field is left unset rather than inferred.
 
