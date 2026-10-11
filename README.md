@@ -7,7 +7,7 @@
 **Every known vulnerability in the stack GPU datacenters run on - firmware to model serving.**
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fgpuvulndb.org&label=gpuvulndb.org&up_color=5a31d8)](https://gpuvulndb.org)
-![Entries](https://img.shields.io/badge/entries-5%2C984-5a31d8)
+![Entries](https://img.shields.io/badge/entries-6%2C006-5a31d8)
 [![Validation](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml/badge.svg)](https://github.com/liranmarkin/gpu-vulndb/actions/workflows/validate.yml)
 [![Data: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-2b1663)](LICENSE-DATA)
 [![Code: MIT](https://img.shields.io/badge/code-MIT-2b1663)](LICENSE)
@@ -84,16 +84,16 @@ It is built for the people who operate this stack: GPU clouds, colocation datace
 
 ## 🧱 What's in scope
 
-**5,984 entries covering 5,944 distinct CVEs, spanning 2010 to 2026** - organized by the six layers of the stack, top to bottom:
+**6,006 entries covering 5,987 distinct CVEs, spanning 2010 to 2026** - organized by the six layers of the stack, top to bottom:
 
 | Layer | What it covers | Entries |
 | --- | --- | ---: |
-| `ai-serving` | Inference servers, training frameworks, model formats | 483 |
-| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 616 |
-| `control-plane` | Cluster management, storage, CI/CD, observability | 1,082 |
-| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 1,214 |
+| `ai-serving` | Inference servers, training frameworks, model formats | 485 |
+| `container-orchestration` | Container runtimes, Kubernetes, schedulers, service mesh | 622 |
+| `control-plane` | Cluster management, storage, CI/CD, observability | 1,088 |
+| `kernel-hypervisor` | Host kernel, userspace, virtualization, microcode | 1,221 |
 | `gpu-stack` | GPU drivers, firmware, CUDA, container toolkit, vGPU, ROCm, Gaudi | 1,323 |
-| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,266 |
+| `firmware-bmc-fabric` | BMC/IPMI/Redfish, BIOS/UEFI, NVLink, InfiniBand, DPUs, PDUs, cooling | 1,267 |
 
 **Design-level weaknesses that will never get a CVE are in scope too.** Unauthenticated IPMI over LAN, RDMA fabrics with no cryptographic binding between a packet and its connection, physical DRAM interposers that both Intel and AMD classify as out of scope - these carry an `NCVD-` id. There are 187 of them, and they are frequently a bigger problem than anything with a CVSS score. They also cannot be represented in NVD, OSV, or any advisory-passthrough database, which is a large part of why this one exists.
 
@@ -101,18 +101,18 @@ Out of scope: vulnerabilities with no plausible path to GPU infrastructure, undi
 
 ## 💸 Cost to remediate
 
-The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 4,444 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
+The field that makes this more than an advisory mirror. A CVSS score tells you how bad a vulnerability is; it does not tell you whether fixing it costs a config change or a firmware flash across every node you own. 4,463 entries carry a `fleet.pain_class`, from cheapest to most disruptive:
 
 | Class | Entries | What it means |
 | --- | ---: | --- |
 | `hot-patch` | 83 | Fixable without interrupting workloads |
-| `daemon-restart` | 935 | Service restart on affected nodes |
+| `daemon-restart` | 951 | Service restart on affected nodes |
 | `node-drain` | 203 | Tenant workloads evicted from each node |
-| `node-reboot` | 2,414 | Full reboot of each affected node |
+| `node-reboot` | 2,416 | Full reboot of each affected node |
 | `microcode + reboot` | 54 | Microcode update and a reboot |
 | `firmware-flash` | 610 | Firmware flash, usually with the node out of service |
 | `physical access` | 2 | Someone has to be at the machine |
-| `unpatchable / mitigate-only` | 139 | **No vendor fix exists** |
+| `unpatchable / mitigate-only` | 140 | **No vendor fix exists** |
 
 These are extracted from remediation prose that names the action, never guessed. Where a remediation does not state a cost, the field is left unset rather than inferred.
 
