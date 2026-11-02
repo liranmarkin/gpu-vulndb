@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Instrument_Sans, Spline_Sans_Mono } from "next/font/google";
 import Link from "next/link";
+import Script from "next/script";
 import Logo from "./_components/Logo";
 import { LAYERS } from "@/lib/schema";
 import "./globals.css";
@@ -121,6 +122,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </footer>
         <Analytics />
+        <Script src="https://hooks.liranmarkin.com/sa/s.js" strategy="afterInteractive" />
       </body>
     </html>
   );
