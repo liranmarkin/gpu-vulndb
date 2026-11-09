@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RESEARCH = ROOT / "research"
 PROMPT = ROOT / "scripts" / "daily_prompt.md"
 
-MODEL = "claude-opus-5"
+MODEL = "opus"  # tier alias: the CLI resolves it to the current Opus
 ALLOWED_TOOLS = "WebFetch,WebSearch"
 LAYERS = {"gpu-stack", "firmware-bmc-fabric", "kernel-hypervisor",
           "container-orchestration", "ai-serving", "control-plane"}

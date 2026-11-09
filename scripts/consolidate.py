@@ -34,7 +34,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ENTRIES = ROOT / "entries"
 
-MODEL = "claude-opus-5"
+MODEL = "opus"  # tier alias: the CLI resolves it to the current Opus
 
 # References that identify a CVE rather than an advisory. Two entries sharing only these have
 # nothing in common but being CVEs, which is what every entry here has.
