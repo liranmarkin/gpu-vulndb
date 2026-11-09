@@ -135,7 +135,7 @@ def run_batch(batch: list[dict], index: int, timeout: int
               + json.dumps([slim(c) for c in batch], indent=1, ensure_ascii=False)
               + "\n```\n")
     cmd = ["claude", "-p", "--model", MODEL, "--output-format", "json",
-           "--allowedTools", ALLOWED_TOOLS]
+           "--strict-mcp-config", "--allowedTools", ALLOWED_TOOLS]
     try:
         proc = subprocess.run(cmd, input=prompt, capture_output=True, text=True,
                               timeout=timeout, cwd=ROOT)

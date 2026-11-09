@@ -168,7 +168,8 @@ def adjudicate(group: list[tuple[Path, dict]], timeout: int) -> dict | None:
     } for _, e in group]
     prompt = PROMPT + "\n```json\n" + json.dumps(payload, indent=1, ensure_ascii=False) + "\n```\n"
     try:
-        proc = subprocess.run(["claude", "-p", "--model", MODEL, "--output-format", "json"],
+        proc = subprocess.run(["claude", "-p", "--model", MODEL, "--output-format", "json",
+                               "--strict-mcp-config"],
                               input=prompt, capture_output=True, text=True,
                               timeout=timeout, cwd=ROOT)
     except subprocess.TimeoutExpired:
