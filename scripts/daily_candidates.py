@@ -12,6 +12,7 @@ NVD_API_KEY is honoured if set (50 requests/30s instead of 5), but is not requir
 """
 
 import argparse
+import http.client
 import json
 import os
 import re
@@ -142,7 +143,12 @@ def kernel_subsystem(desc: str) -> str:
 
 
 def http_json(url: str, timeout: int = 120, tries: int = 5, headers: dict | None = None):
-    """NVD rate-limits aggressively and 503s under load; a bare urlopen is not enough."""
+    """NVD rate-limits aggressively and 503s under load; a bare urlopen is not enough.
+
+    Under load NVD also cuts responses short: the body ends before Content-Length
+    (http.client.IncompleteRead, an HTTPException, not an OSError) or arrives as
+    truncated JSON (ValueError). Both are retried like any other transient failure.
+    """
     last = None
     for attempt in range(tries):
         req = urllib.request.Request(url, headers={"User-Agent": "gpu-vulndb-daily/1.0",
@@ -150,7 +156,8 @@ def http_json(url: str, timeout: int = 120, tries: int = 5, headers: dict | None
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 return json.loads(resp.read())
-        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError) as e:
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError,
+                http.client.HTTPException, ValueError) as e:
             last = e
             wait = min(60, 6 * 2**attempt)
             print(f"  {type(e).__name__}: {e} — retrying in {wait}s", file=sys.stderr, flush=True)
